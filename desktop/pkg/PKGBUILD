@@ -1,0 +1,25 @@
+pkgname=lumina-desktop
+pkgver=1.6
+pkgrel=2
+pkgdesc="The desktop"
+arch=("x86_64")
+license=("BSD")
+makedepends=("cmake")
+depends=(
+ "liblumina"
+ "qt6-base"
+ "qt6-svg"
+)
+
+build() {
+	mkdir -p build
+	cd build
+	cmake ../../../ -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_DATADIR=share -DCMAKE_INSTALL_BINDIR=bin
+	make
+}
+
+
+package() {
+	cd build
+	make DESTDIR="$pkgdir" install
+}
