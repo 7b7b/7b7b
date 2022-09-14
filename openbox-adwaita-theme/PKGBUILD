@@ -1,0 +1,10 @@
+pkgname=openbox-adwaita-themes
+pkgver=1.0
+pkgrel=0
+pkgdesc="Adwaita and Adwaita-dark themes for openbox"
+arch=("any")
+
+package() {
+	mkdir -p "$pkgdir"/usr/share/themes
+	cp -r ../Adwaita* "$pkgdir"/usr/share/themes
+}

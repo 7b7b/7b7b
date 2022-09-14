@@ -1,0 +1,13 @@
+pkgname=7b7b-files
+pkgver=1.0
+pkgrel=0
+pkgdesc="Default configuration for 7b7b"
+arch=("any")
+
+package() {
+	mkdir -p "$pkgdir"/etc/xdg/7b7b/
+	cp -r ../openbox "$pkgdir"/etc/xdg/7b7b
+	cp -r ../opensnap "$pkgdir"/etc/xdg/7b7b
+	cp ../compton.conf "$pkgdir"/etc/xdg/7b7b
+
+}
