@@ -20,4 +20,11 @@ unset QT_AUTO_SCREEN_SCALE_FACTOR
 
 #openbox --config-file "${OPENBOX_CONFIG}" &
 openbox &
+
+# Window snapping
+opensnap -d &
+
+# Compositor
+compix &
+
 lumina-desktop
