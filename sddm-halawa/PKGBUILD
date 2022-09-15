@@ -1,0 +1,10 @@
+pkgname=sddm-halawa
+pkgver=1.0
+pkgrel=0
+pkgdesc="SDDM theme, simplified (forked from sddm-sugar-candy"
+arch=("any")
+
+package() {
+	mkdir -p "$pkgdir"/usr/share/sddm/themes/
+	cp -r ../halawa "$pkgdir"/usr/share/sddm/themes/	
+}
