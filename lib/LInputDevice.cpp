@@ -18,7 +18,7 @@
 #include <xcb/xinput.h>
 #include <xcb/xproto.h>
 
-#include <LUtils.h>
+#include "LUtils.h"
 
 //===================
 //    LInputDevice Class

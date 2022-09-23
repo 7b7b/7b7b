@@ -6,9 +6,9 @@
 //===========================================
 #include "LIconCache.h"
 
-#include <LuminaOS.h>
-#include <LUtils.h>
-#include <LuminaXDG.h>
+#include "LuminaOS.h"
+#include "LUtils.h"
+#include "LuminaXDG.h"
 
 #include <QDir>
 #include <QtConcurrent>

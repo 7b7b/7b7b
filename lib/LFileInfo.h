@@ -10,7 +10,7 @@
 #ifndef _LUMINA_LIBRARY_FILE_INFO_H
 #define _LUMINA_LIBRARY_FILE_INFO_H
 
-#include <LuminaXDG.h>
+#include "LuminaXDG.h"
 #include <QString>
 #include <QFileInfo>
 #include <QJsonObject>

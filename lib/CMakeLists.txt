@@ -10,12 +10,15 @@ HOMEPAGE_URL https://lumina-project.org
 DESCRIPTION "Libraries for lumina"
 VERSION 1.6.2)
 
+set(LIB_NAME "lumina" CACHE STRING "lumina")
+
 set(LIBRARY_NAME lumina)
 
 # CMake Settings (policies to do AUTOMOC as much as possible)
 cmake_policy(SET CMP0057 NEW)
 cmake_policy(SET CMP0071 NEW)
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
 
 # C++ Settings (pretend everything is modern)
 set(CMAKE_CXX_STANDARD 17)
@@ -49,7 +52,7 @@ find_package(
     Gui
     Network
     Svg
-    Widgets
+    Widgets	
     #X11Extras
 )
 
@@ -90,7 +93,6 @@ add_definitions(
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-#set(LUMINA_INTREE_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/include")
 set(LUMINA_INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${LIBRARY_NAME}")
 
 set(SRCS
@@ -137,7 +139,7 @@ add_library(
 
 target_include_directories(${LIBRARY_NAME}
     PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    #${CMAKE_CURRENT_SOURCE_DIR}
     ${XCB_INCLUDE_DIR}
 )
 
@@ -169,12 +171,42 @@ set(pc_req_public "Qt6Core Qt6Network xcb xcb-aux xcb-damage xcb-screensaver x11
 
 configure_file(lumina.pc.in lumina.pc @ONLY)
 
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/cmake/${LIB_NAME}-config.cmake.in"
+    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${LIB_NAME}"
+)
+
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config-version.cmake"
+    VERSION 1.0.0
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config-version.cmake"
+    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${LIB_NAME}"
+    COMPONENT Devel
+)
+
+install(EXPORT
+    "${LIB_NAME}-targets"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${LIB_NAME}"
+    COMPONENT Devel
+)
+
 install(TARGETS
 	${LIBRARY_NAME}
 	DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-	EXPORT libLumina-targets
+	EXPORT lumina-targets
 	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 	COMPONENT Runtime
+)
+
+export(TARGETS ${LIB_NAME}
+    FILE "${CMAKE_BINARY_DIR}/${LIB_NAME}-targets.cmake"
+    EXPORT_LINK_INTERFACE_LIBRARIES
 )
 
 install(FILES
@@ -188,3 +220,4 @@ install(FILES
     DESTINATION "${LUMINA_INSTALL_INCLUDE_DIR}"
     COMPONENT Devel
 )
+

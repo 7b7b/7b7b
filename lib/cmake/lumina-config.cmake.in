@@ -1,0 +1,14 @@
+@PACKAGE_INIT@
+
+if (CMAKE_VERSION VERSION_LESS 3.0.2)
+    message(FATAL_ERROR \"liblumina requires at least CMake version 3.0.2\")
+endif()
+
+include(CMakeFindDependencyMacro)
+
+if (NOT TARGET @LIB_NAME@)
+    if (POLICY CMP0024)
+        cmake_policy(SET CMP0024 NEW)
+    endif()
+    include("${CMAKE_CURRENT_LIST_DIR}/@LIB_NAME@-targets.cmake")
+endif()

@@ -5,7 +5,7 @@
 //  See the LICENSE file for full details
 //===========================================
 #include "LFileInfo.h"
-#include <LUtils.h>
+#include "LUtils.h"
 //#include <QRegExp>
 #include <unistd.h>
 
