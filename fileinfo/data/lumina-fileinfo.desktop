@@ -1,0 +1,12 @@
+[Desktop Entry]
+Exec=lumina-fileinfo -application %f
+TryExec=lumina-fileinfo
+Icon=unknown
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;
+Name=Lumina File Information
+Comment=View or edit file information including application links
+Name[pt]=Informações de ficheiros do Lumina
+Comment[pt]=Ver e editar informações dos ficheiros
