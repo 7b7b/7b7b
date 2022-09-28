@@ -115,10 +115,6 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
         //invalid default - reset it and continue on
         LFileDialog::setDefaultApp(extension, "");
     }
-    //Final catch: directory given - no valid default found - use lumina-fm
-    if(extension=="inode/directory" && !showDLG) {
-        return "lumina-fm";
-    }
     //No default set -- Start up the application selection dialog
     QApplication App(argc, argv);
     
@@ -321,8 +317,8 @@ void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& pat
                 inFile.remove(0,7);    //chop that URL prefix off the front (should have happened earlier - just make sure)
             }
             //Now replace the field codes
-            cmd.replace("%f","\""+inFile+"\"");
-            cmd.replace("%F","\""+inFile+"\"");
+            cmd.replace("%f",inFile);
+            cmd.replace("%F",inFile);
         } else if( (cmd.contains("%U") || cmd.contains("%u")) ) {
             //Apply any special field replacements for the desired format
             if(!inFile.contains("://") && !isUrl) {
@@ -330,13 +326,13 @@ void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& pat
             }
             inFile.replace(" ", "%20");
             //Now replace the field codes
-            cmd.replace("%u","\""+inFile+"\"");
-            cmd.replace("%U","\""+inFile+"\"");
+            cmd.replace("%u",inFile);
+            cmd.replace("%U",inFile);
         } else {
             //No field codes (or improper field codes given in the file - which is quite common)
             // - Just tack the input file on the end and let the app handle it as necessary
             inFile.replace("%20"," "); //assume a local-file format rather than URL format
-            cmd.append(" \""+inFile+"\"");
+            cmd.append(" "+inFile);
         }
     }
     if(DEBUG) qDebug() << "Found Command:" << cmd << "Extension:" << extension;
@@ -345,7 +341,6 @@ void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& pat
         cmd = cmd.remove("%U").remove("%u").remove("%F").remove("%f").remove("%i").remove("%c").remove("%k").simplified();
     }
     binary = cmd; //pass this string to the calling function
-
 }
 
 int main(int argc, char **argv) {
