@@ -99,7 +99,6 @@ void AppLauncherPlugin::loadButton() {
                     else {
                         ICONS->loadIcon(tmp, "quickopen-file");
                     }
-                    //tmp->setIcon( LXDG::findIcon(file.actions[i].icon,"quickopen-file") );
                     tmp->setWhatsThis( file.actions[i].ID );
                 }
             }
@@ -190,14 +189,6 @@ void AppLauncherPlugin::loadButton() {
     ICONS->loadIcon(tmp, "edit-redo");
     iconLoaded(iconID); //make sure the emblem is layered on top
     //If the file is a symlink, put the overlay on the icon
-    /*if(info.isSymLink()){
-      QImage img = button->icon().pixmap(QSize(icosize,icosize)).toImage();
-      int oSize = icosize/3; //overlay size
-      QPixmap overlay = ICONS->loadIcon("emblem-symbolic-link").pixmap(oSize,oSize).scaled(oSize,oSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-      QPainter painter(&img);
-        painter.drawPixmap(icosize-oSize,icosize-oSize,overlay); //put it in the bottom-right corner
-      button->setIcon( QIcon(QPixmap::fromImage(img)) );
-    }*/
     //Now adjust the visible text as necessary based on font/grid sizing
     if(button->toolTip().isEmpty()) {
         button->setToolTip(txt);
@@ -268,12 +259,13 @@ void AppLauncherPlugin::buttonClicked(bool openwith) {
         this->saveSetting("applicationpath", apps[ names.indexOf(app) ]->filePath);
         QTimer::singleShot(0,this, SLOT(loadButton()));
     } else if(openwith) {
-        //LSession::LaunchApplication("lumina-open -select \""+path+"\"");
-		QProcess::startDetached("lumina-open", QStringList() << "-select" << path);
+        LSession::LaunchApplication("lumina-open -select "+path);
+		//QProcess::startDetached("lumina-open", QStringList() << "-select" << path);
     } else {
-        //LSession::LaunchApplication("lumina-open \""+path+"\"");
-		QProcess::startDetached("lumina-open", QStringList() << path);
+        LSession::LaunchApplication("lumina-open "+path);
+		//QProcess::startDetached("lumina-open", QStringList() << path);
     }
+    qDebug() << path;
 
 }
 
@@ -316,7 +308,7 @@ void AppLauncherPlugin::actionTriggered(QAction *act) {
     if(path.isEmpty() || !QFile::exists(path)) {
         return;    //invalid file
     }
-    LSession::LaunchApplication("lumina-open -action \""+act->whatsThis()+"\" \""+path+"\"");
+    LSession::LaunchApplication("lumina-open -action "+act->whatsThis()+" "+path);
 }
 
 void AppLauncherPlugin::openWith() {
@@ -328,7 +320,7 @@ void AppLauncherPlugin::fileProperties() {
     if(path.isEmpty() || !QFile::exists(path)) {
         return;    //invalid file
     }
-    LSession::LaunchApplication("lumina-fileinfo \""+path+"\"");
+    LSession::LaunchApplication("lumina-fileinfo " +path.replace('"', ""));
 }
 
 void AppLauncherPlugin::fileDelete() {

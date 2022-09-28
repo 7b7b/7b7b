@@ -65,11 +65,7 @@ void LAppMenuPlugin::LaunchItem(QAction* item) {
             LSession::handle()->systemWindow();
         }
     } else if(!appFile.isEmpty()) {
-	//appFile.replace('""', "").replace("\", "");
-	appFile.replace('"', "");
-	QProcess::startDetached("lumina-open", QStringList() << appFile);
-	//qDebug() << appFile;
-        //LSession::LaunchApplication("lumina-open "+appFile);
+        LSession::LaunchApplication("lumina-open "+appFile);
     }
 }
 
@@ -152,7 +148,8 @@ void LAppMenuPlugin::UpdateMenu() {
                 //Just a single entry point - no extra actions
                 QAction *act = new QAction(LXDG::findIcon(appL[a]->icon, ""), appL[a]->name, menu);
                 act->setToolTip(appL[a]->comment);
-                act->setWhatsThis("\""+appL[a]->filePath+"\"");
+                //act->setWhatsThis("\""+appL[a]->filePath+"\"");
+                act->setWhatsThis(appL[a]->filePath);
                 menu->addAction(act);
             } else {
                 //This app has additional actions - make this a sub menu
@@ -168,7 +165,9 @@ void LAppMenuPlugin::UpdateMenu() {
                 for(int sa=0; sa<appL[a]->actions.length(); sa++) {
                     QAction *sact = new QAction(LXDG::findIcon(appL[a]->actions[sa].icon, appL[a]->icon), appL[a]->actions[sa].name, this);
                     sact->setToolTip(appL[a]->comment);
-                    sact->setWhatsThis("-action \""+appL[a]->actions[sa].ID+"\" \""+appL[a]->filePath+"\"");
+                    
+                    //sact->setWhatsThis("-action \""+appL[a]->actions[sa].ID+"\" \""+appL[a]->filePath+"\"");
+                    sact->setWhatsThis("-action "+appL[a]->actions[sa].ID +" " +appL[a]->filePath);
                     submenu->addAction(sact);
                 }
                 menu->addMenu(submenu);

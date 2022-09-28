@@ -169,7 +169,7 @@ void AppMenu::updateAppList() {
                         ICONS->loadIcon(sact, appL[a]->icon);
                     }
                     sact->setToolTip(appL[a]->comment);
-                    sact->setWhatsThis("-action \""+appL[a]->actions[sa].ID+"\" \""+appL[a]->filePath+"\"");
+                    sact->setWhatsThis("-action "+appL[a]->actions[sa].ID+" "+appL[a]->filePath);
                     submenu->addAction(sact);
                 }
                 menu->addMenu(submenu);
@@ -200,6 +200,6 @@ void AppMenu::launchApp(QAction *act) {
     if(appFile.startsWith("-action")) {
         LSession::LaunchApplication("lumina-open "+appFile); //already has quotes put in place properly
     } else {
-        LSession::LaunchApplication("lumina-open \""+appFile+"\"");
+        LSession::LaunchApplication("lumina-open "+appFile);
     }
 }

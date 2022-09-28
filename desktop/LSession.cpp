@@ -709,7 +709,10 @@ void LSession::storeClipboard(QString text, QClipboard::Mode mode) {
 //===============
 void LSession::LaunchApplication(QString cmd) {
     //LSession::setOverrideCursor(QCursor(Qt::BusyCursor));
-    ExternalProcess::launch(cmd, QStringList(), true);
+    QStringList args = cmd.split(" ");
+    QString bin = args.at(0);
+    args.remove(0);
+    ExternalProcess::launch(bin, args, true);
 }
 
 QFileInfoList LSession::DesktopFiles() {
