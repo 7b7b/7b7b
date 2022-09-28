@@ -39,5 +39,3 @@ include_directories(
 )
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-install(FILES "data/lumina-fileinfo.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
-
