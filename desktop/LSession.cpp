@@ -12,7 +12,6 @@
 #include <QtConcurrent>
 #include <QMimeData>
 #include "LXcbEventFilter.h"
-#include "widgets/BootSplash.h"
 
 #include <LuminaXDG.h>
 
@@ -40,9 +39,6 @@ LSession::LSession(int &argc, char ** argv) : LSingleApplication(argc, argv, "lu
         this->setEffectEnabled( Qt::UI_AnimateMenu, true);
         this->setEffectEnabled( Qt::UI_AnimateCombo, true);
         this->setEffectEnabled( Qt::UI_AnimateTooltip, true);
-        //this->setAttribute(Qt::AA_UseDesktopOpenGL);
-        //this->setAttribute(Qt::AA_UseHighDpiPixmaps); //allow pixmaps to be scaled up as well as down
-        //this->setStyle( new MenuProxyStyle); //QMenu icon size override
         SystemTrayID = 0;
         VisualTrayID = 0;
         sysWindow = 0;
@@ -66,8 +62,6 @@ LSession::LSession(int &argc, char ** argv) : LSingleApplication(argc, argv, "lu
         XCB = new LXCB(); //need access to XCB data/functions right away
         //initialize the empty internal pointers to 0
         appmenu = 0;
-        //currTranslator=0;
-        //mediaObj=0;
         sessionsettings=0;
         //Setup the event filter for Qt5
         evFilter =  new XCBEventFilter(this);
@@ -91,20 +85,13 @@ LSession::~LSession() {
         }
         //delete WM;
         appmenu->deleteLater();
-        /*delete currTranslator;
-        if(mediaObj!=0) {
-            delete mediaObj;
-        }*/
     }
 }
 
 void LSession::setupSession() {
     //Seed random number generator (if needed)
     QRandomGenerator( QTime::currentTime().msec() );
-
-    //currTranslator = LUtils::LoadTranslation(this, "lumina-desktop");
-    BootSplash splash;
-    splash.showScreen("init");
+    
     qDebug() << "Initializing Session";
     if(QFile::exists("/tmp/.luminastopping")) {
         QFile::remove("/tmp/.luminastopping");
@@ -115,12 +102,7 @@ void LSession::setupSession() {
         timer->start();
         qDebug() << " - Init srand:" << timer->elapsed();
     }
-
-    //Setup the QSettings default paths
-    splash.showScreen("settings");
-    if(DEBUG) {
-        qDebug() << " - Init QSettings:" << timer->elapsed();
-    }
+    
     sessionsettings = new QSettings("lumina-desktop", "sessionsettings");
     DPlugSettings = new QSettings("lumina-desktop","pluginsettings/desktopsettings");
     //Load the proper translation files
@@ -134,49 +116,29 @@ void LSession::setupSession() {
                               sessionsettings->value("InitLocale/LC_COLLATE","").toString(), \
                               sessionsettings->value("InitLocale/LC_CTYPE","").toString() );
     }
-//use the system settings
-    //Setup the user's lumina settings directory as necessary
-    //splash.showScreen("user");
-    //if(DEBUG){ qDebug() << " - Init User Files:" << timer->elapsed();}
     checkUserFiles();
 
     //Initialize the internal variables
     DESKTOPS.clear();
 
-    //Start the background system tray
-    splash.showScreen("systray");
-    if(DEBUG) {
-        qDebug() << " - Init System Tray:" << timer->elapsed();
-    }
     startSystemTray();
 
     //Initialize the global menus
     qDebug() << " - Initialize system menus";
-    splash.showScreen("apps");
-    if(DEBUG) {
-        qDebug() << " - Init AppMenu:" << timer->elapsed();
-    }
+
     appmenu = new AppMenu();
 
-    splash.showScreen("menus");
-    if(DEBUG) {
-        qDebug() << " - Init SystemWindow:" << timer->elapsed();
-    }
     sysWindow = new SystemWindow();
 
     //Initialize the desktops
-    splash.showScreen("desktop");
-    if(DEBUG) {
-        qDebug() << " - Init Desktops:" << timer->elapsed();
-    }
+
     desktopFiles = QDir(LUtils::standardDirectory(LUtils::Desktop)).entryInfoList(QDir::NoDotAndDotDot | QDir::Files | QDir::Dirs, QDir::Name | QDir::IgnoreCase | QDir::DirsFirst);
     updateDesktops();
     //if(DEBUG){ qDebug() << " - Process Events (6x):" << timer->elapsed();}
-    //for(int i=0; i<6; i++){ LSession::processEvents(); } //Run through this a few times so the interface systems get up and running
 
     //Now setup the system watcher for changes
-    splash.showScreen("final");
     //qDebug() << " - Initialize file system watcher";
+
     if(DEBUG) {
         qDebug() << " - Init QFileSystemWatcher:" << timer->elapsed();
     }
@@ -204,20 +166,14 @@ void LSession::setupSession() {
     connect(watcher, SIGNAL(fileChanged(QString)), this, SLOT(watcherChange(QString)) );
     connect(this, SIGNAL(aboutToQuit()), this, SLOT(SessionEnding()) );
     //if(DEBUG){ qDebug() << " - Process Events (4x):" << timer->elapsed();}
-    //for(int i=0; i<4; i++){ LSession::processEvents(); } //Again, just a few event loops here so thing can settle before we close the splash screen
     if(DEBUG) {
         qDebug() << " - Launch Startup Apps:" << timer->elapsed();
     }
-    //launchStartupApps();
+
     QTimer::singleShot(500, this, SLOT(launchStartupApps()) );
-    //if(DEBUG){ qDebug() << " - Hide Splashscreen:" << timer->elapsed();}
-    //splash.hide();
-    //LSession::processEvents();
     if(DEBUG) {
         qDebug() << " - Close Splashscreen:" << timer->elapsed();
     }
-    splash.close();
-    //LSession::processEvents();
     if(DEBUG) {
         qDebug() << " - Init Finished:" << timer->elapsed();
         delete timer;
@@ -229,11 +185,7 @@ void LSession::CleanupSession() {
     LSession::processEvents();
     //Create a temporary flag to prevent crash dialogs from opening during cleanup
     LUtils::writeFile("/tmp/.luminastopping",QStringList() << "yes", true);
-    //Start the logout chimes (if necessary)
-    /*int vol = LOS::audioVolume();
-    if(vol>=0) {
-        sessionsettings->setValue("last_session_state/audio_volume", vol);
-    }*/
+
     //Stop the background system tray (detaching/closing apps as necessary)
     stopSystemTray(!cleansession);
     //Now perform any other cleanup
@@ -324,15 +276,6 @@ void LSession::NewCommunication(QStringList list) {
 void LSession::launchStartupApps() {
     //First start any system-defined startups, then do user defined
     qDebug() << "Launching startup applications";
-    //Enable Numlock
-    /*int tmp = LOS::ScreenBrightness();
-    if(tmp>0) {
-        LOS::setScreenBrightness( tmp );
-        qDebug() << " - - Screen Brightness:" << QString::number(tmp)+"%";
-    }*/
-    //QProcess::startDetached("nice lumina-open -autostart-apps");
-    //ExternalProcess::launch("lumina-open", QStringList() << "-autostart-apps", false);
-
     //* FROM LUMINA-OPEN
 
     QList<XDGDesktop*> xdgapps = LXDG::findAutoStartFiles();
@@ -356,17 +299,6 @@ void LSession::launchStartupApps() {
     }
 
     //* END
-
-    //Re-load the screen brightness and volume settings from the previous session
-    // Wait until after the XDG-autostart functions, since the audio system might be started that way
-    qDebug() << " - Loading previous settings";
-    /*tmp = sessionsettings->value("last_session_state/audio_volume",50).toInt();
-    if(tmp>=0) {
-        LOS::setAudioVolume(tmp);
-    }
-    qDebug() << " - - Audio Volume:" << QString::number(tmp)+"%";*/
-
-    //qDebug() << "[DESKTOP INIT FINISHED]";
 }
 
 void LSession::StartLogout() {

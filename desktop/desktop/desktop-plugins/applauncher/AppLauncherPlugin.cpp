@@ -15,6 +15,7 @@ AppLauncherPlugin::AppLauncherPlugin(QWidget* parent, QString ID) : LDPlugin(par
     this->setLayout(lay);
     lay->setContentsMargins(0,0,0,0);
     button = new OutlineToolButton(this);
+    button->setStyleSheet( "QToolButton::hover{ background: palette(highlight); }" );
     button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     button->setAutoRaise(true);
     button->setText("...\n..."); //Need to set something here so that initial sizing works properly

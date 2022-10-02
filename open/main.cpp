@@ -37,8 +37,6 @@ void printUsageInfo() {
     qDebug() << "           lumina-open [-volumeup, -volumedown, -brightnessup, -brightnessdown]";
     qDebug() << "  [-select] (optional) flag to bypass any default application settings and show the application selector window";
     qDebug() << "  [-action <ActionID>] (optional) Flag to run one of the alternate Actions listed in a .desktop registration file rather than the main command.";
-    qDebug() << "Special Flags:";
-    qDebug() << " \"-autostart-apps\" Flag to launch all the various apps which are registered with XDG autostart specification";
     exit(1);
 }
 
@@ -48,26 +46,6 @@ void ShowErrorDialog(int argc, char **argv, QString message) {
     QMessageBox dlg(QMessageBox::Critical, QObject::tr("File Error"), message );
     dlg.exec();
     exit(1);
-}
-
-void LaunchAutoStart() {
-    QList<XDGDesktop*> xdgapps = LXDG::findAutoStartFiles();
-    for(int i=0; i<xdgapps.length(); i++) {
-        //Generate command and clean up any stray "Exec" field codes (should not be any here)
-        QString cmd = xdgapps[i]->getDesktopExec();
-        if(cmd.contains("%")) {
-            cmd = cmd.remove("%U").remove("%u").remove("%F").remove("%f").remove("%i").remove("%c").remove("%k").simplified();
-        }
-        //Now run the command
-        if(!cmd.isEmpty()) {
-            if(DEBUG) qDebug() << " - Auto-Starting File:" << xdgapps[i]->filePath;
-            QProcess::startDetached(cmd);
-        }
-    }
-    //make sure we clean up all the xdgapps structures
-    for(int i=0;  i<xdgapps.length(); i++) {
-        xdgapps[i]->deleteLater();
-    }
 }
 
 QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QString& path, bool showDLG=false) {

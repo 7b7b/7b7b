@@ -18,8 +18,6 @@
 // ===================
 LDesktopPluginSpace::LDesktopPluginSpace() : QWidget() {
     this->setObjectName("LuminaDesktopPluginSpace");
-    //this->setAttribute(Qt::WA_TranslucentBackground);
-    //this->setAttribute(Qt::WA_NoSystemBackground);
     this->setAutoFillBackground(false);
     this->setStyleSheet("QWidget#LuminaDesktopPluginSpace{ border: none; background: transparent; }");
     this->setWindowFlags(Qt::WindowStaysOnBottomHint | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
@@ -30,7 +28,6 @@ LDesktopPluginSpace::LDesktopPluginSpace() : QWidget() {
     GRIDSIZE = 100.0; //default value if not set
     plugsettings = LSession::handle()->DesktopPluginSettings();
     LSession::handle()->XCB->SetAsDesktop(this->winId());
-    //this->setWindowOpacity(0.0);
 }
 
 LDesktopPluginSpace::~LDesktopPluginSpace() {
@@ -130,8 +127,6 @@ void LDesktopPluginSpace::UpdateGeom(int oldgrid) {
 //          PRIVATE
 // ===================
 void LDesktopPluginSpace::addDesktopItem(QString filepath) {
-    //addDesktopPlugin("applauncher::"+filepath+"---dlink"+QString::number(LSession::handle()->desktop()->screenNumber(this)) );
-    //addDesktopPlugin("applauncher::"+filepath+"---dlink"+QString::number(LSession::handle()->screenAt(this->pos())) );
     addDesktopPlugin("applauncher::"+filepath+"---dlink"+QString::number(LSession::handle()->screens().indexOf( LSession::handle()->screenAt( this->pos() ) )));
 }
 

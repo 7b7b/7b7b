@@ -24,7 +24,7 @@
 
 // Local includes
 #include "LWinInfo.h"
-#include "../LTBWidget.h"
+#include "./LTBWidget.h"
 
 class LTaskButton : public LTBWidget{
 	Q_OBJECT

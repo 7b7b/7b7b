@@ -17,7 +17,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 find_package(PkgConfig REQUIRED)
 
 # OS-detection
-#
 # This ignores the actual OS and just sets FreeBSD-useful values
 add_definitions(
     -DL_ETCDIR=QStringLiteral\("/etc"\)
@@ -25,7 +24,6 @@ add_definitions(
 )
 
 # Dependencies
-# find_package(Qt5 REQUIRED COMPONENTS Widgets X11Extras Network Multimedia MultimediaWidgets Concurrent Svg Quick Qml)
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui Network Concurrent Svg)
 pkg_check_modules(LUMINA REQUIRED lumina)
 
@@ -44,7 +42,6 @@ add_executable(${PROJECT}
  # Widgets
  widgets/AppMenu.cpp
  widgets/SystemWindow.cpp
- widgets/BootSplash.cpp
  
  # Desktop plugins
  desktop/desktop-plugins/applauncher/AppLauncherPlugin.cpp
@@ -53,6 +50,7 @@ add_executable(${PROJECT}
 
  # Panel plugins
  panel/panel-plugins/appmenu/LAppMenuPlugin.cpp
+ panel/panel-plugins/taskmanager/LTBWidget.h
  panel/panel-plugins/taskmanager/LTaskManagerPlugin.cpp
  panel/panel-plugins/taskmanager/LTaskButton.cpp
  panel/panel-plugins/spacer/LSpacer.h
@@ -60,13 +58,11 @@ add_executable(${PROJECT}
  panel/panel-plugins/systemtray/TrayIcon.cpp
  panel/panel-plugins/clock/LClock.cpp
  panel/panel-plugins/showdesktop/LHomeButton.cpp
- panel/panel-plugins/RotateToolButton.h
 	
  #Test
  desktop/desktop-plugins/LDPlugin.cpp
  panel/panel-plugins/LPPlugin.h
  panel/panel-plugins/NewPP.h
- panel/panel-plugins/LTBWidget.h
  desktop/desktop-plugins/LDPlugin.h
  desktop/desktop-plugins/NewDP.h
 )
@@ -95,13 +91,7 @@ install(FILES "data/Lumina-DE.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/xse
 # PNG
 install(FILES "data/Lumina-DE.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps")
 install(FILES "data/Lumina-DE.png" DESTINATION "${CMAKE_INSTALL_DATADIR}/lumina-desktop")
-
-# Configuration
 ## Defaults
 install(FILES "data/defaults/luminaDesktop.conf" DESTINATION "${CMAKE_INSTALL_DATADIR}/lumina-desktop")
-#install(FILES "data/audiofiles/Logout.ogg" DESTINATION "${CMAKE_INSTALL_DATADIR}/lumina-desktop")
-#install(FILES "data/audiofiles/Login.ogg" DESTINATION "${CMAKE_INSTALL_DATADIR}/lumina-desktop")
 ## Extrafiles
 install(FILES "data/extrafiles/globs2" DESTINATION "${CMAKE_INSTALL_DATADIR}/lumina-desktop")
-## Themes
-#install(DIRECTORY "data/themes" DESTINATION "${CMAKE_INSTALL_DATADIR}/lumina-desktop")

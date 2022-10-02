@@ -1,8 +1,3 @@
-# libLumina build, CMake edition. EXPERIMENTAL.
-#
-# SPDX-License-Identifier: BSD-2-Clause
-# SPDX-FileCopyrightText: Copyright 2022 Adriaan de Groot <adridg@FreeBSD.org>
-
 cmake_minimum_required(VERSION 3.0)
 project(libLumina
 LANGUAGES C CXX
@@ -24,25 +19,7 @@ include(CMakePackageConfigHelpers)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# ECM setup
-include(FeatureSummary)
-find_package(ECM 5.88.0 NO_MODULE)
-set_package_properties(
-    ECM
-    PROPERTIES
-    TYPE REQUIRED
-    DESCRIPTION "Extra CMake Modules."
-    URL "https://commits.kde.org/extra-cmake-modules"
-)
-feature_summary(
-    WHAT REQUIRED_PACKAGES_NOT_FOUND
-    FATAL_ON_MISSING_REQUIRED_PACKAGES
-)
-
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-
 # Dependencies
-set(QT_VERSION 5.15.0)
 find_package(
     Qt6
     CONFIG
@@ -51,9 +28,7 @@ find_package(
     Core
     Gui
     Network
-    Svg
     Widgets	
-    #X11Extras
 )
 
 find_package(X11)
@@ -61,9 +36,6 @@ find_package(
     XCB
     COMPONENTS
     XCB
-    KEYSYMS
-    XKB
-    XINPUT
     XFIXES
     AUX
     COMPOSITE
@@ -72,9 +44,7 @@ find_package(
     EWMH
     ICCCM
     IMAGE
-    SCREENSAVER
     RANDR
-    OPTIONAL_COMPONENTS XTEST
 )
 
 if(NOT X11_FOUND OR NOT XCB_XCB_FOUND)
@@ -82,7 +52,6 @@ if(NOT X11_FOUND OR NOT XCB_XCB_FOUND)
 endif()
 
 # OS-detection
-#
 # This ignores the actual OS and just sets FreeBSD-useful values
 add_definitions(
     -DL_ETCDIR=QStringLiteral\("/etc"\)
@@ -94,40 +63,33 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(LUMINA_INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${LIBRARY_NAME}")
-
 set(SRCS
-    DesktopSettings.cpp
-    LDesktopUtils.cpp
-    LFileInfo.cpp
-    LIconCache.cpp
-    LInputDevice.cpp
-    LUtils.cpp
-    LuminaSingleApplication.cpp
-    LuminaRandR-X11.cpp
-    LuminaX11.cpp
-    LuminaXDG.cpp
-    ResizeMenu.cpp
-    XDGMime.cpp
-
-	# Template, you should change it to your own OS
-	LuminaOS-Linux.cpp
+    src/DesktopSettings.cpp
+    src/LDesktopUtils.cpp
+    src/LIconCache.cpp
+    src/LUtils.cpp
+    src/LuminaSingleApplication.cpp
+    src/LuminaRandR-X11.cpp
+    src/LuminaX11.cpp
+    src/LuminaXDG.cpp
+    src/ResizeMenu.cpp
+    src/XDGMime.cpp
+	src/LuminaOS.cpp
 )
 
 set(PUB_HDRS
-    DesktopSettings.h
-    ExternalProcess.h
-    LDesktopUtils.h
-    LFileInfo.h
-    LIconCache.h
-    LInputDevice.h
-    LuminaRandR.h
-    LuminaSingleApplication.h
-    LuminaX11.h
-    LuminaXDG.h
-    LuminaOS.h
-    LUtils.h
-    ResizeMenu.h
-    XDGMime.h
+    src/DesktopSettings.h
+    src/ExternalProcess.h
+	src/LDesktopUtils.h
+    src/LIconCache.h
+    src/LuminaRandR.h
+    src/LuminaSingleApplication.h
+    src/LuminaX11.h
+    src/LuminaXDG.h
+    src/LuminaOS.h
+    src/LUtils.h
+    src/ResizeMenu.h
+    src/XDGMime.h
 )
 
 add_library(
@@ -139,7 +101,6 @@ add_library(
 
 target_include_directories(${LIBRARY_NAME}
     PUBLIC
-    #${CMAKE_CURRENT_SOURCE_DIR}
     ${XCB_INCLUDE_DIR}
 )
 
@@ -148,26 +109,22 @@ target_link_libraries(
         Qt6::Concurrent
         Qt6::Core
         Qt6::GuiPrivate
-        Qt6::Svg
         Qt6::Widgets
         Qt6::Network
-        #Qt6::X11Extras
         XCB::XCB
         XCB::AUX
         XCB::IMAGE
         XCB::COMPOSITE
         XCB::DAMAGE
-        XCB::XINPUT
         XCB::ICCCM
         XCB::RANDR
         XCB::EWMH
-        XCB::SCREENSAVER
         XCB::DPMS
         X11::Xdamage
 )
 
 set(target ${LIBRARY_NAME})
-set(pc_req_public "Qt6Core Qt6Network xcb xcb-aux xcb-damage xcb-screensaver x11")
+set(pc_req_public "Qt6Core Qt6Network xcb xcb-aux xcb-damage x11")
 
 configure_file(lumina.pc.in lumina.pc @ONLY)
 

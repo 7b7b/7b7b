@@ -6,8 +6,6 @@
 //===========================================
 #include "LuminaRandR.h"
 
-//#include "X11/extensions/Xrandr.h"
-
 inline QString atomToName(xcb_atom_t atom){
   xcb_get_atom_name_reply_t *nreply = xcb_get_atom_name_reply(QX11Info::connection(), xcb_get_atom_name_unchecked(QX11Info::connection(), atom), NULL);
     QString name = QString::fromLocal8Bit(xcb_get_atom_name_name(nreply), xcb_get_atom_name_name_length(nreply));

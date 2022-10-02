@@ -113,30 +113,19 @@ QRect LDesktop::availableScreenGeom() {
 }
 
 void LDesktop::UpdateGeometry() {
-    //First make sure there is something different about the geometry
-    //if(desktop->screenGeometry(Screen())==bgWindow->geometry()){ return; }
-    //Now update the screen
-    // NOTE: This functionality is highly event-driven based on X changes - so we need to keep things in order (no signals/slots)
-    //qDebug() << "Changing Desktop Geom:" << Screen();
-    //bgWindow->setGeometry(desktop->screenGeometry(Screen()));
-    /*for(int i=0; i<PANELS.length(); i++){
-      PANELS[i]->UpdatePanel(true); //geom only updates - do this before adjusting the background
-    }*/
-    //qDebug() << " - Update Desktop Plugin Area";
-    //UpdateDesktopPluginArea();
-    //qDebug() << " - Done With Desktop Geom Updates";
     QTimer::singleShot(0, this, SLOT(UpdateBackground()));
     QTimer::singleShot(0, this, SLOT(UpdatePanels()));
 }
 
 void LDesktop::SystemLock() {
-    QTimer::singleShot(30,LSession::handle(), SLOT(LockScreen()) );
+    //QTimer::singleShot(30,LSession::handle(), SLOT(LockScreen()) );
     //QProcess::startDetached("xscreensaver-command -lock");
 }
 
 void LDesktop::SystemLogout() {
     LSession::handle()->systemWindow();
 }
+
 void LDesktop::SystemPreferences() {
     LSession::LaunchApplication("lumina-config");
 }
@@ -147,18 +136,17 @@ void LDesktop::SystemTerminal() {
     if(term.isEmpty() ||(!term.endsWith(".desktop") && !LUtils::isValidBinary(term)) ) {
         term = "xterm";
     }
-    LSession::LaunchApplication("lumina-open \""+term+"\"");
+    LSession::LaunchApplication("lumina-open " + term);
 }
 
 void LDesktop::SystemFileManager() {
     //Just open the home directory
-    QString fm =  "lumina-open \""+QDir::homePath()+"\"";
-    LSession::LaunchApplication(fm);
+    LSession::LaunchApplication("lumina-open " + QDir::homePath());
 }
 
 void LDesktop::SystemApplication(QAction* act) {
     if(!act->whatsThis().isEmpty() && act->parent()==deskMenu) {
-        LSession::LaunchApplication("lumina-open \""+act->whatsThis()+"\"");
+        LSession::LaunchApplication("lumina-open " + act->whatsThis());
     }
 }
 
@@ -262,10 +250,6 @@ void LDesktop::InitDesktop() {
     winMenu->setTitle(tr("Window List"));
     winMenu->setIcon( LXDG::findIcon("preferences-system-windows","") );
     connect(winMenu, SIGNAL(triggered(QAction*)), this, SLOT(winClicked(QAction*)) );
-    //workspacelabel = new QLabel(0);
-    //  workspacelabel->setAlignment(Qt::AlignCenter);
-    //wkspaceact = new QWidgetAction(0);
-    //  wkspaceact->setDefaultWidget(workspacelabel);
     bgtimer = new QTimer(this);
     bgtimer->setSingleShot(true);
     connect(bgtimer, SIGNAL(timeout()), this, SLOT(UpdateBackground()) );
@@ -275,19 +259,6 @@ void LDesktop::InitDesktop() {
     connect(QApplication::instance(), SIGNAL(MediaFilesChanged()), this, SLOT(UpdateDesktop()) );
     connect(QApplication::instance(), SIGNAL(LocaleChanged()), this, SLOT(LocaleChanged()) );
     connect(QApplication::instance(), SIGNAL(WorkspaceChanged()), this, SLOT(UpdateBackground()) );
-    //if(DEBUG){ qDebug() << "Create bgWindow"; }
-    /*bgWindow = new QWidget(); //LDesktopBackground();
-    bgWindow->setObjectName("bgWindow");
-    bgWindow->setContextMenuPolicy(Qt::CustomContextMenu);
-    bgWindow->setFocusPolicy(Qt::StrongFocus);
-    	bgWindow->setWindowFlags(Qt::WindowStaysOnBottomHint | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-    LSession::handle()->XCB->SetAsDesktop(bgWindow->winId());
-    bgWindow->setGeometry(LSession::handle()->screenGeom(Screen()));
-          bgWindow->setWindowOpacity(0.0);
-    connect(bgWindow, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowMenu()) );*/
-    if(DEBUG) {
-        qDebug() << "Create bgDesktop";
-    }
     bgDesktop = new LDesktopPluginSpace();
     int grid = settings->value(DPREFIX+"GridSize",-1).toInt();
     if(grid<0 && QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
@@ -310,7 +281,6 @@ void LDesktop::InitDesktop() {
     desktopFolderActionMenu->setIcon(LXDG::findIcon("user-desktop",""));
     desktopFolderActionMenu->addAction(LXDG::findIcon("folder-new",""), tr("New Folder"), this, SLOT(NewDesktopFolder()) );
     desktopFolderActionMenu->addAction(LXDG::findIcon("document-new",""), tr("New File"), this, SLOT(NewDesktopFile()) );
-    //desktopFolderActionMenu->addAction(LXDG::findIcon("edit-paste",""), tr("Paste"), this, SLOT(PasteInDesktop()) );
     if(DEBUG) {
         qDebug() << " - Desktop Init Done:" << screenID;
     }
@@ -776,7 +746,7 @@ void LDesktop::NewDesktopFolder(QString name) {
     if(name.isEmpty()) {
         i_dlg_folder = true; //creating a new folder
         if(inputDLG == 0) {
-            inputDLG = new QInputDialog(0, Qt::Dialog | Qt::WindowStaysOnTopHint);
+            inputDLG = new QInputDialog(0, Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
             inputDLG->setInputMode(QInputDialog::TextInput);
             inputDLG->setTextValue("");
             inputDLG->setTextEchoMode(QLineEdit::Normal);
@@ -802,7 +772,7 @@ void LDesktop::NewDesktopFile(QString name) {
     if(name.isEmpty()) {
         i_dlg_folder = false; //creating a new file
         if(inputDLG == 0) {
-            inputDLG = new QInputDialog(0, Qt::Dialog | Qt::WindowStaysOnTopHint);
+            inputDLG = new QInputDialog(0, Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
             inputDLG->setInputMode(QInputDialog::TextInput);
             inputDLG->setTextValue("");
             inputDLG->setTextEchoMode(QLineEdit::Normal);

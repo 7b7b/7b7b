@@ -9,8 +9,6 @@
 #include "LUtils.h"
 #include <QObject>
 #include <QTimer>
-//#include <QMediaPlayer>
-#include <QSvgRenderer>
 
 static QStringList mimeglobs;
 static qint64 mimechecktime;
@@ -942,23 +940,7 @@ QIcon LXDG::findIcon(QString iconName, QString fallback){
   for(int i=0; i<srch.length() && ico.isNull(); i++){
     //Look for a svg first
     if(QFile::exists(srch[i]+":"+iconName+".svg") && !iconName.contains("libreoffice") ){
-        //Be careful about how an SVG is loaded - needs to render the image onto a paint device
-        /*QSvgRenderer svg;
-        if( svg.load(srch[i]+":"+iconName+".svg") ){
-	  //Could be loaded - now check that it is version 1.1+ (Qt has issues with 1.0? (LibreOffice Icons) )
-	  float version = 1.1; //only downgrade files that explicitly set the version as older
-	  QString svginfo = LUtils::readFile(srch[i]+":"+iconName+".svg").join("\n").section("<svg",1,1).section(">",0,0);
-	  svginfo.replace("\t"," "); svginfo.replace("\n"," ");
-	  if(svginfo.contains(" version=")){ version = svginfo.section(" version=\"",1,1).section("\"",0,0).toFloat(); }
-	  if(version>=1.1){*/
-            ico.addFile(srch[i]+":"+iconName+".svg"); //could be loaded/parsed successfully
-	  /*}else{
-	    //qDebug() << "Old SVG Version file:" << iconName+".svg  Theme:" << srch[i];
-	    //qDebug() << "SVGInfo:" << svginfo;
-	  }
-        }else{
-          qDebug() << "Found bad SVG file:" << iconName+".svg  Theme:" << srch[i];
-        }*/
+      ico.addFile(srch[i]+":"+iconName+".svg"); //could be loaded/parsed successfully
     }
     if(QFile::exists(srch[i]+":"+iconName+".png")){
       //simple PNG image - load directly into the QIcon structure
@@ -1454,74 +1436,10 @@ QList<XDGDesktop*> LXDG::findAutoStartFiles(bool includeInvalid){
   return files;
 }
 
-/*bool LXDG::setAutoStarted(bool autostart, XDGDesktop *app){
-  //First get the list of system directories to search (system first, user-provided files come later and overwrite sys files as needed)
-  QStringList paths = QString(getenv("XDG_CONFIG_DIRS")).split(":");
-  QString upath = QString(getenv("XDG_CONFIG_HOME")).section(":",0,0);
-  if(upath.isEmpty()){ upath = QDir::homePath()+"/.config/autostart/"; }
-  else{ upath.append("/autostart/"); }
-  //Verify that the autostart directory exists
-  if(!QFile::exists(upath)){
-    QDir dir;
-    dir.mkpath(upath);
-  }
-
-  //Quick check/finish for user-defined files which are getting disabled (just remove the file)
-  if(app->filePath.startsWith(upath) && !autostart){
-    return QFile::remove(app->filePath);
-  }
-  bool sysfile = false;
-  for(int i=0; i<paths.length(); i++){
-    if(app->filePath.startsWith(paths[i]+"/autostart/") ){
-      sysfile = true;
-      //Change it to the user-modifiable directory
-      app.filePath = app.filePath.replace(paths[i]+"/autostart/", upath);
-    }
-  }
-  //Make sure the user-autostart dir is specified, and clean the app structure as necessary
-  if( !app.filePath.startsWith(upath) && autostart){ 
-    //Some other non-override autostart file - set it up to open with lumina-open
-    if(!app.filePath.endsWith(".desktop")){
-      app.exec = "lumina-open \""+app.filePath+"\"";
-      app.tryexec = app.filePath; //make sure this file exists
-      if(app.name.isEmpty()){ app.name = app.filePath.section("/",-1); }
-      if(app.icon.isEmpty()){ app.icon = LXDG::findAppMimeForFile(app.filePath); app.icon.replace("/","-"); }
-      app.filePath = upath+app.filePath.section("/",-1)+".desktop";
-      app.type = XDGDesktop::APP;
-    }else{
-      //Some other *.desktop file on the system (keep almost all the existing settings/values)
-      // - setup a redirect to the other file
-      app.exec = "lumina-open \""+app.filePath+"\"";
-      app.tryexec = app.filePath; //make sure this file exists
-      // - Adjust the actual path where this file will get saved
-      app.filePath = upath+app.filePath.section("/",-1);
-    }
-  }
-  //Now save the "hidden" value into the file
-  app.isHidden = !autostart; //if hidden, it will not be autostarted
-  //Now save the file as necessary
-  bool saved = false;
-  //qDebug() << " - Saving AutoStart File:" << app.filePath << app.name << app.isHidden;
-  if(sysfile){
-    //Just an override file for the "hidden" field - nothing more
-    QStringList info;
-      info << "[Desktop Entry]" << "Type=Application" << QString("Hidden=")+ (app.isHidden ? QString("true"): QString("false"));
-    saved = LUtils::writeFile(app.filePath, info, true);
-  }else{
-    //Need to actually save the full file
-    saved = LXDG::saveDesktopFile(app);
-  }
-  return saved;
-}*/
-
 bool LXDG::setAutoStarted(bool autostart, QString filePath){
   //Convenience function for the auto-start setter
   XDGDesktop desk(filePath);
   if(!filePath.endsWith(".desktop")){
-    //bool ok = false;
-    //desk = LXDG::loadDesktopFile(filePath, ok);
-    //if(!ok){ return false; } //error reading input file
-  //}else{
     desk.filePath = filePath;
     desk.useTerminal = false;
   }

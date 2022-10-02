@@ -63,14 +63,8 @@ public slots:
 	    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	    this->layout()->setAlignment(Qt::AlignTop);
 	    QSize sz(this->width(), this->width());
-//            QSize sz(this->width(), this->height());  //we want to increase the width but not the height of the icons
 	    for(int i=0; i<BUTTONS.length(); i++){
 	      BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonIconOnly);
-//	      BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-//		if( dpi = 196 ){ int vertsizeicon = ; BUTTONS[i]->setIconSize(vertsizeicon);}
-//		elseif( dpi = 144 ) { int vertsizeicon = ; BUTTONS[i]->setIconSize(vertsizeicon);}
-//		elseif( dpi = 96 ) { int vertsizeicon = ; BUTTONS[i]->setIconSize(vertsizeicon);}
-//		elseif( dpi = 48 ) { int vertsizeicon = ; BUTTONS[i]->setIconSize)vertsizeicon);}
 	      BUTTONS[i]->setIconSize(sz);
 	    }
 	  }
