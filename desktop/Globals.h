@@ -11,8 +11,6 @@
 #include <LuminaXDG.h>
 #include <LuminaOS.h>
 #include <LDesktopUtils.h>
-#include <LFileInfo.h>
-
 #include <QWidgetAction>
 #include <QMenu>
 #include <QString>
