@@ -140,9 +140,6 @@ void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& pat
         for(int i=1; i<argc; i++) {
             if(QString(argv[i]).simplified() == "-select") {
                 showDLG = true;
-            } else if(QString(argv[i]).simplified() == "-autostart-apps") {
-                LaunchAutoStart();
-                return;
             } else if( (QString(argv[i]).simplified() =="-action") && (argc>(i+1)) ) {
                 ActionID = QString(argv[i+1]);
                 qDebug() << ActionID;
