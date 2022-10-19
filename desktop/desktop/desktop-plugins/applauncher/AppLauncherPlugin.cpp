@@ -367,7 +367,7 @@ void AppLauncherPlugin::fileCopy() {
 
 void AppLauncherPlugin::fileRename() {
     if(inputDLG == 0) {
-        inputDLG = new QInputDialog(0, Qt::Dialog | Qt::WindowStaysOnTopHint);
+        inputDLG = new QInputDialog(0, Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         inputDLG->setInputMode(QInputDialog::TextInput);
         inputDLG->setTextValue(button->whatsThis().section("/",-1));
         inputDLG->setTextEchoMode(QLineEdit::Normal);
