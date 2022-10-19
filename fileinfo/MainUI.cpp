@@ -195,4 +195,5 @@ void MainUI::SyncFileInfo() {
 	}
 	ui->label_file_icon->setPixmap( LXDG::findIcon( icon, "unknown").pixmap(QSize(64,64)) );
     this->setWindowIcon( LXDG::findIcon( icon, "unknown") );
+    this->setFixedSize(QSize(550, 600));
 }
