@@ -25,7 +25,6 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.0
 
 Column {
     id: inputContainer
@@ -124,15 +123,6 @@ Column {
                     radius: config.RoundCorners / 2
                     color: root.palette.window
                     layer.enabled: true
-                    layer.effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 10 * config.InterfaceShadowSize
-                        radius: 20 * config.InterfaceShadowSize
-                        samples: 41 * config.InterfaceShadowSize
-                        cached: true
-                        color: Qt.hsla(0,0,0,config.InterfaceShadowOpacity)
-                    }
                 }
 
                 enter: Transition {
