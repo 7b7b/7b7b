@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>315</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,85 +26,6 @@
    <property name="bottomMargin">
     <number>6</number>
    </property>
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <item>
-      <widget class="QCheckBox" name="check_session_numlock">
-       <property name="text">
-        <string>Enable numlock on startup</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="check_session_playloginaudio">
-       <property name="text">
-        <string>Play chimes on startup</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="check_session_playlogoutaudio">
-       <property name="text">
-        <string>Play chimes on exit</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="check_autoapplinks">
-       <property name="statusTip">
-        <string>Automatically create/remove desktop symlinks for applications that are installed/removed</string>
-       </property>
-       <property name="text">
-        <string>Manage desktop app links</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="check_watch_app_procs">
-       <property name="text">
-        <string>Show application crash data</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="check_quotes">
-       <property name="text">
-        <string>Disable Startup Quotes</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
-       <item>
-        <widget class="QPushButton" name="push_session_setUserIcon">
-         <property name="text">
-          <string>Change User Icon</string>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_16">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="1" rowspan="2">
     <layout class="QFormLayout" name="formLayout_3">
      <property name="fieldGrowthPolicy">
@@ -214,13 +135,6 @@
      <item row="4" column="1">
       <widget class="QComboBox" name="combo_session_datetimeorder"/>
      </item>
-     <item row="5" column="1">
-      <widget class="QComboBox" name="mywindowmanager">
-       <property name="toolTip">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -228,20 +142,40 @@
        </property>
       </widget>
      </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="windowmanager"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Shutdown Command</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Restart Command</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Screenlock Command</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="shutdown_cmd"/>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="restart_cmd"/>
+     </item>
+     <item row="8" column="1">
+      <widget class="QLineEdit" name="lock_cmd"/>
+     </item>
     </layout>
-   </item>
-   <item row="1" column="0">
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>100</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item row="2" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox_2">

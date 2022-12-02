@@ -29,33 +29,33 @@
 
 //NOTE: This application type will automatically load the proper translation file(s)
 //  if the application name is set properly
-class LSingleApplication : public QApplication{
-  Q_OBJECT
+class LSingleApplication : public QApplication {
+    Q_OBJECT
 public:
-	LSingleApplication(int &argc, char **argv, QString appname);
-	~LSingleApplication();
+    LSingleApplication(int &argc, char **argv, QString appname);
+    ~LSingleApplication();
 
-	static QString getLockfileName(QString appname);
-	static void removeLocks(QString appname);
+    static QString getLockfileName(QString appname);
+    static void removeLocks(QString appname);
 
-	bool isPrimaryProcess();
+    bool isPrimaryProcess();
 
-	QStringList inputlist; //in case the app wants access to modified inputs (relative path fixes and such)
+    QStringList inputlist; //in case the app wants access to modified inputs (relative path fixes and such)
 
 private:
-	bool isActive, isBypass;
-	QLockFile *lockfile;
-	QLocalServer *lserver;
-	QString cfile;
-	QTranslator *cTrans; //current translation
+    bool isActive, isBypass;
+    QLockFile *lockfile;
+    QLocalServer *lserver;
+    QString cfile;
+    QTranslator *cTrans; //current translation
 
-	void PerformLockChecks();
+    void PerformLockChecks();
 
 private slots:
-	void newInputsAvailable(); //internally used to detect a message from an alternate instance
+    void newInputsAvailable(); //internally used to detect a message from an alternate instance
 
 signals:
-	void InputsAvailable(QStringList);
+    void InputsAvailable(QStringList);
 
 };
 

@@ -27,59 +27,59 @@
 #include <LuminaX11.h>
 #include <LuminaOS.h>
 
-class LPanel : public QWidget{
-	Q_OBJECT
+class LPanel : public QWidget {
+    Q_OBJECT
 private:
-	QBoxLayout *layout;
-	QSettings *settings;
-	QString PPREFIX; //internal prefix for all settings
-	//QDesktopWidget *screen;
-	QWidget *bgWindow, *panelArea;
-        //QRect hidegeom, showgeom; //for hidden panels
-	QPoint hidepoint, showpoint; //for hidden panels: locations when hidden/visible
-	bool defaultpanel, horizontal, hidden, reserveloc;
-	QString screenID;
-	int panelnum;
-	int viswidth, fullwidth;
-	QList<LPPlugin*> PLUGINS;
-	QRect desiredGeom;
-	int Screen(); //Turn the screenID into the appropriate number
+    QBoxLayout *layout;
+    QSettings *settings;
+    QString PPREFIX; //internal prefix for all settings
+    //QDesktopWidget *screen;
+    QWidget *bgWindow, *panelArea;
+    //QRect hidegeom, showgeom; //for hidden panels
+    QPoint hidepoint, showpoint; //for hidden panels: locations when hidden/visible
+    bool defaultpanel, horizontal, hidden, reserveloc;
+    QString screenID;
+    int panelnum;
+    int viswidth, fullwidth;
+    QList<LPPlugin*> PLUGINS;
+    QRect desiredGeom;
+    int Screen(); //Turn the screenID into the appropriate number
 
-	// timerEvent();
-	QString styleCLR;
+    // timerEvent();
+    QString styleCLR;
 
 public:
-	LPanel(QSettings *file, QString scr = 0, int num = 0, QWidget *parent = 0, bool reservespace = true); //settings file, screen number, panel number
-	~LPanel();
+    LPanel(QSettings *file, QString scr = 0, int num = 0, QWidget *parent = 0, bool reservespace = true); //settings file, screen number, panel number
+    ~LPanel();
 
-	int number(){
-	  return panelnum;
-	}
+    int number() {
+        return panelnum;
+    }
 
-	QString prefix(){
-	  return PPREFIX;
-	}
+    QString prefix() {
+        return PPREFIX;
+    }
 
-	int visibleWidth(){
-	  return viswidth;
-	}
-	void prepareToClose();
-	void scalePanel(double xscale, double yscale);
+    int visibleWidth() {
+        return viswidth;
+    }
+    void prepareToClose();
+    void scalePanel(double xscale, double yscale);
 
 public slots:
-	void UpdatePanel(bool geomonly = false);  //Load the settings file and update the panel appropriately
-	void UpdateLocale(); //Locale Changed externally
-	void UpdateTheme(); //Theme Changed externally
+    void UpdatePanel(bool geomonly = false);  //Load the settings file and update the panel appropriately
+    void UpdateLocale(); //Locale Changed externally
+    void UpdateTheme(); //Theme Changed externally
 
 private slots:
-	void checkPanelFocus();
+    void checkPanelFocus();
 
 protected:
-	void resizeEvent(QResizeEvent *event);
-	void paintEvent(QPaintEvent *event);
-	void enterEvent(QEvent *event);
-	void leaveEvent(QEvent *event);
-	void timerEvent(QTimerEvent *) override;
+    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    void timerEvent(QTimerEvent *) override;
 };
 
 #endif

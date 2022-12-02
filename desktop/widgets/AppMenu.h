@@ -24,30 +24,30 @@
 // libLumina includes
 #include <LuminaXDG.h>
 
-class AppMenu : public QMenu{
-	Q_OBJECT
+class AppMenu : public QMenu {
+    Q_OBJECT
 public:
-	AppMenu(QWidget *parent = 0);
-	~AppMenu();
+    AppMenu(QWidget *parent = 0);
+    ~AppMenu();
 
-	QHash<QString, QList<XDGDesktop*> > *currentAppHash();
-	QDateTime lastHashUpdate;
+    QHash<QString, QList<XDGDesktop*> > *currentAppHash();
+    QDateTime lastHashUpdate;
 
 private:
-	//QFileSystemWatcher *watcher;
-	QList<QMenu> MLIST;
-	XDGDesktopList *sysApps;
-	QHash<QString, QList<XDGDesktop*> > APPS;
+    //QFileSystemWatcher *watcher;
+    QList<QMenu> MLIST;
+    XDGDesktopList *sysApps;
+    QHash<QString, QList<XDGDesktop*> > APPS;
 
-	void updateAppList(); //completely update the menu lists
+    void updateAppList(); //completely update the menu lists
 
 private slots:
-	void start(); //This is called in a new thread after initialization
-	void watcherUpdate();
-	void launchApp(QAction *act);
+    void start(); //This is called in a new thread after initialization
+    void watcherUpdate();
+    void launchApp(QAction *act);
 
 signals:
-	void AppMenuUpdated();
+    void AppMenuUpdated();
 };
 
 #endif

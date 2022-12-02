@@ -11,28 +11,28 @@
 
 #include "LPlugins.h"
 
-namespace Ui{
-	class GetPluginDialog;
+namespace Ui {
+class GetPluginDialog;
 };
 
-class GetPluginDialog : public QDialog{
-	Q_OBJECT
+class GetPluginDialog : public QDialog {
+    Q_OBJECT
 public:
-	GetPluginDialog(QWidget* parent = 0);
-	~GetPluginDialog();
-	
-	void LoadPlugins(QString type, LPlugins *DB);
+    GetPluginDialog(QWidget* parent = 0);
+    ~GetPluginDialog();
 
-	bool selected; //this is set to true if a plugin was selected by the user
-	QString plugID; //this is set to the ID of the selected plugin
+    void LoadPlugins(QString type, LPlugins *DB);
+
+    bool selected; //this is set to true if a plugin was selected by the user
+    QString plugID; //this is set to the ID of the selected plugin
 
 private:
-	Ui::GetPluginDialog *ui;
+    Ui::GetPluginDialog *ui;
 
 private slots:
-	void pluginchanged();
-	void accept();
-	
+    void pluginchanged();
+    void accept();
+
 };
 
 #endif

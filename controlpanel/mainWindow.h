@@ -12,52 +12,56 @@
 #include <QResizeEvent>
 #include <QMoveEvent>
 
-namespace Ui{
-	class mainWindow;
+namespace Ui {
+class mainWindow;
 };
 
-class mainWindow : public QMainWindow{
-	Q_OBJECT
+class mainWindow : public QMainWindow {
+    Q_OBJECT
 public:
-	mainWindow();
-	~mainWindow();
+    mainWindow();
+    ~mainWindow();
 
 public slots:
-	void slotSingleInstance(QStringList args);
-	void setupIcons();
-	void loadMonitors();
+    void slotSingleInstance(QStringList args);
+    void setupIcons();
+    void loadMonitors();
 
 private:
-	Ui::mainWindow *ui;
-	QShortcut *backShortcut, *quitShortcut;
-	QString cpage; //current page
-	QTimer *geomTimer;
+    Ui::mainWindow *ui;
+    QShortcut *backShortcut, *quitShortcut;
+    QString cpage; //current page
+    QTimer *geomTimer;
 
-	void changePage(QString id);
+    void changePage(QString id);
 
 private slots:
-	void saveWinGeometry();
+    void saveWinGeometry();
 
-	//Page signals
-	void pageCanSave(bool);
-	void pageSetTitle(QString);
-	bool page_change(QString);
-	//Toolbar actions
-	void on_actionSave_triggered();
-	void on_actionBack_triggered();
-        void changeMonitor(QAction*);
-	void quitShortcut_Triggered();
+    //Page signals
+    void pageCanSave(bool);
+    void pageSetTitle(QString);
+    bool page_change(QString);
+    //Toolbar actions
+    void on_actionSave_triggered();
+    void on_actionBack_triggered();
+    void changeMonitor(QAction*);
+    void quitShortcut_Triggered();
 
 protected:
-	void resizeEvent(QResizeEvent *ev){
-	  if(geomTimer->isActive()){ geomTimer->stop(); }
-	  geomTimer->start();
-	  QMainWindow::resizeEvent(ev);
-	}
-	void moveEvent(QMoveEvent *ev){
-	  if(geomTimer->isActive()){ geomTimer->stop(); }
-	  geomTimer->start();
-	  QMainWindow::moveEvent(ev);
-	}
+    void resizeEvent(QResizeEvent *ev) {
+        if(geomTimer->isActive()) {
+            geomTimer->stop();
+        }
+        geomTimer->start();
+        QMainWindow::resizeEvent(ev);
+    }
+    void moveEvent(QMoveEvent *ev) {
+        if(geomTimer->isActive()) {
+            geomTimer->stop();
+        }
+        geomTimer->start();
+        QMainWindow::moveEvent(ev);
+    }
 };
 #endif

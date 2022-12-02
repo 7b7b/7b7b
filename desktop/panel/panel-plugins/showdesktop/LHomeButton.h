@@ -22,41 +22,41 @@
 #include "LuminaXDG.h"
 
 // PANEL PLUGIN BUTTON
-class LHomeButtonPlugin : public LPPlugin{
-	Q_OBJECT
-	
-public:
-	LHomeButtonPlugin(QWidget *parent = 0, QString id = "homebutton", bool horizontal=true);
-	~LHomeButtonPlugin();
-	
-private:
-	QToolButton *button;
+class LHomeButtonPlugin : public LPPlugin {
+    Q_OBJECT
 
-	void updateButtonVisuals();
+public:
+    LHomeButtonPlugin(QWidget *parent = 0, QString id = "homebutton", bool horizontal=true);
+    ~LHomeButtonPlugin();
+
+private:
+    QToolButton *button;
+
+    void updateButtonVisuals();
 
 private slots:
-	void showDesktop();
+    void showDesktop();
 
 public slots:
-	void OrientationChange(){
-	  if(this->layout()->direction()==QBoxLayout::LeftToRight){
-	    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-	    button->setIconSize( QSize(this->height(), this->height()) );
-	  }else{
-	    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-	    button->setIconSize( QSize(this->width(), this->width()) );
-	  }
-	  this->layout()->update();
-	  updateButtonVisuals();
-	}
-	
-	void LocaleChange(){ 
-	  updateButtonVisuals();
-	}
-	
-	void ThemeChange(){
-	  updateButtonVisuals();
-	}
+    void OrientationChange() {
+        if(this->layout()->direction()==QBoxLayout::LeftToRight) {
+            this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+            button->setIconSize( QSize(this->height(), this->height()) );
+        } else {
+            this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+            button->setIconSize( QSize(this->width(), this->width()) );
+        }
+        this->layout()->update();
+        updateButtonVisuals();
+    }
+
+    void LocaleChange() {
+        updateButtonVisuals();
+    }
+
+    void ThemeChange() {
+        updateButtonVisuals();
+    }
 };
 
 #endif

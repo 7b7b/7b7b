@@ -17,43 +17,45 @@
 //===============================
 
 //Structure of all information needed for a page
-struct PAGEINFO{
-  QString name, title,  icon, comment, category, id;
-  QStringList req_systems, search_tags;
+struct PAGEINFO {
+    QString name, title,  icon, comment, category, id;
+    QStringList req_systems, search_tags;
 };
 
 //Main widget class needed to show a configuration page
-class PageWidget : public QWidget{
-	Q_OBJECT
+class PageWidget : public QWidget {
+    Q_OBJECT
 public:
 
-	//Main constructor/destructor (create/destroy any interface items)
-	PageWidget(QWidget *parent) : QWidget(parent){
-	  //this->setFocusPolicy(Qt::NoFocus);
-	}
-	~PageWidget(){}
-		
-	virtual bool needsScreenSelector(){ return false; } //change this to true for pages which load/set options on a per-screen basis
-	virtual void setPreviousPage(QString){ } //re-implement this if the page needs knowledge of what the previous page was
+    //Main constructor/destructor (create/destroy any interface items)
+    PageWidget(QWidget *parent) : QWidget(parent) {
+        //this->setFocusPolicy(Qt::NoFocus);
+    }
+    ~PageWidget() {}
+
+    virtual bool needsScreenSelector() {
+        return false;    //change this to true for pages which load/set options on a per-screen basis
+    }
+    virtual void setPreviousPage(QString) { } //re-implement this if the page needs knowledge of what the previous page was
 
 signals:
-	//emit this when the page has changes which are waiting to be saved
-	void HasPendingChanges(bool);
-	//emit this when the page title changes (will updates main UI as needed)
-	void ChangePageTitle(QString);
-	//emit this when we need to change to another client/page (if needed - generally only used for the base/group pages)
-	void ChangePage(QString); //ID of new page to open
+    //emit this when the page has changes which are waiting to be saved
+    void HasPendingChanges(bool);
+    //emit this when the page title changes (will updates main UI as needed)
+    void ChangePageTitle(QString);
+    //emit this when we need to change to another client/page (if needed - generally only used for the base/group pages)
+    void ChangePage(QString); //ID of new page to open
 
 public slots:
-	//User requested to save any pending changes
-	virtual void SaveSettings(){} 
-	virtual void LoadSettings(int){} //INPUT: Screen number (0+)
-	virtual void updateIcons(){}
+    //User requested to save any pending changes
+    virtual void SaveSettings() {}
+    virtual void LoadSettings(int) {} //INPUT: Screen number (0+)
+    virtual void updateIcons() {}
 
-	//Simplification function for widget connections
-	virtual void settingChanged(){
-    emit HasPendingChanges(true);
-	}
+    //Simplification function for widget connections
+    virtual void settingChanged() {
+        emit HasPendingChanges(true);
+    }
 };
 
 #endif

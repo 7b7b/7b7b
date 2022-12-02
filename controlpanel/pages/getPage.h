@@ -10,11 +10,11 @@
 #include "../globals.h"
 #include "PageWidget.h"
 
-class Pages{
+class Pages {
 public:
-  static PAGEINFO PageInfo(QString, QString, QString, QString, QString, QString, QStringList, QStringList);
-  static QList<PAGEINFO> KnownPages();
-  static PageWidget* GetNewPage(QString id, QWidget *parent);
+    static PAGEINFO PageInfo(QString, QString, QString, QString, QString, QString, QStringList, QStringList);
+    static QList<PAGEINFO> KnownPages();
+    static PageWidget* GetNewPage(QString id, QWidget *parent);
 };
 
 #endif

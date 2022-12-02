@@ -79,58 +79,28 @@ void AppMenu::updateAppList() {
     for(int i=0; i<cats.length(); i++) {
         //Make sure they are translated and have the right icons
         QString name, icon;
-        if(cats[i]=="All") {
-            continue;    //skip this listing for the menu
-        }
-        else if(cats[i] == "Multimedia") {
-            name = tr("Multimedia");
-            icon = "applications-multimedia";
-        }
-        else if(cats[i] == "Development") {
-            name = tr("Development");
-            icon = "applications-development";
-        }
-        else if(cats[i] == "Education") {
-            name = tr("Education");
-            icon = "applications-education";
-        }
-        else if(cats[i] == "Game") {
+        if (cats[i] == "All") {
+            continue;
+        } else if (cats[i] == "Multimedia" || cats[i] == "Development" || cats[i] == "Education" || cats[i] == "Graphics"
+                   || cats[i] == "Office" || cats[i] == "Science" || cats[i] == "System") {
+            name = tr(cats[i].toUtf8().constData());
+            icon = "applications-" + cats[i].toLower();
+        } else if (cats[i] == "Game") {
             name = tr("Games");
             icon = "applications-games";
-        }
-        else if(cats[i] == "Graphics") {
-            name = tr("Graphics");
-            icon = "applications-graphics";
-        }
-        else if(cats[i] == "Network") {
+        } else if (cats[i] == "Settings") {
+            name = tr("Settings");
+            icon = "applications-system";
+        } else if (cats[i] == "Network") {
             name = tr("Network");
             icon = "applications-internet";
-        }
-        else if(cats[i] == "Office") {
-            name = tr("Office");
-            icon = "applications-office";
-        }
-        else if(cats[i] == "Science") {
-            name = tr("Science");
-            icon = "applications-science";
-        }
-        else if(cats[i] == "Settings") {
-            name = tr("Settings");
-            icon = "preferences-system";
-        }
-        else if(cats[i] == "System") {
-            name = tr("System");
-            icon = "applications-system";
-        }
-        else if(cats[i] == "Utility") {
+        } else if (cats[i] == "Utility") {
             name = tr("Utility");
             icon = "applications-utilities";
-        }
-        else if(cats[i] == "Wine") {
+        } else if (cats[i] == "Wine") {
             name = tr("Wine");
             icon = "wine";
-        }
-        else {
+        } else {
             name = tr("Unsorted");
             icon = "applications-other";
         }

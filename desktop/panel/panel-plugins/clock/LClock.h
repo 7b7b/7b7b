@@ -24,35 +24,35 @@
 
 //#include "../RotateToolButton.h"
 
-class LClock : public LPPlugin{
-	Q_OBJECT
+class LClock : public LPPlugin {
+    Q_OBJECT
 public:
-	LClock(QWidget *parent = 0, QString id = "clock", bool horizontal=true);
-	~LClock();
-	
+    LClock(QWidget *parent = 0, QString id = "clock", bool horizontal=true);
+    ~LClock();
+
 private:
-	QTimer *timer;
-	QToolButton *button; //RotateToolButton
-	QString timefmt, datefmt, datetimeorder;
-	bool deftime, defdate;
-	QMenu *TZMenu;
-	QCalendarWidget *calendar;
-	QWidgetAction *calAct;
-	
+    QTimer *timer;
+    QToolButton *button; //RotateToolButton
+    QString timefmt, datefmt, datetimeorder;
+    bool deftime, defdate;
+    QMenu *TZMenu;
+    QCalendarWidget *calendar;
+    QWidgetAction *calAct;
+
 private slots:
-	void updateTime(bool adjustformat = false);
-	void updateFormats();
+    void updateTime(bool adjustformat = false);
+    void updateFormats();
 
-	void updateMenu();
-	void openMenu();
-	void closeMenu();
+    void updateMenu();
+    void openMenu();
+    void closeMenu();
 
-	void ChangeTZ(QAction*);
+    void ChangeTZ(QAction*);
 
 public slots:
-	void LocaleChange();
-	void ThemeChange();
-	void OrientationChange();
+    void LocaleChange();
+    void ThemeChange();
+    void OrientationChange();
 };
 
 #endif

@@ -62,8 +62,8 @@ protected:
 
         //Now get the text rectangle for the widget
         QRect box = p.style()->itemTextRect(opt.fontMetrics, opt.rect, Qt::AlignHCenter | Qt::AlignBottom, true, this->text());
-		
-		
+
+
         QPainterPath path;
         QStringList txt = this->text().split("\n"); //need each line independently, the newline actually gets painted otherwise
         for(int i=0; i<txt.length(); i++) {
@@ -75,7 +75,7 @@ protected:
         QRadialGradient RG(box.center(), box.width()*1.5); //width is always going to be greater than height
         p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing); //need antialiasing for this to work well (sub-pixel painting)
         p.fillPath(path, QBrush(Qt::white)); //this will be the inside/text color
-		
+
     }
 
 };

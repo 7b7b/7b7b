@@ -17,39 +17,39 @@
 
 #include "../LDPlugin.h"
 
-class DesktopViewPlugin : public LDPlugin{
-	Q_OBJECT
+class DesktopViewPlugin : public LDPlugin {
+    Q_OBJECT
 public:
-	DesktopViewPlugin(QWidget* parent, QString ID);
-	~DesktopViewPlugin();
-	
-	virtual QSize defaultPluginSize(){
-	  // The returned QSize is in grid points (typically 100 or 200 pixels square)
-	  return QSize(3,3);
-	}
+    DesktopViewPlugin(QWidget* parent, QString ID);
+    ~DesktopViewPlugin();
+
+    virtual QSize defaultPluginSize() {
+        // The returned QSize is in grid points (typically 100 or 200 pixels square)
+        return QSize(3,3);
+    }
 private:
-	QListWidget *list;
-	QMenu *menu;
+    QListWidget *list;
+    QMenu *menu;
 
 private slots:
-	void runItems();
-	void copyItems();
-	void cutItems();
-	void deleteItems();
-	void showMenu(const QPoint&);
-	void increaseIconSize();
-	void decreaseIconSize();
-	void updateContents();
-	void displayProperties();
+    void runItems();
+    void copyItems();
+    void cutItems();
+    void deleteItems();
+    void showMenu(const QPoint&);
+    void increaseIconSize();
+    void decreaseIconSize();
+    void updateContents();
+    void displayProperties();
 
 
 public slots:
-	void LocaleChange(){
-	  QTimer::singleShot(0,this, SLOT(updateContents()));
-	}
-	void ThemeChange(){
-	  QTimer::singleShot(0,this, SLOT(updateContents()));
-	}
+    void LocaleChange() {
+        QTimer::singleShot(0,this, SLOT(updateContents()));
+    }
+    void ThemeChange() {
+        QTimer::singleShot(0,this, SLOT(updateContents()));
+    }
 
 };
 #endif

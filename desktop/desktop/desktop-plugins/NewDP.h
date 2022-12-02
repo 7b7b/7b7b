@@ -16,20 +16,20 @@
 #include "applauncher/AppLauncherPlugin.h"
 #include "desktopview/DesktopViewPlugin.h"
 
-class NewDP{
+class NewDP {
 public:
-	static LDPlugin* createPlugin(QString plugin, QWidget* parent=0){
-	  LDPlugin *plug = 0;
-	   if(plugin.section("---",0,0).section("::",0,0)=="applauncher"){
-	    //This plugin can be pre-initialized to a file path after the "::" delimiter
-	    plug = new AppLauncherPlugin(parent, plugin);
-	  }else if(plugin.section("---",0,0)=="desktopview"){
-	    plug = new DesktopViewPlugin(parent, plugin);
-	  }else{
-	    qWarning() << "Invalid Desktop Plugin:"<<plugin << " -- Ignored";
-	  }
-	  return plug;
-	}
+    static LDPlugin* createPlugin(QString plugin, QWidget* parent=0) {
+        LDPlugin *plug = 0;
+        if(plugin.section("---",0,0).section("::",0,0)=="applauncher") {
+            //This plugin can be pre-initialized to a file path after the "::" delimiter
+            plug = new AppLauncherPlugin(parent, plugin);
+        } else if(plugin.section("---",0,0)=="desktopview") {
+            plug = new DesktopViewPlugin(parent, plugin);
+        } else {
+            qWarning() << "Invalid Desktop Plugin:"<<plugin << " -- Ignored";
+        }
+        return plug;
+    }
 
 };
 

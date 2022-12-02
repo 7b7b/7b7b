@@ -21,44 +21,44 @@
 
 
 // PANEL PLUGIN BUTTON
-class LAppMenuPlugin : public LPPlugin{
-	Q_OBJECT
-	
-public:
-	LAppMenuPlugin(QWidget *parent = 0, QString id = "appmenu", bool horizontal=true);
-	~LAppMenuPlugin();
-	
-private:
-	QToolButton *button;
-	QMenu *mainmenu;
+class LAppMenuPlugin : public LPPlugin {
+    Q_OBJECT
 
-	void updateButtonVisuals();
+public:
+    LAppMenuPlugin(QWidget *parent = 0, QString id = "appmenu", bool horizontal=true);
+    ~LAppMenuPlugin();
+
+private:
+    QToolButton *button;
+    QMenu *mainmenu;
+
+    void updateButtonVisuals();
 
 private slots:
-	void shortcutActivated();
-	void LaunchItem(QAction* item);
-	void UpdateMenu();
+    void shortcutActivated();
+    void LaunchItem(QAction* item);
+    void UpdateMenu();
 
 public slots:
-	void OrientationChange(){
-	  if(this->layout()->direction()==QBoxLayout::LeftToRight){
-	    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-	    button->setIconSize( QSize(this->height(), this->height()) );
-	  }else{
-	    this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-	    button->setIconSize( QSize(this->width(), this->width()) );
-	  }
-	  this->layout()->update();
-	  updateButtonVisuals();
-	}
-	
-	void LocaleChange(){ 
-	  updateButtonVisuals();
-	}
-	
-	void ThemeChange(){
-	  updateButtonVisuals();
-	}
+    void OrientationChange() {
+        if(this->layout()->direction()==QBoxLayout::LeftToRight) {
+            this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+            button->setIconSize( QSize(this->height(), this->height()) );
+        } else {
+            this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+            button->setIconSize( QSize(this->width(), this->width()) );
+        }
+        this->layout()->update();
+        updateButtonVisuals();
+    }
+
+    void LocaleChange() {
+        updateButtonVisuals();
+    }
+
+    void ThemeChange() {
+        updateButtonVisuals();
+    }
 };
 
 #endif

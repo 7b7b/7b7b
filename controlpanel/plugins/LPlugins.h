@@ -12,32 +12,32 @@
 #include <QString>
 #include <QStringList>
 
-// Lumina Plugin Info class 
-class LPI{
-  public:
+// Lumina Plugin Info class
+class LPI {
+public:
     QString name, ID, description, icon;
-    LPI(){}
-    ~LPI(){}
+    LPI() {}
+    ~LPI() {}
 };
 
 // Utility class for getting information
-class LPlugins{
+class LPlugins {
 public:
-	LPlugins();
-	~LPlugins();
-	//Total lists of plugins
-	QStringList panelPlugins();
-	QStringList desktopPlugins();
-	QStringList menuPlugins();
-	//Information on individual plugins
-	LPI panelPluginInfo(QString);
-	LPI desktopPluginInfo(QString);
-	LPI menuPluginInfo(QString);
+    LPlugins();
+    ~LPlugins();
+    //Total lists of plugins
+    QStringList panelPlugins();
+    QStringList desktopPlugins();
+    QStringList menuPlugins();
+    //Information on individual plugins
+    LPI panelPluginInfo(QString);
+    LPI desktopPluginInfo(QString);
+    LPI menuPluginInfo(QString);
 
 private:
-	QHash<QString, LPI> PANEL, DESKTOP, MENU, COLORS;
-	void LoadPanelPlugins();
-	void LoadDesktopPlugins();
-	void LoadMenuPlugins();
+    QHash<QString, LPI> PANEL, DESKTOP, MENU, COLORS;
+    void LoadPanelPlugins();
+    void LoadDesktopPlugins();
+    void LoadMenuPlugins();
 };
 #endif

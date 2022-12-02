@@ -24,33 +24,33 @@
 // libLumina includes
 //#include <LuminaX11.h>
 
-class TrayIcon : public QWidget{
-	Q_OBJECT
+class TrayIcon : public QWidget {
+    Q_OBJECT
 public:
-	TrayIcon(QWidget* parent = 0);
-	~TrayIcon();
+    TrayIcon(QWidget* parent = 0);
+    ~TrayIcon();
 
-	void cleanup(); //about to be removed after window was detroyed
+    void cleanup(); //about to be removed after window was detroyed
 
-	WId appID(); //the ID for the attached application
-	void attachApp(WId id);
-	void setSizeSquare(int side);
+    WId appID(); //the ID for the attached application
+    void attachApp(WId id);
+    void setSizeSquare(int side);
 
 public slots:
-	void detachApp();
-	void updateIcon();
+    void detachApp();
+    void updateIcon();
 
 private:
-	WId IID, AID; //icon ID and app ID
-	int badpaints;
-	uint dmgID;
-	int scalefactor;
+    WId IID, AID; //icon ID and app ID
+    int badpaints;
+    uint dmgID;
+    int scalefactor;
 
 protected:
-	void paintEvent(QPaintEvent *event);
-	void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 signals:
-	void BadIcon();
+    void BadIcon();
 };
 #endif

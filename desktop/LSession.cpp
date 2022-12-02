@@ -69,7 +69,6 @@ LSession::LSession(int &argc, char ** argv) : LSingleApplication(argc, argv, "lu
         connect(this, SIGNAL(screenAdded(QScreen*)), this, SLOT(screensChanged()) );
         connect(this, SIGNAL(screenRemoved(QScreen*)), this, SLOT(screensChanged()) );
         connect(this, SIGNAL(primaryScreenChanged(QScreen*)), this, SLOT(screensChanged()) );
-
         // Clipboard
         ignoreClipboard = false;
         qRegisterMetaType<QClipboard::Mode>("QClipboard::Mode");
@@ -79,19 +78,20 @@ LSession::LSession(int &argc, char ** argv) : LSingleApplication(argc, argv, "lu
 
 LSession::~LSession() {
     if(this->isPrimaryProcess()) {
-        //WM->stopWM();
         for(int i=0; i<DESKTOPS.length(); i++) {
             DESKTOPS[i]->deleteLater();
         }
-        //delete WM;
         appmenu->deleteLater();
     }
 }
 
 void LSession::setupSession() {
+	//QString WM = LSession::handle()->sessionSettings()->value("WindowManager", "").toString();
+	//QProcess::startDetached(WM);
+    
     //Seed random number generator (if needed)
     QRandomGenerator( QTime::currentTime().msec() );
-    
+
     qDebug() << "Initializing Session";
     if(QFile::exists("/tmp/.luminastopping")) {
         QFile::remove("/tmp/.luminastopping");
@@ -102,7 +102,7 @@ void LSession::setupSession() {
         timer->start();
         qDebug() << " - Init srand:" << timer->elapsed();
     }
-    
+
     sessionsettings = new QSettings("lumina-desktop", "sessionsettings");
     DPlugSettings = new QSettings("lumina-desktop","pluginsettings/desktopsettings");
     //Load the proper translation files
@@ -117,7 +117,14 @@ void LSession::setupSession() {
                               sessionsettings->value("InitLocale/LC_CTYPE","").toString() );
     }
     checkUserFiles();
+	
+	// Window Manager
+	QString cmd = sessionsettings->value("WindowManager", "").toString();
+	QStringList args = cmd.split(" ");
+	args.removeFirst();
+	QProcess::startDetached(cmd.split(" ")[0], args);
 
+	
     //Initialize the internal variables
     DESKTOPS.clear();
 
@@ -214,7 +221,6 @@ void LSession::CleanupSession() {
     evFilter->StopEventHandling();
     //Stop the window manager
     //qDebug() << " - Stopping the window manager";
-    //WM->stopWM();
     //Now close down the desktop
     qDebug() << " - Closing down the desktop elements";
     for(int i=0; i<DESKTOPS.length(); i++) {
@@ -222,40 +228,14 @@ void LSession::CleanupSession() {
         //don't actually close them yet - that will happen when the session exits
         // this will leave the wallpapers up for a few moments (preventing black screens)
     }
-        for(int i=0; i<20; i++) {
-            LSession::processEvents();    //1/2 second pause
-            usleep(25000);
-        }
+    for(int i=0; i<20; i++) {
+        LSession::processEvents();    //1/2 second pause
+        usleep(25000);
+    }
     //Clean up the temporary flag
     if(QFile::exists("/tmp/.luminastopping")) {
         QFile::remove("/tmp/.luminastopping");
     }
-}
-
-int LSession::VersionStringToNumber(QString version) {
-    version = version.section("-",0,0); //trim any extra labels off the end
-    int maj, mid, min; //major/middle/minor version numbers (<Major>.<Middle>.<Minor>)
-    maj = mid = min = 0;
-    bool ok = true;
-    maj = version.section(".",0,0).toInt(&ok);
-    if(ok) {
-        mid = version.section(".",1,1).toInt(&ok);
-    }
-    else {
-        maj = 0;
-    }
-    if(ok) {
-        min = version.section(".",2,2).toInt(&ok);
-    }
-    else {
-        mid = 0;
-    }
-    if(!ok) {
-        min = 0;
-    }
-    //Now assemble the number
-    //NOTE: This format allows numbers to be anywhere from 0->999 without conflict
-    return (maj*1000000 + mid*1000 + min);
 }
 
 void LSession::NewCommunication(QStringList list) {
@@ -276,7 +256,6 @@ void LSession::NewCommunication(QStringList list) {
 void LSession::launchStartupApps() {
     //First start any system-defined startups, then do user defined
     qDebug() << "Launching startup applications";
-    //* FROM LUMINA-OPEN
 
     QList<XDGDesktop*> xdgapps = LXDG::findAutoStartFiles();
     for(int i=0; i<xdgapps.length(); i++) {
@@ -297,32 +276,40 @@ void LSession::launchStartupApps() {
     for(int i=0;  i<xdgapps.length(); i++) {
         xdgapps[i]->deleteLater();
     }
-
-    //* END
 }
 
 void LSession::StartLogout() {
-	//TODO: Remove liblumina requirement for a Configurable executable
     CleanupSession();
     QCoreApplication::exit(0);
 }
 
 void LSession::StartShutdown(bool skipupdates) {
-	//TODO: Remove liblumina requirement for a Configurable executable
     CleanupSession();
-    LOS::systemShutdown(skipupdates);
+
+	QString cmd = sessionSettings()->value("ShutdownCmd", "").toString();
+	QStringList args = cmd.split(" ");
+	args.removeFirst();
+	QProcess::startDetached(cmd.split(" ")[0], args);
+
     QCoreApplication::exit(0);
 }
 
 void LSession::StartReboot(bool skipupdates) {
-	//TODO: Remove liblumina requirement for a Configurable executable
     CleanupSession();
-    LOS::systemRestart(skipupdates);
+
+	QString cmd = sessionSettings()->value("RestartCmd", "").toString();
+	QStringList args = cmd.split(" ");
+	args.removeFirst();
+	QProcess::startDetached(cmd.split(" ")[0], args);
+
     QCoreApplication::exit(0);
 }
 
 void LSession::LockScreen() {
-	//TODO: Configurable executable
+	QString cmd = sessionSettings()->value("LockCmd", "").toString();
+	QStringList args = cmd.split(" ");
+	args.removeFirst();
+	QProcess::startDetached(cmd.split(" ")[0], args);
 }
 
 void LSession::reloadIconTheme() {

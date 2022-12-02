@@ -165,7 +165,7 @@ void LAppMenuPlugin::UpdateMenu() {
                 for(int sa=0; sa<appL[a]->actions.length(); sa++) {
                     QAction *sact = new QAction(LXDG::findIcon(appL[a]->actions[sa].icon, appL[a]->icon), appL[a]->actions[sa].name, this);
                     sact->setToolTip(appL[a]->comment);
-                    
+
                     //sact->setWhatsThis("-action \""+appL[a]->actions[sa].ID+"\" \""+appL[a]->filePath+"\"");
                     sact->setWhatsThis("-action "+appL[a]->actions[sa].ID +" " +appL[a]->filePath);
                     submenu->addAction(sact);

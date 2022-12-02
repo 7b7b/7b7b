@@ -24,50 +24,50 @@
 #include "LWinInfo.h"
 #include "../LPPlugin.h"
 
-class LTaskManagerPlugin : public LPPlugin{
-	Q_OBJECT
+class LTaskManagerPlugin : public LPPlugin {
+    Q_OBJECT
 public:
-	LTaskManagerPlugin(QWidget *parent=0, QString id="taskmanager", bool horizontal=true);
-	~LTaskManagerPlugin();
+    LTaskManagerPlugin(QWidget *parent=0, QString id="taskmanager", bool horizontal=true);
+    ~LTaskManagerPlugin();
 //	int vertsizeicon;
 //	int *dpi;  //this comes from the PCDM dpi
 
 private:
-	QList<LTaskButton*> BUTTONS; //to keep track of the current buttons
-	QTimer *timer;
-	QDateTime updating; //quick flag for if it is currently working
-	bool usegroups;
+    QList<LTaskButton*> BUTTONS; //to keep track of the current buttons
+    QTimer *timer;
+    QDateTime updating; //quick flag for if it is currently working
+    bool usegroups;
 
 private slots:
-	void UpdateButtons();
-	void UpdateButton(WId win);
-	void checkWindows();
+    void UpdateButtons();
+    void UpdateButton(WId win);
+    void checkWindows();
 
 public slots:
-	void LocaleChange(){
-	  UpdateButtons();
-	}
-	void ThemeChange(){
-	  UpdateButtons();
-	}
-	void OrientationChange(){
-	  if(this->layout()->direction()==QBoxLayout::LeftToRight){ //horizontal
-	    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	    this->layout()->setAlignment(Qt::AlignLeft);
-	    QSize sz(this->height(), this->height());
-	    for(int i=0; i<BUTTONS.length(); i++){
-	      BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	      BUTTONS[i]->setIconSize(sz);
-	    }
-	  }else{ //vertical
-	    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-	    this->layout()->setAlignment(Qt::AlignTop);
-	    QSize sz(this->width(), this->width());
-	    for(int i=0; i<BUTTONS.length(); i++){
-	      BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonIconOnly);
-	      BUTTONS[i]->setIconSize(sz);
-	    }
-	  }
-	}
+    void LocaleChange() {
+        UpdateButtons();
+    }
+    void ThemeChange() {
+        UpdateButtons();
+    }
+    void OrientationChange() {
+        if(this->layout()->direction()==QBoxLayout::LeftToRight) { //horizontal
+            this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+            this->layout()->setAlignment(Qt::AlignLeft);
+            QSize sz(this->height(), this->height());
+            for(int i=0; i<BUTTONS.length(); i++) {
+                BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+                BUTTONS[i]->setIconSize(sz);
+            }
+        } else { //vertical
+            this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+            this->layout()->setAlignment(Qt::AlignTop);
+            QSize sz(this->width(), this->width());
+            for(int i=0; i<BUTTONS.length(); i++) {
+                BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonIconOnly);
+                BUTTONS[i]->setIconSize(sz);
+            }
+        }
+    }
 };
 #endif

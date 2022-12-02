@@ -10,16 +10,14 @@
 #include <QApplication>
 #include <QDebug>
 #include <QString>
-//#include <QX11Info>
+
 #include <QtGui/private/qtx11extras_p.h>
 #include <QEvent>
 #include <QTranslator>
 #include <QSettings>
 #include <QProxyStyle>
-//#include <QDesktopWidget>
 #include <QList>
 #include <QThread>
-//#include <QMediaPlayer>
 #include <QThread>
 #include <QUrl>
 #include <QClipboard>
@@ -36,14 +34,6 @@
 #define SYSTEM_TRAY_REQUEST_DOCK 0
 #define SYSTEM_TRAY_BEGIN_MESSAGE 1
 #define SYSTEM_TRAY_CANCEL_MESSAGE 2
-
-/*class MenuProxyStyle : public QProxyStyle{
-public:
-	int pixelMetric(PixelMetric metric, const QStyleOption *option=0, const QWidget *widget=0) const{
-	  if(metric==PM_SmallIconSize){ return 22; } //override QMenu icon size (make it larger)
-	  else{ return QProxyStyle::pixelMetric(metric, option, widget); } //use the current style for everything else
-	}
-};*/
 
 class LSession : public LSingleApplication{
 	Q_OBJECT
@@ -106,7 +96,6 @@ public:
 	void adjustWindowGeom(WId win, bool maximize = false);
 
 private:
-	//WMProcess *WM;
 	QList<LDesktop*> DESKTOPS;
 	QFileSystemWatcher *watcher;
 	QTimer *screenTimer;

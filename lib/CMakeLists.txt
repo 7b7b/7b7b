@@ -1,13 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
-project(libLumina
-LANGUAGES C CXX
-HOMEPAGE_URL https://lumina-project.org
-DESCRIPTION "Libraries for lumina"
-VERSION 1.6.2)
-
-set(LIB_NAME "lumina" CACHE STRING "lumina")
-
-set(LIBRARY_NAME lumina)
+set(PROJECT Lumina)
+project(Lumina)
 
 # CMake Settings (policies to do AUTOMOC as much as possible)
 cmake_policy(SET CMP0057 NEW)
@@ -31,10 +24,11 @@ find_package(
     Widgets	
 )
 
-find_package(X11)
+find_package(X11 REQUIRED)
 find_package(
     XCB
     COMPONENTS
+    REQUIRED
     XCB
     XFIXES
     AUX
@@ -47,10 +41,6 @@ find_package(
     RANDR
 )
 
-if(NOT X11_FOUND OR NOT XCB_XCB_FOUND)
-    message(FATAL_ERROR "Required XCB component for X11 not found.")
-endif()
-
 # OS-detection
 # This ignores the actual OS and just sets FreeBSD-useful values
 add_definitions(
@@ -62,7 +52,7 @@ add_definitions(
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(LUMINA_INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${LIBRARY_NAME}")
+set(LUMINA_INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${PROJECT}")
 set(SRCS
     src/DesktopSettings.cpp
     src/LDesktopUtils.cpp
@@ -93,83 +83,44 @@ set(PUB_HDRS
 )
 
 add_library(
-    ${LIBRARY_NAME}
+    ${PROJECT}
     SHARED
     ${PUB_HDRS}
     ${SRCS}
 )
 
-target_include_directories(${LIBRARY_NAME}
+target_include_directories(${PROJECT}
     PUBLIC
     ${XCB_INCLUDE_DIR}
 )
 
 target_link_libraries(
-    ${LIBRARY_NAME}
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::GuiPrivate
-        Qt6::Widgets
-        Qt6::Network
-        XCB::XCB
-        XCB::AUX
-        XCB::IMAGE
-        XCB::COMPOSITE
-        XCB::DAMAGE
-        XCB::ICCCM
-        XCB::RANDR
-        XCB::EWMH
-        XCB::DPMS
-        X11::Xdamage
+	${PROJECT}
+	Qt6::Concurrent
+	Qt6::Core
+	Qt6::GuiPrivate
+	Qt6::Widgets
+	Qt6::Network
+	XCB::XCB
+	XCB::AUX
+	XCB::IMAGE
+	XCB::COMPOSITE
+	XCB::DAMAGE
+	XCB::ICCCM
+	XCB::RANDR
+	XCB::EWMH
+	XCB::DPMS
+	X11::Xdamage
 )
 
-set(target ${LIBRARY_NAME})
-set(pc_req_public "Qt6Core Qt6Network xcb xcb-aux xcb-damage x11")
-
-configure_file(lumina.pc.in lumina.pc @ONLY)
-
-configure_package_config_file(
-    "${PROJECT_SOURCE_DIR}/cmake/${LIB_NAME}-config.cmake.in"
-    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config.cmake"
-    INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${LIB_NAME}"
-)
-
-write_basic_package_version_file(
-    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config-version.cmake"
-    VERSION 1.0.0
-    COMPATIBILITY AnyNewerVersion
-)
-
-install(FILES
-    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config-version.cmake"
-    "${CMAKE_BINARY_DIR}/${LIB_NAME}-config.cmake"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${LIB_NAME}"
-    COMPONENT Devel
-)
-
-install(EXPORT
-    "${LIB_NAME}-targets"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${LIB_NAME}"
-    COMPONENT Devel
-)
+message("${CMAKE_MODULE_PATH}")
 
 install(TARGETS
-	${LIBRARY_NAME}
+	${PROJECT}
 	DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-	EXPORT lumina-targets
+	EXPORT FindLumina
 	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 	COMPONENT Runtime
-)
-
-export(TARGETS ${LIB_NAME}
-    FILE "${CMAKE_BINARY_DIR}/${LIB_NAME}-targets.cmake"
-    EXPORT_LINK_INTERFACE_LIBRARIES
-)
-
-install(FILES
-    ${CMAKE_BINARY_DIR}/lumina.pc
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
-    COMPONENT Devel
 )
 
 install(FILES
@@ -177,4 +128,6 @@ install(FILES
     DESTINATION "${LUMINA_INSTALL_INCLUDE_DIR}"
     COMPONENT Devel
 )
+
+install(EXPORT FindLumina DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT}")
 

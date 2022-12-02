@@ -1,6 +1,6 @@
 pkgname=lumina-fileinfo
-pkgver=1.6
-pkgrel=2
+pkgver=1.7
+pkgrel=0
 pkgdesc="File info"
 arch=("x86_64")
 license=("BSD")

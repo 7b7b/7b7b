@@ -14,7 +14,6 @@ QString LOS::OSName() {
 }
 
 //OS-specific prefix(s)
-// NOTE: PREFIX, L_ETCDIR, L_SHAREDIR are defined in the OS-detect.pri project file and passed in
 QString LOS::LuminaShare() {
     return (L_SHAREDIR+"/lumina-desktop/");    //Install dir for Lumina share files
 }
@@ -64,18 +63,6 @@ QStringList LOS::ExternalDevicePaths() {
 //Most likely the user has systemd as the main init system, this will be an issue with other init systems
 bool LOS::userHasShutdownAccess() {
     return true;
-}
-
-//System Shutdown
-void LOS::systemShutdown(bool) { //start poweroff sequence
-    //INPUT: skip updates (true/false)
-    QProcess::startDetached("shutdown", QStringList() << "-P" << "-h" << "now");
-}
-
-//System Restart
-void LOS::systemRestart(bool) { //start reboot sequence
-    //INPUT: skip updates (true/false)
-    QProcess::startDetached("shutdown", QStringList() << "-r" << "now");
 }
 
 //Check for suspend support

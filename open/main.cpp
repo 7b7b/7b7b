@@ -22,7 +22,7 @@
 #include <QPixmap>
 #include <QColor>
 
-#include "LFileDialog.h"
+#include "LDialog.h"
 
 #include <LuminaXDG.h>
 #include <LUtils.h>
@@ -67,7 +67,7 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
             }
         }
     } else {
-        defApp = LFileDialog::getDefaultApp(extension);
+        defApp = LDialog::getDefaultApp(extension);
     }
     if(DEBUG) qDebug() << "Mimetype:" << extension << "defApp:" << defApp;
     if( !defApp.isEmpty() && !showDLG ) {
@@ -91,12 +91,12 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
             }
         }
         //invalid default - reset it and continue on
-        LFileDialog::setDefaultApp(extension, "");
+        LDialog::setDefaultApp(extension, "");
     }
     //No default set -- Start up the application selection dialog
     QApplication App(argc, argv);
-    
-    LFileDialog w;
+
+    LDialog w;
     if(extension=="email" || extension.startsWith("x-scheme-handler/")) {
         //URL
         w.setFileInfo(inFile, extension, false);
@@ -121,10 +121,10 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
     //  might move it to the runtime phase later after seeing that the app has successfully started
     if(w.setDefault) {
         if(!w.appFile.isEmpty()) {
-            LFileDialog::setDefaultApp(extension, w.appFile);
+            LDialog::setDefaultApp(extension, w.appFile);
         }
         else {
-            LFileDialog::setDefaultApp(extension, w.appExec);
+            LDialog::setDefaultApp(extension, w.appExec);
         }
     }
     //Now return the resulting application command
@@ -132,7 +132,7 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
 }
 
 void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& path, bool& watch) {
-	//Get the input file
+    //Get the input file
     //Make sure to load the proper system encoding first
     QString inFile, ActionID;
     bool showDLG = false; //flag to bypass any default application setting
@@ -363,8 +363,8 @@ int main(int argc, char **argv) {
                 //qDebug() << " - Setting working path:" << path;
                 p->setWorkingDirectory(path);
             }
-			
-			// TODO: Apply this to all
+
+            // TODO: Apply this to all
             QStringList args = cmd.split(" ");
             QString bin = args.at(0);
             args.remove(0);

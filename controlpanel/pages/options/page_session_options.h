@@ -9,37 +9,37 @@
 #include "globals.h"
 #include "../PageWidget.h"
 
-namespace Ui{
-	class page_session_options;
+namespace Ui {
+class page_session_options;
 };
 
-class page_session_options : public PageWidget{
-	Q_OBJECT
+class page_session_options : public PageWidget {
+    Q_OBJECT
 public:
-	page_session_options(QWidget *parent);
-	~page_session_options();
+    page_session_options(QWidget *parent);
+    ~page_session_options();
 
 public slots:
-	void SaveSettings();
-	void LoadSettings(int screennum = -1);
-	void updateIcons();
+    void SaveSettings();
+    void LoadSettings(int screennum = -1);
+    void updateIcons();
 
-	virtual void settingChanged(){
-	  if(!loading){ emit HasPendingChanges(true); }
-	}
+    virtual void settingChanged() {
+        if(!loading) {
+            emit HasPendingChanges(true);
+        }
+    }
 private:
-	Ui::page_session_options *ui;
-	bool loading;
-        void FindWindowManagerOptions();
-	bool verifySettingsReset();
+    Ui::page_session_options *ui;
+    bool loading;
+    bool verifySettingsReset();
 
 private slots:
-	void sessionChangeUserIcon();
-	void sessionResetSys();
-	void sessionResetLumina();
-	void sessionLoadTimeSample();
-	void sessionShowTimeCodes();
-	void sessionLoadDateSample();
-	void sessionShowDateCodes();
+    void sessionResetSys();
+    void sessionResetLumina();
+    void sessionLoadTimeSample();
+    void sessionShowTimeCodes();
+    void sessionLoadDateSample();
+    void sessionShowDateCodes();
 };
 #endif

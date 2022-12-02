@@ -11,39 +11,41 @@
 #include "plugins/LPlugins.h"
 #include "plugins/PanelWidget.h"
 
-namespace Ui{
-	class page_interface_panels;
+namespace Ui {
+class page_interface_panels;
 };
 
-class page_interface_panels : public PageWidget{
-	Q_OBJECT
+class page_interface_panels : public PageWidget {
+    Q_OBJECT
 public:
-	page_interface_panels(QWidget *parent);
-	~page_interface_panels();
+    page_interface_panels(QWidget *parent);
+    ~page_interface_panels();
 
-	bool needsScreenSelector(){ return true; }
+    bool needsScreenSelector() {
+        return true;
+    }
 
 public slots:
-	void SaveSettings();
-	void LoadSettings(int screennum = -1);
-	void updateIcons();
+    void SaveSettings();
+    void LoadSettings(int screennum = -1);
+    void updateIcons();
 
 private:
-	Ui::page_interface_panels *ui;
-	bool loading;
-	int cscreen; //current monitor/screen number
-	QSettings *settings;
-	LPlugins *PINFO;
-	QList<PanelWidget*> PANELS;
+    Ui::page_interface_panels *ui;
+    bool loading;
+    int cscreen; //current monitor/screen number
+    QSettings *settings;
+    LPlugins *PINFO;
+    QList<PanelWidget*> PANELS;
 
-	void setupProfiles();
+    void setupProfiles();
 
 private slots:
-	void panelValChanged();
-	void newPanel();
-	void removePanel(int); //connected to a signal from the panel widget
-	void applyProfile(QAction*);
-	void applyImport(QAction*);
-	void applyImport(QString fromID);
+    void panelValChanged();
+    void newPanel();
+    void removePanel(int); //connected to a signal from the panel widget
+    void applyProfile(QAction*);
+    void applyImport(QAction*);
+    void applyImport(QString fromID);
 };
 #endif

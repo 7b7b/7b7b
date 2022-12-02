@@ -244,7 +244,7 @@ void AppLauncherPlugin::buttonClicked(bool openwith) {
     QString path = button->whatsThis();
 
     path.replace('"', "");
-    
+
     if(path.isEmpty() || !QFile::exists(path) ) {
         //prompt for the user to select an application
         QList<XDGDesktop*> apps = LSession::handle()->applicationMenu()->currentAppHash()->value("All"); //LXDG::sortDesktopNames( LXDG::systemDesktopFiles() );
@@ -261,10 +261,10 @@ void AppLauncherPlugin::buttonClicked(bool openwith) {
         QTimer::singleShot(0,this, SLOT(loadButton()));
     } else if(openwith) {
         LSession::LaunchApplication("lumina-open -select "+path);
-		//QProcess::startDetached("lumina-open", QStringList() << "-select" << path);
+        //QProcess::startDetached("lumina-open", QStringList() << "-select" << path);
     } else {
         LSession::LaunchApplication("lumina-open "+path);
-		//QProcess::startDetached("lumina-open", QStringList() << path);
+        //QProcess::startDetached("lumina-open", QStringList() << path);
     }
     qDebug() << path;
 

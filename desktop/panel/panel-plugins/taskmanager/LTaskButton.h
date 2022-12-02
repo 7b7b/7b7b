@@ -26,58 +26,58 @@
 #include "LWinInfo.h"
 #include "./LTBWidget.h"
 
-class LTaskButton : public LTBWidget{
-	Q_OBJECT
+class LTaskButton : public LTBWidget {
+    Q_OBJECT
 public:
-	LTaskButton(QWidget *parent=0, bool smallDisplay = true);
-	~LTaskButton();
+    LTaskButton(QWidget *parent=0, bool smallDisplay = true);
+    ~LTaskButton();
 
-	//Window Information
-	QList<WId> windows();
-	QString classname();
-	bool isActive();
+    //Window Information
+    QList<WId> windows();
+    QString classname();
+    bool isActive();
 
-	//Window Management
-	void addWindow(WId win); //Add a window to this button
-	void rmWindow(WId win); //Remove a window from this button
+    //Window Management
+    void addWindow(WId win); //Add a window to this button
+    void rmWindow(WId win); //Remove a window from this button
 
 private:
-	QList<LWinInfo> WINLIST;
-	int LWINLIST;
-	QMenu *actMenu; // action menu (custom context menu)
-	QMenu *winMenu; // window menu (if more than 1)
-	LWinInfo cWin;
-	QString cname; //class name for the entire button
-	bool noicon, showText;
+    QList<LWinInfo> WINLIST;
+    int LWINLIST;
+    QMenu *actMenu; // action menu (custom context menu)
+    QMenu *winMenu; // window menu (if more than 1)
+    LWinInfo cWin;
+    QString cname; //class name for the entire button
+    bool noicon, showText;
 
-	LWinInfo currentWindow(); //For getting the currently-active window
-	LXCB::WINDOWVISIBILITY cstate; //current state of the button
+    LWinInfo currentWindow(); //For getting the currently-active window
+    LXCB::WINDOWVISIBILITY cstate; //current state of the button
 
 public slots:
-	void UpdateButton(); //re-sync the current window infomation
-	void UpdateMenus(); //re-create the menus (text + icons)
+    void UpdateButton(); //re-sync the current window infomation
+    void UpdateMenus(); //re-create the menus (text + icons)
 
 private slots:
 
-	void buttonClicked();
-	void closeWindow(); //send the signal to close a window
-	void maximizeWindow(); //send the signal to maximize/restore a window
-	void minimizeWindow(); //send the signal to minimize a window (iconify)
-	void showAllWindows();
-	void hideAllWindows();
-	void closeAllWindows();
-	void triggerWindow(); //change b/w visible and invisible
-	void winClicked(QAction*);
-	void openActionMenu();
+    void buttonClicked();
+    void closeWindow(); //send the signal to close a window
+    void maximizeWindow(); //send the signal to maximize/restore a window
+    void minimizeWindow(); //send the signal to minimize a window (iconify)
+    void showAllWindows();
+    void hideAllWindows();
+    void closeAllWindows();
+    void triggerWindow(); //change b/w visible and invisible
+    void winClicked(QAction*);
+    void openActionMenu();
 protected:
-	void changeEvent(QEvent *ev){
-	  LTBWidget::changeEvent(ev);
-	  QEvent::Type tmp = ev->type();
-	  if(tmp==QEvent::ThemeChange || tmp==QEvent::LanguageChange || tmp==QEvent::LocaleChange){
-	    QTimer::singleShot(QRandomGenerator::global()->generate()%100+500, this, SLOT(UpdateButton()) );
-	  }
-	}
+    void changeEvent(QEvent *ev) {
+        LTBWidget::changeEvent(ev);
+        QEvent::Type tmp = ev->type();
+        if(tmp==QEvent::ThemeChange || tmp==QEvent::LanguageChange || tmp==QEvent::LocaleChange) {
+            QTimer::singleShot(QRandomGenerator::global()->generate()%100+500, this, SLOT(UpdateButton()) );
+        }
+    }
 signals:
-	void MenuClosed();
+    void MenuClosed();
 };
 #endif

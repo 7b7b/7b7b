@@ -9,33 +9,33 @@
 #include "../globals.h"
 #include "PageWidget.h"
 
-namespace Ui{
-	class page_main;
+namespace Ui {
+class page_main;
 };
 
-class page_main : public PageWidget{
-	Q_OBJECT
+class page_main : public PageWidget {
+    Q_OBJECT
 public:
-	page_main(QWidget *parent);
-	~page_main();
+    page_main(QWidget *parent);
+    ~page_main();
 
-	virtual void setPreviousPage(QString id);
-	void clearlineEdit();
+    virtual void setPreviousPage(QString id);
+    void clearlineEdit();
 
 public slots:
-	void SaveSettings();
-	void LoadSettings(int screennum = -1);
-	void updateIcons();
+    void SaveSettings();
+    void LoadSettings(int screennum = -1);
+    void updateIcons();
 
 private:
-	Ui::page_main *ui;
-	QList<PAGEINFO> INFO;
-	QShortcut *findShort;
-	void UpdateItems(QString search);
+    Ui::page_main *ui;
+    QList<PAGEINFO> INFO;
+    QShortcut *findShort;
+    void UpdateItems(QString search);
 
 private slots:
-	void showFind();
-	void itemTriggered(QTreeWidgetItem*, int);
-	void searchChanged(QString);
+    void showFind();
+    void itemTriggered(QTreeWidgetItem*, int);
+    void searchChanged(QString);
 };
 #endif

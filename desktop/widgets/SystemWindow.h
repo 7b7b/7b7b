@@ -5,35 +5,35 @@
 
 #include "ui_SystemWindow.h"
 
-namespace Ui{
-	class SystemWindow;
+namespace Ui {
+class SystemWindow;
 };
 
-class SystemWindow : public QDialog{
-	Q_OBJECT
+class SystemWindow : public QDialog {
+    Q_OBJECT
 public:
-	SystemWindow();
-	~SystemWindow();
+    SystemWindow();
+    ~SystemWindow();
 
 public slots:
-	void updateWindow();
+    void updateWindow();
 
 private:
-	Ui::SystemWindow *ui;
+    Ui::SystemWindow *ui;
 
 private slots:
-	void sysLogout();
+    void sysLogout();
 
-	void sysRestart();
-	void sysShutdown();
+    void sysRestart();
+    void sysShutdown();
 
-	void sysSuspend();
+    void sysSuspend();
 
-	void sysCancel(){
-	  this->close();
-	}
+    void sysCancel() {
+        this->close();
+    }
 
-	void sysLock();
+    void sysLock();
 };
 
 #endif
