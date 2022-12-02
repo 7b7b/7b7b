@@ -28,9 +28,6 @@ public:
     int PanelNumber();
     void ChangePanelNumber(int newnum);
 
-public slots:
-    void LoadIcons();
-
 private:
     Ui::PanelWidget *ui;
     QWidget *mainui;

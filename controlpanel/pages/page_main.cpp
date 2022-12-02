@@ -15,7 +15,7 @@ extern XDGDesktopList* APPSLIST;
 //==========
 page_main::page_main(QWidget *parent) : PageWidget(parent), ui(new Ui::page_main()) {
     ui->setupUi(this);
-    findShort = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_F), this, SLOT(showFind()));
+    findShort = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_F), this, SLOT(showFind()));
     ui->treeWidget->setMouseTracking(true);
     ui->treeWidget->setSortingEnabled(false); //the QTreeView sort flag always puts them in backwards (reverse-alphabetical)
     connect(ui->treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), this, SLOT(itemTriggered(QTreeWidgetItem*, int)) );

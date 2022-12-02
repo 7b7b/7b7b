@@ -33,11 +33,10 @@ mainWindow::mainWindow() : QMainWindow(), ui(new Ui::mainWindow()) {
     ui->toolBar->insertWidget(ui->actionSave, tmp); //after the save button
     backShortcut = new QShortcut(Qt::Key_Escape, this);
     connect(backShortcut, SIGNAL(activated()), this, SLOT(on_actionBack_triggered()) );
-    quitShortcut = new QShortcut(Qt::CTRL + Qt::Key_Q, this);
+    quitShortcut = new QShortcut(Qt::CTRL | Qt::Key_Q, this);
     connect(quitShortcut, SIGNAL(activated()), this, SLOT(quitShortcut_Triggered()) );
     setupIcons();
     loadMonitors();
-    //changePage(""); //load the default main page
     QSettings S("lumina-desktop","lumina-config");
     QRect geom = S.value("window_geometry", QRect()).toRect();
     if(!geom.isNull()) {
@@ -154,9 +153,6 @@ bool mainWindow::page_change(QString id) {
         //unsaved changed available - prompt to save first
         QMessageBox dialog(QMessageBox::Question, tr("Unsaved Changes"), tr("This page currently has unsaved changes, do you wish to save them now?"),  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, this);
         dialog.setDefaultButton(QMessageBox::No);
-        dialog.setButtonText(QMessageBox::Yes, tr("Yes"));
-        dialog.setButtonText(QMessageBox::No, tr("No"));
-        dialog.setButtonText(QMessageBox::Cancel, tr("Cancel"));
         const int result = dialog.exec();
         if(result == QMessageBox::Yes) {
             on_actionSave_triggered();

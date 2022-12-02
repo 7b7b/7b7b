@@ -23,7 +23,6 @@ PanelWidget::PanelWidget(QWidget *parent, QWidget *Main, LPlugins *Pinfo) : QWid
     ui->combo_edge->addItem(tr("Left"), "left");
     ui->combo_edge->addItem(tr("Right"), "right");
 
-    LoadIcons();
     //Now connect any other signals/slots
     connect(ui->combo_edge, SIGNAL(currentIndexChanged(int)), this, SLOT(ItemChanged()) );
     connect(ui->combo_align, SIGNAL(currentIndexChanged(int)), this, SLOT(ItemChanged()) );
@@ -110,18 +109,6 @@ int PanelWidget::PanelNumber() {
 void PanelWidget::ChangePanelNumber(int newnum) {
     ui->label->setText( QString(tr("Panel %1")).arg(QString::number(newnum+1) ) );
     pnum = newnum; //So we can retain the current settings, but will save them with a different number
-}
-
-void PanelWidget::LoadIcons() {
-    ui->tool_rm->setIcon( LXDG::findIcon("list-remove","") );
-    ui->tool_remplugin->setIcon( LXDG::findIcon("list-remove","") );
-    ui->tool_addplugin->setIcon( LXDG::findIcon("list-add","") );
-    ui->tool_upplugin->setIcon( LXDG::findIcon("go-up","") );
-    ui->tool_downplugin->setIcon( LXDG::findIcon("go-down","") );
-    ui->tool_selectcolor->setIcon( LXDG::findIcon("preferences-desktop-color","") );
-    ui->tabWidget->setTabIcon(0,LXDG::findIcon("transform-move",""));
-    ui->tabWidget->setTabIcon(1,LXDG::findIcon("preferences-desktop-display",""));
-    ui->tabWidget->setTabIcon(2,LXDG::findIcon("preferences-plugin",""));
 }
 
 void PanelWidget::reloadColorSample() {
