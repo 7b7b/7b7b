@@ -85,10 +85,7 @@ LSession::~LSession() {
     }
 }
 
-void LSession::setupSession() {
-	//QString WM = LSession::handle()->sessionSettings()->value("WindowManager", "").toString();
-	//QProcess::startDetached(WM);
-    
+void LSession::setupSession() {    
     //Seed random number generator (if needed)
     QRandomGenerator( QTime::currentTime().msec() );
 
@@ -119,11 +116,7 @@ void LSession::setupSession() {
     checkUserFiles();
 	
 	// Window Manager
-	QString cmd = sessionsettings->value("WindowManager", "").toString();
-	QStringList args = cmd.split(" ");
-	args.removeFirst();
-	QProcess::startDetached(cmd.split(" ")[0], args);
-
+	LaunchApplicationDetached(sessionsettings->value("WindowManager", "").toString());
 	
     //Initialize the internal variables
     DESKTOPS.clear();
@@ -287,9 +280,6 @@ void LSession::StartShutdown(bool skipupdates) {
     CleanupSession();
 
 	QString cmd = sessionSettings()->value("ShutdownCmd", "").toString();
-	QStringList args = cmd.split(" ");
-	args.removeFirst();
-	QProcess::startDetached(cmd.split(" ")[0], args);
 
     QCoreApplication::exit(0);
 }
@@ -297,19 +287,12 @@ void LSession::StartShutdown(bool skipupdates) {
 void LSession::StartReboot(bool skipupdates) {
     CleanupSession();
 
-	QString cmd = sessionSettings()->value("RestartCmd", "").toString();
-	QStringList args = cmd.split(" ");
-	args.removeFirst();
-	QProcess::startDetached(cmd.split(" ")[0], args);
-
+	LaunchApplicationDetached(sessionSettings()->value("RestartCmd", "").toString());
     QCoreApplication::exit(0);
 }
 
 void LSession::LockScreen() {
-	QString cmd = sessionSettings()->value("LockCmd", "").toString();
-	QStringList args = cmd.split(" ");
-	args.removeFirst();
-	QProcess::startDetached(cmd.split(" ")[0], args);
+	LaunchApplicationDetached(sessionSettings()->value("LockCmd", "").toString());
 }
 
 void LSession::reloadIconTheme() {
@@ -627,11 +610,14 @@ void LSession::storeClipboard(QString text, QClipboard::Mode mode) {
 //  SYSTEM ACCESS
 //===============
 void LSession::LaunchApplication(QString cmd) {
-    //LSession::setOverrideCursor(QCursor(Qt::BusyCursor));
+    ExternalProcess::launch(cmd, true);
+}
+
+void LSession::LaunchApplicationDetached(QString cmd) {
     QStringList args = cmd.split(" ");
-    QString bin = args.at(0);
-    args.remove(0);
-    ExternalProcess::launch(bin, args, true);
+	args.removeFirst();
+	QProcess::startDetached(cmd.split(" ")[0], args);
+
 }
 
 QFileInfoList LSession::DesktopFiles() {

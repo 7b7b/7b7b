@@ -78,14 +78,18 @@ public:
         return logoutput;
     }
 
-    static void launch(QString program, QStringList args = QStringList(), bool manageCursors = true) {
+    static void launch(QString cmd, bool manageCursors = true) {
         //Quick launch of a process with logging disabled and automatic cleanup
         ExternalProcess *tmp = new ExternalProcess("", manageCursors);
+
+		QStringList args = cmd.split(" ");
+		QString bin = args.at(0);
+		args.remove(0);
+
         if(args.isEmpty()) {
-            tmp->start(program);
-        }
-        else {
-            tmp->start(program, args);
+            tmp->start(bin);
+        } else {
+            tmp->start(bin, args);
         }
     }
 };

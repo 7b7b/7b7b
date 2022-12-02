@@ -6,7 +6,6 @@
 //===========================================
 #include "AppMenu.h"
 #include "LSession.h"
-#include <LuminaOS.h>
 #include <LIconCache.h>
 
 extern LIconCache *ICONS;
@@ -79,31 +78,41 @@ void AppMenu::updateAppList() {
     for(int i=0; i<cats.length(); i++) {
         //Make sure they are translated and have the right icons
         QString name, icon;
-        if (cats[i] == "All") {
-            continue;
-        } else if (cats[i] == "Multimedia" || cats[i] == "Development" || cats[i] == "Education" || cats[i] == "Graphics"
-                   || cats[i] == "Office" || cats[i] == "Science" || cats[i] == "System") {
-            name = tr(cats[i].toUtf8().constData());
-            icon = "applications-" + cats[i].toLower();
-        } else if (cats[i] == "Game") {
-            name = tr("Games");
-            icon = "applications-games";
-        } else if (cats[i] == "Settings") {
-            name = tr("Settings");
-            icon = "applications-system";
-        } else if (cats[i] == "Network") {
-            name = tr("Network");
-            icon = "applications-internet";
-        } else if (cats[i] == "Utility") {
-            name = tr("Utility");
-            icon = "applications-utilities";
-        } else if (cats[i] == "Wine") {
-            name = tr("Wine");
-            icon = "wine";
-        } else {
-            name = tr("Unsorted");
-            icon = "applications-other";
-        }
+
+        QStringList submenus = QStringList() << "All" << "Game" << "Network" << "Settings" << "Utility" << "Wine" << "Multimedia" << "Development" << "Education" << "Graphics" << "Office" << "Science" << "System";
+		switch (submenus.indexOf(cats[i])){
+			case 0:
+				continue;
+				break;
+			case 1:
+				name = tr("Games");
+				icon = "applications-games";
+				break;
+			case 2:
+				name = tr("Network");
+				icon = "applications-internet";
+				break;
+			case 3:
+				name = tr("Settings");
+				icon = "applications-system";
+				break;
+			case 4:
+				name = tr("Utility");
+				icon = "applications-utilities";
+				break;
+			case 5:
+				name = tr("Wine");
+				icon = "wine";
+				break;
+			case 6 ... 12:
+				name = tr(cats[i].toUtf8().constData());
+				icon = "applications-" + cats[i].toLower();
+				break;
+			default:
+				name = tr("Unsorted");
+				icon = "applications-other";
+				break;
+		}
 
         QMenu *menu = new QMenu(name, this);
         menu->setIcon( ICONS->loadIcon(icon) );
@@ -166,10 +175,6 @@ void AppMenu::watcherUpdate() {
 }
 
 void AppMenu::launchApp(QAction *act) {
-    QString appFile = act->whatsThis();
-    if(appFile.startsWith("-action")) {
-        LSession::LaunchApplication("lumina-open "+appFile); //already has quotes put in place properly
-    } else {
-        LSession::LaunchApplication("lumina-open "+appFile);
-    }
+	QString appFile = act->whatsThis();
+	LSession::LaunchApplication("lumina-open "+appFile);
 }

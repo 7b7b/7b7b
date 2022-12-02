@@ -203,7 +203,7 @@ void DesktopViewPlugin::updateContents() {
             } else {
                 txt = this->fontMetrics().elidedText(txt,Qt::ElideRight, 2*(gridSZ.width()-4));
                 //Now split the line in half for the two lines
-                txt.insert( (txt.count()/2), "\n");
+                txt.insert( (txt.size()/2), "\n");
             }
         } else {
             txt.append("\n "); //ensure two lines (2nd one invisible) - keeps formatting sane

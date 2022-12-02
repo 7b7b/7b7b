@@ -40,7 +40,7 @@ class LSession : public LSingleApplication{
 public:
 	LSession(int &argc, char **argv);
 	~LSession();
-
+		
 	static bool checkUserFiles();
 	//Functions to be called during startup
 	void setupSession();
@@ -72,6 +72,7 @@ public:
 	}
 
 	static void LaunchApplication(QString cmd);
+	static void LaunchApplicationDetached(QString cmd);
 	QFileInfoList DesktopFiles();
 
 	QRect screenGeom(int num);

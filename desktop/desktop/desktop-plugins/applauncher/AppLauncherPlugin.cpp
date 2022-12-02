@@ -228,7 +228,7 @@ void AppLauncherPlugin::loadButton() {
         } else {
             txt = this->fontMetrics().elidedText(txt,Qt::ElideRight, 2*(button->width()-OUTMARGIN));
             //Now split the line in half for the two lines
-            txt.insert( ((txt.count())/2), "\n");
+            txt.insert( ((txt.size())/2), "\n");
         }
     }
     if(!txt.contains("\n")) {
