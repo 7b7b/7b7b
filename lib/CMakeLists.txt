@@ -38,7 +38,6 @@ find_package(
     EWMH
     ICCCM
     IMAGE
-    RANDR
 )
 
 # OS-detection
@@ -59,7 +58,6 @@ set(SRCS
     src/LIconCache.cpp
     src/LUtils.cpp
     src/LuminaSingleApplication.cpp
-    src/LuminaRandR-X11.cpp
     src/LuminaX11.cpp
     src/LuminaXDG.cpp
     src/ResizeMenu.cpp
@@ -72,7 +70,6 @@ set(PUB_HDRS
     src/ExternalProcess.h
 	src/LDesktopUtils.h
     src/LIconCache.h
-    src/LuminaRandR.h
     src/LuminaSingleApplication.h
     src/LuminaX11.h
     src/LuminaXDG.h
@@ -107,13 +104,10 @@ target_link_libraries(
 	XCB::COMPOSITE
 	XCB::DAMAGE
 	XCB::ICCCM
-	XCB::RANDR
 	XCB::EWMH
 	XCB::DPMS
 	X11::Xdamage
 )
-
-message("${CMAKE_MODULE_PATH}")
 
 install(TARGETS
 	${PROJECT}
@@ -130,4 +124,3 @@ install(FILES
 )
 
 install(EXPORT FindLumina DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT}")
-
