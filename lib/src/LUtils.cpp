@@ -14,7 +14,6 @@
 
 #include <unistd.h>
 
-
 //=============
 //  LUtils Functions
 //=============
@@ -271,47 +270,6 @@ QStringList LUtils::systemApplicationDirs() {
     return out;
 }
 
-QString LUtils::GenerateOpenTerminalExec(QString term, QString dirpath) {
-    //Check the input terminal application (default/fallback - determined by calling application)
-    //if(!LUtils::isValidBinary(term)){
-    if(term.endsWith(".desktop")) {
-        //Pull the binary name out of the shortcut
-        XDGDesktop DF(term);
-        if(DF.type == XDGDesktop::BAD) {
-            term = "xterm";
-        }
-        else {
-            term= DF.exec.section(" ",0,0);    //only take the binary name - not any other flags
-        }
-    } else {
-        term = "xterm"; //fallback
-    }
-    //}
-    //Now create the calling command for the designated terminal
-    // NOTE: While the "-e" routine is supposed to be universal, many terminals do not properly use it
-    //  so add some special/known terminals here as necessary
-    QString exec;
-    qWarning() << " - Reached terminal initialization" << term;
-    if(term=="mate-terminal" || term=="lxterminal" || term=="gnome-terminal") {
-        exec = term+" --working-directory=\""+dirpath+"\"";
-    } else if(term=="xfce4-terminal") {
-        exec = term+" --default-working-directory=\""+dirpath+"\"";
-    } else if(term=="konsole" || term == "qterminal") {
-        exec = term+" --workdir \""+dirpath+"\"";
-    } else {
-        //-e is the parameter for most of the terminal appliction to execute an external command.
-        //In this case we start a shell in the selected directory
-        //Need the user's shell first
-        QString shell = QString(getenv("SHELL"));
-        if(!LUtils::isValidBinary(shell)) {
-            shell = "/bin/sh";    //universal fallback for a shell
-        }
-        exec = term + " -e \"cd " + dirpath + " && " + shell + " \" ";
-    }
-    qDebug() << exec;
-    return exec;
-}
-
 QStringList LUtils::listSubDirectories(QString dir, bool recursive) {
     //This is a recursive method for returning the full paths of all subdirectories (if recursive flag is enabled)
     QDir maindir(dir);
@@ -519,85 +477,39 @@ QString LUtils::currentLocale() {
     return curr;
 }
 
-double LUtils::DisplaySizeToBytes(QString num) {
-    //qDebug() << "Convert Num to Bytes:" << num;
-    num = num.toLower().simplified();
-    num = num.remove(" ");
-    if(num.isEmpty()) {
-        return 0.0;
+double LUtils::DisplaySizeToBytes(QString dSize) {
+    if(dSize.isEmpty() || dSize[dSize.size()-1].isNumber()) {
+		return 0.0;
+	}
+    dSize.remove(" ");
+	QStringList metrics = QStringList() << "B" << "K" << "M" << "G" << "T" << "P";
+	QString metric = "B";
+
+	if (!dSize[dSize.size()-2].isNumber()) {
+		dSize.chop(1);
+	}
+	metric = dSize.right(1);
+	dSize.chop(1);
+	
+	double num = dSize.toDouble();
+	for(int i=0; i<metrics.length(); i++) {
+		if(metric==metrics[i]) {
+			break;
+		}
+		num = num*1024.00;
     }
-    if(num.endsWith("b")) {
-        num.chop(1);    //remove the "bytes" marker (if there is one)
-    }
-    QString lab = "b";
-    if(!num[num.size()-1].isNumber()) {
-        lab = num.right(1);
-        num.chop(1);
-    }
-    double N = num.toDouble();
-    QStringList labs;
-    labs <<"b"<<"k"<<"m"<<"g"<<"t"<<"p"; //go up to petabytes for now
-    for(int i=0; i<labs.length(); i++) {
-        if(lab==labs[i]) {
-            break;    //already at the right units - break out
-        }
-        N = N*1024.0; //Move to the next unit of measurement
-    }
-    //qDebug() << " - Done:" << QString::number(N) << lab << num;
-    return N;
+
+    return num;
 }
 
-QString LUtils::BytesToDisplaySize(qint64 ibytes) {
-    static QStringList labs = QStringList();
-    if(labs.isEmpty()) {
-        labs << "B" << "K" << "M" << "G" << "T" << "P";
-    }
-    //Now get the dominant unit
-    int c=0;
-    double bytes = ibytes; //need to keep decimel places for calculations
-    while(bytes>=1000 && c<labs.length() ) {
-        bytes = bytes/1024;
-        c++;
-    } //labs[c] is the unit
-    //Bytes are now
-    //Now format the number (up to 3 digits, not including decimel places)
-    QString num;
-    if(bytes>=100) {
-        //No decimel places
-        num = QString::number(qRound(bytes));
-    } else if(bytes>=10) {
-        //need 1 decimel place
-        num = QString::number( (qRound(bytes*10)/10.0) );
-    } else if(bytes>=1) {
-        //need 2 decimel places
-        num = QString::number( (qRound(bytes*100)/100.0) );
-    } else {
-        //Fully decimel (3 places)
-        num = "0."+QString::number(qRound(bytes*1000));
-    }
-    //qDebug() << "Bytes to Human-readable:" << bytes << c << num << labs[c];
-    return (num+labs[c]);
-}
+QString LUtils::BytesToDisplaySize(qint64 bytes) {
+    QStringList metrics = QStringList() << "B" << "KB" << "MB" << "GB" << "TB" << "PB";
+	int i;
 
-QString LUtils::SecondsToDisplay(int secs) {
-    if(secs < 0) {
-        return "??";
-    }
-    QString rem; //remaining
-    if(secs > 3600) {
-        int hours = secs/3600;
-        rem.append( QString::number(hours)+"h ");
-        secs = secs - (hours*3600);
-    }
-    if(secs > 60) {
-        int min = secs/60;
-        rem.append( QString::number(min)+"m ");
-        secs = secs - (min*60);
-    }
-    if(secs > 0) {
-        rem.append( QString::number(secs)+"s");
-    } else {
-        rem.append( "0s" );
-    }
-    return rem;
+	double dblBytes = bytes;
+	for(i = 0; dblBytes >= 1024 && i<metrics.length(); i++) {
+		dblBytes /= 1024;
+	}
+	
+	return (QString::number(qRound(dblBytes*100)/100.0)+metrics[i]);
 }

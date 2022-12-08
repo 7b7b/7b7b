@@ -13,8 +13,6 @@
 
 #define DEBUG 0
 
-static bool hascompositer = !LUtils::getCmdOutput("ps -x").filter("compton").filter("--backend").isEmpty(); //LUtils::isValidBinary("xcompmgr"); //NOT WORKING YET - xcompmgr issue with special window flags?
-
 LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool reservespace) : QWidget() {
     //Take care of inputs
     reserveloc = reservespace;
@@ -467,7 +465,7 @@ void LPanel::resizeEvent(QResizeEvent *event) {
 }
 
 void LPanel::paintEvent(QPaintEvent *event) {
-    if(!hascompositer && reserveloc) {
+    if(reserveloc) {
         QPainter *painter = new QPainter(this);
         //qDebug() << "Paint Panel:" << PPREFIX;
         //Make sure the base background of the event rectangle is the associated rectangle from the BGWindow

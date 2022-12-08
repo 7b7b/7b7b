@@ -57,9 +57,6 @@ public:
     //Return all the dirs on the system which contain .desktop files
     static QStringList systemApplicationDirs();
 
-    //Create the exec string to open a terminal in a particular directory
-    static QString GenerateOpenTerminalExec(QString term, QString dirpath);
-
     //List all the sub-directories of a parent dir (recursive)
     static QStringList listSubDirectories(QString dir, bool recursive = true);
 
@@ -77,9 +74,8 @@ public:
     static QString currentLocale();
 
     //Number format conversions
-    static double DisplaySizeToBytes(QString num); //Turn a display size (like 50M or 50KB) into a double for calculations (bytes)
+    static double DisplaySizeToBytes(QString dSize); //Turn a display size (like 50M or 50KB) into a double for calculations (bytes)
     static QString BytesToDisplaySize(qint64 bytes); //convert into a readable size (like 50M or 50KB)
-
-    static QString SecondsToDisplay(int secs); //convert into a readable time
+	
 };
 #endif
