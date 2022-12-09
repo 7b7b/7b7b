@@ -23,7 +23,7 @@ private:
     Ui::AppDialog *ui;
 
 public:
-    AppDialog(QWidget *parent = 0, QString defaultPath = "") : QDialog(parent), ui(new Ui::AppDialog) {
+    explicit AppDialog(QWidget *parent = 0, QString defaultPath = "") : QDialog(parent), ui(new Ui::AppDialog) {
         ui->setupUi(this); //load the designer file
         appreset = false;
         ui->listApps->clear();

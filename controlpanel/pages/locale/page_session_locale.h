@@ -16,13 +16,13 @@ class page_session_locale;
 class page_session_locale : public PageWidget {
     Q_OBJECT
 public:
-    page_session_locale(QWidget *parent);
+    explicit page_session_locale(QWidget *parent);
     ~page_session_locale();
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum) override;
+    void updateIcons() override;
 
 private:
     Ui::page_session_locale *ui;

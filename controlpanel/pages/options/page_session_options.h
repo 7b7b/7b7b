@@ -16,13 +16,13 @@ class page_session_options;
 class page_session_options : public PageWidget {
     Q_OBJECT
 public:
-    page_session_options(QWidget *parent);
+    explicit page_session_options(QWidget *parent);
     ~page_session_options();
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum = -1);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum = -1) override;
+    void updateIcons() override;
 
     virtual void settingChanged() {
         if(!loading) {

@@ -16,16 +16,16 @@ class page_main;
 class page_main : public PageWidget {
     Q_OBJECT
 public:
-    page_main(QWidget *parent);
+    explicit page_main(QWidget *parent);
     ~page_main();
 
-    virtual void setPreviousPage(QString id);
+    virtual void setPreviousPage(QString id) override;
     void clearlineEdit();
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum = -1);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum = -1) override;
+    void updateIcons() override;
 
 private:
     Ui::page_main *ui;

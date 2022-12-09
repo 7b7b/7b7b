@@ -161,11 +161,6 @@ void PanelWidget::ItemChanged() {
     emit PanelChanged();
 }
 
-void PanelWidget::UseColorChanged() {
-
-    emit PanelChanged();
-}
-
 void PanelWidget::on_tool_selectcolor_clicked() {
     QString color = getColorStyle(ui->label_color_sample->whatsThis());
     if( color.isEmpty()) {

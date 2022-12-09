@@ -17,13 +17,13 @@ class page_interface_menu;
 class page_interface_menu : public PageWidget {
     Q_OBJECT
 public:
-    page_interface_menu(QWidget *parent);
+    explicit page_interface_menu(QWidget *parent);
     ~page_interface_menu();
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum) override;
+    void updateIcons() override;
 
 private:
     Ui::page_interface_menu *ui;

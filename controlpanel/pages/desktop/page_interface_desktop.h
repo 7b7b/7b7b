@@ -17,17 +17,17 @@ class page_interface_desktop;
 class page_interface_desktop : public PageWidget {
     Q_OBJECT
 public:
-    page_interface_desktop(QWidget *parent);
+    explicit page_interface_desktop(QWidget *parent);
     ~page_interface_desktop();
 
-    bool needsScreenSelector() {
+    bool needsScreenSelector() override {
         return true;
     }
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum = -1);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum = -1) override;
+    void updateIcons() override;
 
 private:
     Ui::page_interface_desktop *ui;

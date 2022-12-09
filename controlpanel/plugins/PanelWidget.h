@@ -41,7 +41,6 @@ private:
 private slots:
     void on_tool_rm_clicked();
     void ItemChanged();
-    void UseColorChanged();
     void on_tool_selectcolor_clicked();
     void on_tool_addplugin_clicked();
     void on_tool_remplugin_clicked();

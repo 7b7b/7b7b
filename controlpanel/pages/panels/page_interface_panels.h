@@ -18,17 +18,17 @@ class page_interface_panels;
 class page_interface_panels : public PageWidget {
     Q_OBJECT
 public:
-    page_interface_panels(QWidget *parent);
+    explicit page_interface_panels(QWidget *parent);
     ~page_interface_panels();
 
-    bool needsScreenSelector() {
+    bool needsScreenSelector() override {
         return true;
     }
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum = -1);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum = -1) override;
+    void updateIcons() override;
 
 private:
     Ui::page_interface_panels *ui;

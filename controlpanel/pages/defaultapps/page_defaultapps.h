@@ -16,13 +16,13 @@ class page_defaultapps;
 class page_defaultapps : public PageWidget {
     Q_OBJECT
 public:
-    page_defaultapps(QWidget *parent);
+    explicit page_defaultapps(QWidget *parent);
     ~page_defaultapps();
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum) override;
+    void updateIcons() override;
 
 private:
     Ui::page_defaultapps *ui;

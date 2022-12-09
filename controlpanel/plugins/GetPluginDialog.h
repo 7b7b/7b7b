@@ -18,7 +18,7 @@ class GetPluginDialog;
 class GetPluginDialog : public QDialog {
     Q_OBJECT
 public:
-    GetPluginDialog(QWidget* parent = 0);
+    explicit GetPluginDialog(QWidget* parent = 0);
     ~GetPluginDialog();
 
     void LoadPlugins(QString type, LPlugins *DB);

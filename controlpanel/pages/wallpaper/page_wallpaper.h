@@ -16,17 +16,17 @@ class page_wallpaper;
 class page_wallpaper : public PageWidget {
     Q_OBJECT
 public:
-    page_wallpaper(QWidget *parent);
+    explicit page_wallpaper(QWidget *parent);
     ~page_wallpaper();
 
-    bool needsScreenSelector() {
+    bool needsScreenSelector() override {
         return true;
     }
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum) override;
+    void updateIcons() override;
 
 private:
     Ui::page_wallpaper *ui;

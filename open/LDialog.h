@@ -31,7 +31,7 @@ class LDialog;
 class LDialog : public QDialog {
     Q_OBJECT
 public:
-    LDialog(QWidget *parent = 0);
+    explict LDialog(QWidget *parent = 0);
     ~LDialog();
 
     //inputs

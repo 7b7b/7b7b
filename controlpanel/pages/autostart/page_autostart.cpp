@@ -39,13 +39,13 @@ void page_autostart::SaveSettings() {
         QString file = ui->list_session_start->item(i)->whatsThis();
         bool enabled = ui->list_session_start->item(i)->checkState()==Qt::Checked;
         bool found = false;
-        for(int i=0; i<STARTAPPS.length(); i++) {
-            if(STARTAPPS[i]->filePath==file) {
+        for(int j=0; j<STARTAPPS.length(); j++) {
+            if(STARTAPPS[j]->filePath==file) {
                 found = true;
-                if(enabled != !STARTAPPS[i]->isHidden) {
+                if(enabled != !STARTAPPS[j]->isHidden) {
                     //value is different
-                    qDebug() << "Setting Autostart:" << enabled << STARTAPPS[i]->filePath;
-                    STARTAPPS[i]->setAutoStarted(enabled);
+                    qDebug() << "Setting Autostart:" << enabled << STARTAPPS[j]->filePath;
+                    STARTAPPS[j]->setAutoStarted(enabled);
                 }
                 break;
             }
@@ -116,14 +116,6 @@ QString page_autostart::getSysApp(bool allowreset) {
 //=================
 //    PRIVATE SLOTS
 //=================
-void page_autostart::rmsessionstartitem() {
-    if(ui->list_session_start->currentRow() < 0) {
-        return;    //no item selected
-    }
-    delete ui->list_session_start->takeItem(ui->list_session_start->currentRow());
-    settingChanged();
-}
-
 void page_autostart::addsessionstartapp() {
     //Prompt for the application to start
     QString app = getSysApp(false); //no reset

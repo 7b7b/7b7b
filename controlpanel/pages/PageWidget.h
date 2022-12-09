@@ -28,9 +28,7 @@ class PageWidget : public QWidget {
 public:
 
     //Main constructor/destructor (create/destroy any interface items)
-    PageWidget(QWidget *parent) : QWidget(parent) {
-        //this->setFocusPolicy(Qt::NoFocus);
-    }
+    explicit PageWidget(QWidget *parent) : QWidget(parent){};
     ~PageWidget() {}
 
     virtual bool needsScreenSelector() {

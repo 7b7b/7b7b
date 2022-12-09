@@ -16,13 +16,13 @@ class page_autostart;
 class page_autostart : public PageWidget {
     Q_OBJECT
 public:
-    page_autostart(QWidget *parent);
+    explicit page_autostart(QWidget *parent);
     ~page_autostart();
 
 public slots:
-    void SaveSettings();
-    void LoadSettings(int screennum);
-    void updateIcons();
+    void SaveSettings() override;
+    void LoadSettings(int screennum) override;
+    void updateIcons() override;
 
 private:
     Ui::page_autostart *ui;
@@ -30,7 +30,6 @@ private:
     QString getSysApp(bool allowreset);
 
 private slots:
-    void rmsessionstartitem();
     void addsessionstartapp();
     void addsessionstartbin();
     void addsessionstartfile();
