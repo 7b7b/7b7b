@@ -31,9 +31,6 @@ public:
 
     void LoadFile(QString path);
 
-public slots:
-    void UpdateIcons();
-
 private:
     Ui::MainUI *ui;
     QFileInfo *fileINFO;

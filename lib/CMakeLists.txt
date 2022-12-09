@@ -60,7 +60,6 @@ set(SRCS
     src/LuminaSingleApplication.cpp
     src/LuminaX11.cpp
     src/LuminaXDG.cpp
-    src/XDGMime.cpp
     src/LuminaOS.cpp
 )
 
@@ -74,7 +73,6 @@ set(PUB_HDRS
     src/LuminaXDG.h
 	src/LuminaOS.h
     src/LUtils.h
-	src/XDGMime.h
 )
 
 add_library(

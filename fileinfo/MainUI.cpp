@@ -14,7 +14,6 @@ MainUI::MainUI() : QMainWindow(), ui(new Ui::MainUI) {
     ui->setupUi(this); //load the designer form
     terminate_thread = false;
     fileINFO = new QFileInfo();
-    UpdateIcons(); //Set all the icons in the dialog
     SetupConnections();
 }
 
@@ -32,10 +31,6 @@ void MainUI::LoadFile(QString path) {
     if(!fileINFO->filePath().isEmpty()) {
         SyncFileInfo();
     }
-}
-
-void MainUI::UpdateIcons() {
-
 }
 
 //==============

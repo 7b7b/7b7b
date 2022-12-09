@@ -1221,168 +1221,15 @@ void LXDG::setEnvironmentVars() {
 }
 
 QIcon LXDG::findIcon(QString iconName, QString fallback) {
-    //With the addition of the Lumina theme engine (8/3/17), switch back to using the Qt icon from theme method for apps
-    QIcon tmp;
-    if(!iconName.contains("libreoffice") || !QIcon::themeName().startsWith("material-design") ) { //libreoffice is stupid - their svg icons are un-renderable with Qt
-        tmp = QIcon::fromTheme(iconName);
-        /*if(iconName.contains("start-here")){
-          qDebug() << "[ICON]" << iconName << "found:" << !tmp.isNull() << tmp.name();
-        }*/
-        //if(tmp.isNull()){ tmp = QIcon::fromTheme(fallback); }
-    }
-    if(!tmp.isNull() && tmp.name()==iconName) {
-        return tmp;    //found this in the theme
-    }
-    else if(iconName=="start-here-lumina") {
-        //Additional fallback options for the OS-branded icon
-        QString osname = LOS::OSName().simplified().toLower();
-        QStringList possible;
-        possible << "distributor-logo-"+osname << osname;
-        QStringList words;
-        if(osname.contains(" ")) {
-            words = osname.split(" ");
-        }
-        else if(osname.contains("-")) {
-            words = osname.split("-");
-        }
-        for(int i=0; i<words.length(); i++) {
-            possible << "distributor-logo-"+words[i] << words[i];
-        }
-        //qDebug() << "Looking for possible OS icons:" << possible;
-        for(int i=0; i<possible.length(); i++) {
-            if(QIcon::hasThemeIcon(possible[i])) {
-                return QIcon::fromTheme(possible[i]);
-            }
-        }
-    }
-    if(!fallback.isEmpty() && QIcon::hasThemeIcon(fallback)) {
-        tmp = QIcon::fromTheme(fallback);    //found this in the theme
-        return tmp;
-    }
 
+	QIcon ico;
+	ico = QIcon::fromTheme(iconName);
 
-    //NOTE: This was re-written on 11/10/15 to avoid using the QIcon::fromTheme() framework
-    //   -- Too many issues with SVG files and/or search paths with the built-in system
+	if(ico.isNull() && !fallback.isEmpty()) {
+		ico = LXDG::findIcon(fallback,"");
+	}
+	return ico;
 
-    //Check if the icon is an absolute path and exists
-    bool DEBUG =false;
-    if(DEBUG) {
-        qDebug() << "[LXDG] Find icon for:" << iconName;
-    }
-    if(QFile::exists(iconName) && iconName.startsWith("/")) {
-        return QIcon(iconName);
-    }
-    else if(iconName.startsWith("/")) {
-        iconName.section("/",-1);    //Invalid absolute path, just look for the icon
-    }
-    //Check if the icon is actually given
-    if(iconName.isEmpty()) {
-        if(fallback.isEmpty()) {
-            return QIcon();
-        }
-        else {
-            return LXDG::findIcon(fallback, "");
-        }
-    }
-    //Now try to find the icon from the theme
-    if(DEBUG) {
-        qDebug() << "[LXDG] Start search for icon";
-    }
-    //Get the currently-set theme
-    QString cTheme = QIcon::themeName();
-    if(cTheme.isEmpty()) {
-        QIcon::setThemeName("material-design-light");
-        cTheme = "material-design-light";
-    }
-    //Make sure the current search paths correspond to this theme
-    if( QDir::searchPaths("icontheme").filter("/"+cTheme+"/").isEmpty() ) {
-        //Need to reset search paths: setup the "icontheme" "material-design-light" and "fallback" sets
-        // - Get all the base icon directories
-        QStringList paths;
-        paths << QDir::homePath()+"/.icons/"; //ordered by priority - local user dirs first
-        QStringList xdd = QString(getenv("XDG_DATA_HOME")).split(":");
-        xdd << QString(getenv("XDG_DATA_DIRS")).split(":");
-        for(int i=0; i<xdd.length(); i++) {
-            if(QFile::exists(xdd[i]+"/icons")) {
-                paths << xdd[i]+"/icons/";
-            }
-        }
-        //Now load all the dirs into the search paths
-        QStringList theme, oxy, fall;
-        QStringList themedeps = getIconThemeDepChain(cTheme, paths);
-        for(int i=0; i<paths.length(); i++) {
-            theme << getChildIconDirs( paths[i]+cTheme);
-            for(int j=0; j<themedeps.length(); j++) {
-                theme << getChildIconDirs(paths[i]+themedeps[j]);
-            }
-            oxy << getChildIconDirs(paths[i]+"material-design-light"); //Lumina base icon set
-            fall << getChildIconDirs(paths[i]+"hicolor"); //XDG fallback (apps add to this)
-        }
-        //Now load all the icon theme dependencies in order (Theme1 -> Theme2 -> Theme3 -> Fallback)
-
-        //fall << LOS::AppPrefix()+"share/pixmaps"; //always use this as well as a final fallback
-        QDir::setSearchPaths("icontheme", theme);
-        QDir::setSearchPaths("default", oxy);
-        QDir::setSearchPaths("fallback", fall);
-        //qDebug() << "Setting Icon Search Paths:" << "\nicontheme:" << theme << "\nmaterial-design-light:" << oxy << "\nfallback:" << fall;
-    }
-    //Find the icon in the search paths
-    QIcon ico;
-    QStringList srch;
-    srch << "icontheme" << "default" << "fallback";
-    for(int i=0; i<srch.length() && ico.isNull(); i++) {
-        //Look for a svg first
-        if(QFile::exists(srch[i]+":"+iconName+".svg") && !iconName.contains("libreoffice") ) {
-            ico.addFile(srch[i]+":"+iconName+".svg"); //could be loaded/parsed successfully
-        }
-        if(QFile::exists(srch[i]+":"+iconName+".png")) {
-            //simple PNG image - load directly into the QIcon structure
-            ico.addFile(srch[i]+":"+iconName+".png");
-        }
-
-    }
-    //If still no icon found, look for any image format in the "pixmaps" directory
-    if(ico.isNull()) {
-        //qDebug() << "Null Icon:" << iconName << LOS::AppPrefix();
-        if(QFile::exists(LOS::AppPrefix()+"share/pixmaps/"+iconName)) {
-            ico.addFile(LOS::AppPrefix()+"share/pixmaps/"+iconName);
-        } else {
-            //Need to scan for any close match in the directory
-            QDir pix(LOS::AppPrefix()+"share/pixmaps");
-            QStringList formats = LUtils::imageExtensions();
-            QStringList found = pix.entryList(QStringList() << iconName, QDir::Files, QDir::Unsorted);
-            if(found.isEmpty()) {
-                found = pix.entryList(QStringList() << iconName+"*", QDir::Files, QDir::Unsorted);
-            }
-            //qDebug() << "Found pixmaps:" << found << formats;
-            //Use the first one found that is a valid format
-            for(int i=0; i<found.length(); i++) {
-                if( formats.contains(found[i].section(".",-1).toLower()) ) {
-                    //qDebug() << " - Found non-theme icon:" << found[i];
-                    ico.addFile( pix.absoluteFilePath(found[i]) );
-                    break;
-                }
-            }
-
-        }
-    }
-    //Use the fallback icon if necessary
-    if(ico.isNull() ) {
-        if(!fallback.isEmpty()) {
-            ico = LXDG::findIcon(fallback,"");
-        }
-        else if(iconName.contains("-x-") && !iconName.endsWith("-x-generic")) {
-            //mimetype - try to use the generic type icon
-            ico = LXDG::findIcon(iconName.section("-x-",0,0)+"-x-generic", "");
-        } else if(iconName.contains("-")) {
-            ico = LXDG::findIcon(iconName.section("-",0,-2), ""); //chop the last modifier off the end and try again
-        }
-    }
-    if(ico.isNull()) {
-        qDebug() << "Could not find icon:" << iconName << fallback;
-    }
-    //Return the icon
-    return ico;
 }
 
 QStringList LXDG::getChildIconDirs(QString parent) {
@@ -1631,21 +1478,17 @@ QString LXDG::findDefaultAppForMime(QString mime) {
     //First get the priority-ordered list of default file locations
     QStringList dirs;
     dirs << QString(getenv("XDG_CONFIG_HOME"))+"/lumina-mimeapps.list" \
-         << QString(getenv("XDG_CONFIG_HOME"))+"/mimeapps.list";
+         << QString(getenv("XDG_DATA_HOME"))+"/applications/lumina-mimeapps.list" \
+         << QString(getenv("XDG_CONFIG_HOME"))+"/mimeapps.list" \
+         << QString(getenv("XDG_DATA_HOME"))+"/applications/mimeapps.list";
     QStringList tmp = QString(getenv("XDG_CONFIG_DIRS")).split(":");
     for(int i=0; i<tmp.length(); i++) {
         dirs << tmp[i]+"/lumina-mimeapps.list";
-    }
-    for(int i=0; i<tmp.length(); i++) {
         dirs << tmp[i]+"/mimeapps.list";
     }
-    dirs << QString(getenv("XDG_DATA_HOME"))+"/applications/lumina-mimeapps.list" \
-         << QString(getenv("XDG_DATA_HOME"))+"/applications/mimeapps.list";
     tmp = QString(getenv("XDG_DATA_DIRS")).split(":");
     for(int i=0; i<tmp.length(); i++) {
         dirs << tmp[i]+"/applications/lumina-mimeapps.list";
-    }
-    for(int i=0; i<tmp.length(); i++) {
         dirs << tmp[i]+"/applications/mimeapps.list";
     }
 
@@ -1714,43 +1557,6 @@ QString LXDG::findDefaultAppForMime(QString mime) {
                 }
             }
         }
-        /* WRITTEN BUT UNUSED CODE FOR MIMETYPE ASSOCIATIONS
-        //Skip using this because it is simply an alternate/unsupported standard that conflicts with
-          the current mimetype database standards. It is better/faster to parse 1 or 2 database glob files
-          rather than have to iterate through hundreds of *.desktop files *every* time you need to
-          find an application
-
-        if(addI<0 && remI<0){
-          //Simple Format: <mimetype>=<*.desktop file>;<*.desktop file>;.....
-            // (usually only one desktop file listed)
-          info = info.filter(mimetype+"=");
-          //Load the listed default(s)
-          for(int w=0; w<info.length(); w++){
-            white << info[w].section("=",1,50).split(";");
-          }
-        }else{
-          //Non-desktop specific mimetypes file: has a *very* convoluted/inefficient algorithm (required by spec)
-          if(addI<0){ addI = info.length(); } //no add section
-          if(remI<0){ remI = info.length(); } // no remove section:
-          //Whitelist items
-          for(int a=addI+1; a!=remI && a<info.length(); a++){
-            if(info[a].contains(mimetype+"=")){
-          QStringList tmp = info[a].section("=",1,50).split(";");
-          for(int t=0; t<tmp.length(); t++){
-            if(!black.contains(tmp[t])){ white << tmp[t]; } //make sure this item is not on the black list
-          }
-          break;
-        }
-          }
-          //Blacklist items
-          for(int a=remI+1; a!=addI && a<info.length(); a++){
-            if(info[a].contains(mimetype+"=")){ black << info[a].section("=",1,50).split(";"); break;}
-          }
-
-          //STEPS 3/4 not written yet
-
-        } //End of non-DE mimetypes file */
-
     } //End loop over files
 
     return cdefault;

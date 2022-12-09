@@ -76,6 +76,6 @@ public:
     //Number format conversions
     static double DisplaySizeToBytes(QString dSize); //Turn a display size (like 50M or 50KB) into a double for calculations (bytes)
     static QString BytesToDisplaySize(qint64 bytes); //convert into a readable size (like 50M or 50KB)
-	
+
 };
 #endif

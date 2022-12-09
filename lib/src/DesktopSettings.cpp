@@ -45,7 +45,6 @@ void DesktopSettings::start() {
     if(watcher==0) {
         watcher = new QFileSystemWatcher(this);
         connect(watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)) );
-        connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(dirChanged(QString)) );
     }
     parseSystemSettings(); //set the runmode appropriately
     locateFiles(); //
@@ -360,8 +359,4 @@ void DesktopSettings::fileChanged(QString file) {
             break;
         }
     }
-}
-
-void DesktopSettings::dirChanged(QString) {
-    //Not used yet - placeholder in case we need it later on
 }

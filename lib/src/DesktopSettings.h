@@ -64,7 +64,6 @@ private:
 
 private slots:
     void fileChanged(QString); //QFileSystemWatcher change detected
-    void dirChanged(QString); //QFileSystemWatcher change detected
 
 signals:
     void FileModified(DesktopSettings::File);
