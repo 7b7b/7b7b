@@ -25,8 +25,10 @@ private:
     QString plugintype;
 
 public:
-    LPPlugin(QWidget *parent = 0, QString ptype="unknown", bool horizontal = true) : QWidget(parent) {
-        plugintype=ptype;
+    explicit LPPlugin(QWidget *parent = 0, QString ptype="unknown", bool horizontal = true)
+		: QWidget(parent),
+		plugintype(ptype) {
+        //plugintype=ptype;
         this->setContentsMargins(1,1,1,1);
         this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         this->setFocusPolicy(Qt::NoFocus); //no keyboard focus on the panel/plugins

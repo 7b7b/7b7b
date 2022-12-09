@@ -86,8 +86,8 @@ QString LUtils::standardDirectory(StandardDir dir, bool createAsNeeded) {
     }; //use the default value
     val = val.replace("$HOME", QDir::homePath());
     if(createAsNeeded && !QFile::exists(val) ) {
-        QDir dir;
-        dir.mkpath(val);
+        QDir cDir;
+        cDir.mkpath(val);
     }
     return val;
 }

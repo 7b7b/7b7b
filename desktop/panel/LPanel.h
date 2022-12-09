@@ -17,7 +17,6 @@
 #include <QStringList>
 #include <QTimer>
 #include <QMoveEvent>
-//#include <QDesktopWidget>
 #include <QPainter>
 #include <QPaintEvent>
 
@@ -33,7 +32,6 @@ private:
     QBoxLayout *layout;
     QSettings *settings;
     QString PPREFIX; //internal prefix for all settings
-    //QDesktopWidget *screen;
     QWidget *bgWindow, *panelArea;
     //QRect hidegeom, showgeom; //for hidden panels
     QPoint hidepoint, showpoint; //for hidden panels: locations when hidden/visible
@@ -49,7 +47,7 @@ private:
     QString styleCLR;
 
 public:
-    LPanel(QSettings *file, QString scr = 0, int num = 0, QWidget *parent = 0, bool reservespace = true); //settings file, screen number, panel number
+    explicit LPanel(QSettings *file, QString scr = 0, int num = 0, QWidget *parent = 0, bool reservespace = true); //settings file, screen number, panel number
     ~LPanel();
 
     int number() {
@@ -64,12 +62,9 @@ public:
         return viswidth;
     }
     void prepareToClose();
-    void scalePanel(double xscale, double yscale);
 
 public slots:
     void UpdatePanel(bool geomonly = false);  //Load the settings file and update the panel appropriately
-    void UpdateLocale(); //Locale Changed externally
-    void UpdateTheme(); //Theme Changed externally
 
 private slots:
     void checkPanelFocus();

@@ -30,8 +30,6 @@ void LDesktopUtils::LoadSystemDefaults(bool skipOS) {
         dir.mkpath(setdir);
     }
 
-    bool skipmime = QFile::exists( QString(getenv("XDG_CONFIG_HOME"))+"/lumina-mimapps.list" );
-    //qDebug() << " - Skipping mimetype default apps" << skipmime;
     QStringList sysDefaults;
 
     if(!skipOS) {
@@ -39,15 +37,11 @@ void LDesktopUtils::LoadSystemDefaults(bool skipOS) {
     }
 
     //Find the number of the left-most desktop screen
-    //QString screen = "0";
-    int screen = 0;
     QRect screenGeom;
     QList<QScreen*> screens = QGuiApplication::screens();
     QList<QScreen*>::const_iterator it;
-    int i = 0;
-    for(it = screens.constBegin(); it != screens.constEnd(); ++it, ++i) {
+    for(it = screens.constBegin(); it != screens.constEnd(); ++it) {
         if((*it)->availableGeometry().x()==0) {
-            screen = i;
             screenGeom = (*it)->availableGeometry();
             break;
         }
@@ -152,12 +146,12 @@ void LDesktopUtils::LoadSystemDefaults(bool skipOS) {
         if(!tmp.isEmpty()) {
             deskset << "[panel_"+deskID+"."+QString::number(i-1)+"]";
         }
-        for(int i=0; i<tmp.length(); i++) {
-            if(tmp[i].startsWith("#") || !tmp[i].contains("=") ) {
+        for(int j=0; j<tmp.length(); j++) {
+            if(tmp[j].startsWith("#") || !tmp[j].contains("=") ) {
                 continue;
             }
-            QString var = tmp[i].section("=",0,0).toLower().simplified();
-            QString val = tmp[i].section("=",1,1).section("#",0,0).simplified();
+            QString var = tmp[j].section("=",0,0).toLower().simplified();
+            QString val = tmp[j].section("=",1,1).section("#",0,0).simplified();
             if(val.isEmpty()) {
                 continue;
             }

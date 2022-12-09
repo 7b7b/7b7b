@@ -295,13 +295,6 @@ void LSession::LockScreen() {
 	LaunchApplicationDetached(sessionSettings()->value("LockCmd", "").toString());
 }
 
-void LSession::reloadIconTheme() {
-    //Wait a moment for things to settle before sending out the signal to the interfaces
-    QApplication::processEvents();
-    QApplication::processEvents();
-    emit IconThemeChanged();
-}
-
 void LSession::watcherChange(QString changed) {
     if(DEBUG) {
         qDebug() << "Session Watcher Change:" << changed;
@@ -336,15 +329,6 @@ void LSession::watcherChange(QString changed) {
 
 void LSession::screensChanged() {
     qDebug() << "Screen Number Changed";
-    if(screenTimer->isActive()) {
-        screenTimer->stop();
-    }
-    screenTimer->start();
-    xchange = true;
-}
-
-void LSession::screenResized(int scrn) {
-    qDebug() << "Screen Resized:" << scrn;
     if(screenTimer->isActive()) {
         screenTimer->stop();
     }
@@ -396,10 +380,8 @@ void LSession::updateDesktops() {
     }
     screenRect = QRect(); //clear it
     QList<QScreen*>::const_iterator it;
-    int i = 0;
-    for(it = screens.constBegin(); it != screens.constEnd(); ++it, ++i) {
+    for(it = screens.constBegin(); it != screens.constEnd(); ++it) {
         screenRect = screenRect.united((*it)->geometry());
-        qDebug() << " -- Screen["+QString::number(i)+"]:" << (*it)->geometry();
     }
 
     bool firstrun = (DESKTOPS.length()==0);
@@ -600,12 +582,6 @@ void LSession::handleClipboard(QClipboard::Mode mode) {
     }
 }
 
-void LSession::storeClipboard(QString text, QClipboard::Mode mode) {
-    ignoreClipboard = true;
-    QApplication::clipboard()->setText(text, mode);
-    ignoreClipboard = false;
-}
-
 //===============
 //  SYSTEM ACCESS
 //===============
@@ -673,16 +649,6 @@ WId LSession::activeWindow() {
         //qDebug() << " -- New Last Active Window:" << lastActiveWin;
     }
     return lastActiveWin;
-}
-
-//Temporarily change the session locale (nothing saved between sessions)
-void LSession::switchLocale(QString localeCode) {
-    //currTranslator = LUtils::LoadTranslation(this, "lumina-desktop", localeCode, currTranslator);
-    //if(currTranslator!=0 || localeCode=="en_US") {
-    if(localeCode=="en_US") {
-        LUtils::setLocaleEnv(localeCode); //will set everything to this locale (no custom settings)
-    }
-    emit LocaleChanged();
 }
 
 void LSession::systemWindow() {

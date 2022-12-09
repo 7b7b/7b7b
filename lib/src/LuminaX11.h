@@ -60,6 +60,7 @@ public:
     icccm_size_hints() {
         x=y=width=height=min_width=max_width=min_height=max_height = -1;
         width_inc=height_inc=min_aspect_num=min_aspect_den=max_aspect_num=max_aspect_den = -1;
+        base_height=base_width = -1;
         win_gravity = 0;
     }
     ~icccm_size_hints() {}

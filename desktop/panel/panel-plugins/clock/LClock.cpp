@@ -103,25 +103,24 @@ void LClock::updateTime(bool adjustformat) {
         QFont font = LSession::handle()->font();
         button->setFont(font);
         //Check the font/spacing for the display and adjust as necessary
-        QStringList lines = label.split("\n");
+        QStringList localLines = label.split("\n");
         QFontMetrics metrics(font);
         if(this->layout()->direction()==QBoxLayout::LeftToRight) {
             //horizontal layout
             int wid = 0;
-            int lwid = 0;
-            for(int i=0; i<lines.length(); i++) {
-                lwid = metrics.horizontalAdvance(lines[i]);
+            for(int i=0; i<localLines.length(); i++) {
+                int lwid = metrics.horizontalAdvance(localLines[i]);
                 if(lwid>wid) {
                     wid = lwid;
                 }
             }
-            qDebug() << "Verify Clock width:" << lines.length() << wid << lines;
+            qDebug() << "Verify Clock width:" << localLines.length() << wid << localLines;
             this->setMinimumWidth(wid);
             this->setMaximumWidth(wid + (4*metrics.horizontalAdvance("O")));
         } else {
             //vertical layout
-            this->setMinimumHeight(metrics.lineSpacing() * lines.length());
-            this->setMaximumHeight( (lines.length()+4)*metrics.height() );
+            this->setMinimumHeight(metrics.lineSpacing() * localLines.length());
+            this->setMaximumHeight( (localLines.length()+4)*metrics.height() );
         }
     }
     button->setText(label);
@@ -166,10 +165,6 @@ void LClock::updateMenu() {
 void LClock::openMenu() {
     updateMenu();
     button->showMenu();
-}
-
-void LClock::closeMenu() {
-    button->menu()->hide();
 }
 
 void LClock::ChangeTZ(QAction *act) {

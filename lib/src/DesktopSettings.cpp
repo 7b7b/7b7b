@@ -174,8 +174,8 @@ void DesktopSettings::parseSystemSettings() {
                 int grpSize = 100;
                 if( getgrouplist(cuser.toLocal8Bit(), getgid(), grpList, &grpSize) > 0 ) {
                     QStringList groups;
-                    for(int i=0; i<grpSize; i++) {
-                        struct group *g = getgrgid(grpList[i]);
+                    for(int j=0; j<grpSize; j++) {
+                        struct group *g = getgrgid(grpList[j]);
                         if(g!=0) {
                             groups << QString(g->gr_name);
                             free(g);

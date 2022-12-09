@@ -271,8 +271,8 @@ QRect LXCB::WindowGeometry(WId win, bool includeFrame) {
     if(win==0) {
         return geom;
     }
-    xcb_get_geometry_cookie_t cookie = xcb_get_geometry(QX11Info::connection(), win);
-    xcb_get_geometry_reply_t *reply = xcb_get_geometry_reply(QX11Info::connection(), cookie, NULL);
+    xcb_get_geometry_cookie_t geomCookie = xcb_get_geometry(QX11Info::connection(), win);
+    xcb_get_geometry_reply_t *reply = xcb_get_geometry_reply(QX11Info::connection(), geomCookie, NULL);
     //qDebug() << "Get Window Geometry:" << reply;
     if(reply != 0) {
         geom = QRect(0, 0, reply->width, reply->height); //make sure to use the origin point for the window
@@ -310,6 +310,7 @@ QRect LXCB::WindowGeometry(WId win, bool includeFrame) {
     return geom;
 }
 
+
 // === WindowFrameGeometry() ===
 QList<int> LXCB::WindowFrameGeometry(WId win) {
     if(DEBUG) {
@@ -341,14 +342,14 @@ LXCB::WINDOWVISIBILITY LXCB::WindowState(WId win) {
     if(win==0) {
         return IGNORE;
     }
-    xcb_get_property_cookie_t cookie = xcb_ewmh_get_wm_state_unchecked(&EWMH, win);
-    if(cookie.sequence == 0) {
+    xcb_get_property_cookie_t stateCookie = xcb_ewmh_get_wm_state_unchecked(&EWMH, win);
+    if(stateCookie.sequence == 0) {
         return IGNORE;
     }
     xcb_ewmh_get_atoms_reply_t states;
     WINDOWVISIBILITY cstate = IGNORE;
     //First Check for special states (ATTENTION in particular);
-    if( 1 == xcb_ewmh_get_wm_state_reply(&EWMH, cookie, &states, NULL) ) {
+    if( 1 == xcb_ewmh_get_wm_state_reply(&EWMH, stateCookie, &states, NULL) ) {
         for(unsigned int i=0; i<states.atoms_len; i++) {
             if(states.atoms[i] == EWMH._NET_WM_STATE_DEMANDS_ATTENTION) {
                 cstate = ATTENTION;    //nothing more urgent - stop here
@@ -369,14 +370,6 @@ LXCB::WINDOWVISIBILITY LXCB::WindowState(WId win) {
             }
         }
     }
-    //Now check for ICCCM Urgency hint (not sure if this is still valid with EWMH instead)
-    /*if(cstate == IGNORE){
-      xcb_get_property_cookie_t cookie = xcb_icccm_get_wm_hints_unchecked(QX11Info::connection(), win);
-      xcb_icccm_wm_hints_t hints;
-      if( 1== xcb_icccm_get_wm_hints_reply(QX11Info::connection(), cookie, &hints, NULL) ){
-        if(xcb_icccm_wm_hints_get_urgency(hints) ){ cstate = ATTENTION; };
-      }
-    }*/
     //Now check for standard visible/invisible attribute (current mapping state)
     if(cstate == IGNORE) {
         xcb_get_window_attributes_cookie_t cookie = xcb_get_window_attributes(QX11Info::connection(), win);
@@ -1689,10 +1682,11 @@ LXCB::ICCCM_PROTOCOLS LXCB::WM_ICCCM_GetProtocols(WId win) {
     if(1==xcb_icccm_get_wm_protocols_reply(QX11Info::connection(), cookie, &reply, NULL) ) {
         for(unsigned int i=0; i<reply.atoms_len; i++) {
             if(reply.atoms[i]==ATOMS[atoms.indexOf("WM_TAKE_FOCUS")]) {
-                flags = flags | TAKE_FOCUS;
+                //flags = flags | TAKE_FOCUS;
+                flags |= TAKE_FOCUS;
             }
             else if(reply.atoms[i]==ATOMS[atoms.indexOf("WM_DELETE_WINDOW")]) {
-                flags = flags | DELETE_WINDOW;
+                flags |= DELETE_WINDOW;
             }
         }
     }
@@ -1999,16 +1993,16 @@ void LXCB::WM_Request_MoveResize_Window(WId win, QRect geom, bool fromuser,  LXC
     //Convert the flags into the XCB type
     int eflags = 0; //xcb_ewmh_moveresize_window_opt_flags_t
     if(flags.testFlag(LXCB::X)) {
-        eflags = eflags | XCB_EWMH_MOVERESIZE_WINDOW_X;
+        eflags |= XCB_EWMH_MOVERESIZE_WINDOW_X;
     }
     if(flags.testFlag(LXCB::Y)) {
-        eflags = eflags | XCB_EWMH_MOVERESIZE_WINDOW_Y;
+        eflags |= XCB_EWMH_MOVERESIZE_WINDOW_Y;
     }
     if(flags.testFlag(LXCB::WIDTH)) {
-        eflags = eflags | XCB_EWMH_MOVERESIZE_WINDOW_WIDTH;
+        eflags |= XCB_EWMH_MOVERESIZE_WINDOW_WIDTH;
     }
     if(flags.testFlag(LXCB::HEIGHT)) {
-        eflags = eflags | XCB_EWMH_MOVERESIZE_WINDOW_HEIGHT;
+        eflags |= XCB_EWMH_MOVERESIZE_WINDOW_HEIGHT;
     }
 
     xcb_ewmh_request_moveresize_window(&EWMH, QX11Info::appScreen(), win, (xcb_gravity_t) grav, \

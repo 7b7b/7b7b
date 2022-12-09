@@ -16,14 +16,16 @@ static qint64 mimechecktime;
 //=============================
 //  XDGDesktop CLASS
 //=============================
-XDGDesktop::XDGDesktop(QString file, QObject *parent) : QObject(parent) {
+XDGDesktop::XDGDesktop(QString file, QObject *parent) 
+	: QObject(parent),
+	filePath(file),
+	exec(""),
+	tryexec("") {
     isHidden=false;
     useTerminal=false;
     startupNotify=false;
     useVGL = false;
     type = XDGDesktop::BAD;
-    filePath = file;
-    exec = tryexec = "";   // just to make sure this is initialized
     if(!filePath.isEmpty()) {
         sync();    //if an input file is given - go ahead and sync now
     }
@@ -235,7 +237,7 @@ void XDGDesktop::sync() {
     } //end reading file
     if(!CDA.ID.isEmpty()) {
         actions << CDA;    //if an action was still being read, add that to the list now
-        CDA = XDGDesktopAction();
+        //CDA = XDGDesktopAction();
     }
 
     file.clear(); //done with contents of file
@@ -373,75 +375,70 @@ QString XDGDesktop::getDesktopExec(QString ActionID) {
 }
 
 QString XDGDesktop::generateExec(QStringList inputfiles, QString ActionID) {
-    QString exec = getDesktopExec(ActionID);
+    QString dExec = getDesktopExec(ActionID);
     //Does the app need the input files in URL or File syntax?
-    bool URLsyntax = (exec.contains("%u") || exec.contains("%U"));
+    bool URLsyntax = (dExec.contains("%u") || dExec.contains("%U"));
     //Adjust the input file formats as needed
     //qDebug() << "Got inputfiles:" << inputfiles << URLsyntax;
     for(int i=0; i<inputfiles.length(); i++) {
-        bool url = inputfiles[i].startsWith("www") || inputfiles[i].contains("://");
+        bool isURL = inputfiles[i].startsWith("www") || inputfiles[i].contains("://");
         //Run it through the QUrl class to catch/fix any URL syntax issues
         if(URLsyntax) {
             if(inputfiles[i].startsWith("mailto:") ) {} //don't touch this syntax - already formatted
-            else if(url) {
+            else if(isURL) {
                 inputfiles[i] = QUrl(inputfiles[i]).url();
             }
             else {
                 inputfiles[i] = QUrl::fromLocalFile(inputfiles[i]).url();
             }
         } else {
-            //if(inputfiles[i].startsWith("mailto:") ){} //don't touch this syntax - already formatted
-            //qDebug() << "Need local format:" << inputfiles[i] << url;
-            if(url) {
+            if(isURL) {
                 inputfiles[i] = QUrl(inputfiles[i]).toLocalFile();
             }
-            else {
-                inputfiles[i] = inputfiles[i];
-            } //QUrl::fromLocalFile(inputfiles[i]).toLocalFile(); }
         }
     }
     inputfiles.removeAll(""); //just in case any empty ones get through
     //Now to the exec replacements as needed
     //qDebug() << "Generate Exec:" << exec << inputfiles;
-    if(exec.contains("%f")) {
+    if(dExec.contains("%f")) {
         if(inputfiles.isEmpty()) {
-            exec.replace("%f","");
+            dExec.replace("%f","");
         }
         else {
-            exec.replace("%f", "\""+inputfiles.first()+"\"");    //Note: can only take one input
+            dExec.replace("%f", "\""+inputfiles.first()+"\"");    //Note: can only take one input
         }
-    } else if(exec.contains("%F")) {
+    } else if(dExec.contains("%F")) {
         if(inputfiles.isEmpty()) {
-            exec.replace("%F","");
+            dExec.replace("%F","");
         }
         else {
-            exec.replace("%F", "\""+inputfiles.join("\" \"")+"\"");
+            dExec.replace("%F", "\""+inputfiles.join("\" \"")+"\"");
         }
     }
-    if(exec.contains("%u")) {
+    if(dExec.contains("%u")) {
         if(inputfiles.isEmpty()) {
-            exec.replace("%u","");
+            dExec.replace("%u","");
         }
         else {
-            exec.replace("%u",  "\""+inputfiles.first()+"\"");    //Note: can only take one input
+            dExec.replace("%u",  "\""+inputfiles.first()+"\"");    //Note: can only take one input
         }
-    } else if(exec.contains("%U")) {
+    } else if(dExec.contains("%U")) {
         if(inputfiles.isEmpty()) {
-            exec.replace("%U","");
+            dExec.replace("%U","");
         }
         else {
-            exec.replace("%U", "\""+inputfiles.join("\" \"")+"\"");
+            dExec.replace("%U", "\""+inputfiles.join("\" \"")+"\"");
         }
     }
     //Sanity check for known Local/URL syntax issues from some apps
-    if(!URLsyntax && exec.contains("%20")) {
-        exec.replace("%20"," ");
+    if(!URLsyntax && dExec.contains("%20")) {
+        dExec.replace("%20"," ");
     }
     //Clean up any leftover "Exec" field codes (should have already been replaced earlier)
-    if(exec.contains("%")) {
-        exec = exec.remove("%U").remove("%u").remove("%F").remove("%f").remove("%i").remove("%c").remove("%k");
+    if(dExec.contains("%")) {
+        dExec = dExec.remove("%U").remove("%u").remove("%F").remove("%f").remove("%i").remove("%c").remove("%k");
     }
-    return exec.simplified();
+    return dExec.simplified();
 }
 
 bool XDGDesktop::saveDesktopFile(bool merge) {
@@ -842,14 +839,14 @@ void XDGDesktopList::updateList() {
     //Variables for internal loop use only (to prevent re-initializing variable on every iteration)
     QString path;
     QDir dir;
-    QStringList apps;
+    QStringList appslist;
     for(int i=0; i<appDirs.length(); i++) {
         if( !dir.cd(appDirs[i]) ) {
             continue;    //could not open dir for some reason
         }
-        apps = dir.entryList(QStringList() << "*.desktop",QDir::Files, QDir::Name);
-        for(int a=0; a<apps.length(); a++) {
-            path = dir.absoluteFilePath(apps[a]);
+        appslist = dir.entryList(QStringList() << "*.desktop",QDir::Files, QDir::Name);
+        for(int a=0; a<appslist.length(); a++) {
+            path = dir.absoluteFilePath(appslist[a]);
             if(files.contains(path) && (files.value(path)->lastRead>QFileInfo(path).lastModified()) ) {
                 //Re-use previous data for this file (nothing changed)
                 found << files[path]->name;  //keep track of which files were already found

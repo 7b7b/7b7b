@@ -29,7 +29,7 @@
 class LTaskButton : public LTBWidget {
     Q_OBJECT
 public:
-    LTaskButton(QWidget *parent=0, bool smallDisplay = true);
+    explicit LTaskButton(QWidget *parent=0, bool smallDisplay = true);
     ~LTaskButton();
 
     //Window Information

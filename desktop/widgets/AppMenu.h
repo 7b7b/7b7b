@@ -27,7 +27,7 @@
 class AppMenu : public QMenu {
     Q_OBJECT
 public:
-    AppMenu(QWidget *parent = 0);
+    explicit AppMenu(QWidget *parent = 0);
     ~AppMenu();
 
     QHash<QString, QList<XDGDesktop*> > *currentAppHash();

@@ -40,7 +40,7 @@ private:
     void setupMenu();
 
 public:
-    LDPlugin(QWidget *parent = 0, QString id="unknown");
+    explicit LDPlugin(QWidget *parent = 0, QString id="unknown");
 
     ~LDPlugin() {}
 

@@ -20,14 +20,12 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QImage>
-//#include <QWindow>
-// libLumina includes
-//#include <LuminaX11.h>
 
 class TrayIcon : public QWidget {
     Q_OBJECT
+
 public:
-    TrayIcon(QWidget* parent = 0);
+    explicit TrayIcon(QWidget* parent = 0);
     ~TrayIcon();
 
     void cleanup(); //about to be removed after window was detroyed
@@ -41,7 +39,8 @@ public slots:
     void updateIcon();
 
 private:
-    WId IID, AID; //icon ID and app ID
+    WId IID;
+    WId AID;
     int badpaints;
     uint dmgID;
     int scalefactor;

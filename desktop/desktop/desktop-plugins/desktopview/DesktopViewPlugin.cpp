@@ -193,8 +193,8 @@ void DesktopViewPlugin::updateContents() {
             if(txt.contains("\n")) {
                 //need to check each line
                 QStringList txtL = txt.split("\n");
-                for(int i=0; i<txtL.length(); i++) {
-                    txtL[i] = this->fontMetrics().elidedText(txtL[i], Qt::ElideRight, gridSZ.width()-4);
+                for(int j=0; j<txtL.length(); j++) {
+                    txtL[j] = this->fontMetrics().elidedText(txtL[j], Qt::ElideRight, gridSZ.width()-4);
                 }
                 txt = txtL.join("\n");
                 if(txtL.length()>2) {

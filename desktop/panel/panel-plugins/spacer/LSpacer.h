@@ -14,7 +14,7 @@
 class LSpacerPlugin : public LPPlugin {
     Q_OBJECT
 public:
-    LSpacerPlugin(QWidget *parent=0, QString id="spacer", bool horizontal=true) : LPPlugin(parent, id, horizontal) {
+    explicit LSpacerPlugin(QWidget *parent=0, QString id="spacer", bool horizontal=true) : LPPlugin(parent, id, horizontal) {
         if(horizontal) {
             this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         }
@@ -25,7 +25,7 @@ public:
     ~LSpacerPlugin() {}
 
 public slots:
-    void OrientationChange() {
+    void OrientationChange() override {
         if(this->layout()->direction()==QBoxLayout::LeftToRight) { //horizontal
             this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         } else { //vertical

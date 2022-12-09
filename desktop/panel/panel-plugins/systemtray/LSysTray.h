@@ -27,10 +27,10 @@
 class LSysTray : public LPPlugin {
     Q_OBJECT
 public:
-    LSysTray(QWidget *parent = 0, QString id="systemtray", bool horizontal=true);
+    explicit LSysTray(QWidget *parent = 0, QString id="systemtray", bool horizontal=true);
     ~LSysTray();
 
-    virtual void AboutToClose() {
+    virtual void AboutToClose() override {
         this->stop();
     }
 
@@ -51,7 +51,7 @@ public slots:
     void start();
     void stop();
 
-    virtual void OrientationChange() {
+    virtual void OrientationChange() override {
         //make sure the internal layout has the same orientation as the main widget
         LI->setDirection( this->layout()->direction() );
         //Re-adjust the maximum widget size

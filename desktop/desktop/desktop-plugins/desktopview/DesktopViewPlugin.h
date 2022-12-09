@@ -23,7 +23,7 @@ public:
     DesktopViewPlugin(QWidget* parent, QString ID);
     ~DesktopViewPlugin();
 
-    virtual QSize defaultPluginSize() {
+    virtual QSize defaultPluginSize() override {
         // The returned QSize is in grid points (typically 100 or 200 pixels square)
         return QSize(3,3);
     }
@@ -44,10 +44,10 @@ private slots:
 
 
 public slots:
-    void LocaleChange() {
+    void LocaleChange() override {
         QTimer::singleShot(0,this, SLOT(updateContents()));
     }
-    void ThemeChange() {
+    void ThemeChange() override {
         QTimer::singleShot(0,this, SLOT(updateContents()));
     }
 

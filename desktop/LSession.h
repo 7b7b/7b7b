@@ -83,7 +83,6 @@ public:
 
 	QSettings* sessionSettings();
 	QSettings* DesktopPluginSettings();
-	//LScreenSaver* screenSaver();
 
 	//Keep track of which non-desktop window should be treated as active
 	WId activeWindow(); //This will return the last active window if a desktop element is currently active
@@ -137,14 +136,11 @@ public slots:
 	void StartReboot(bool skipupdates = false);
 	void LockScreen();
 
-	void reloadIconTheme();
-
 private slots:
 	void NewCommunication(QStringList);
 	void launchStartupApps(); //used during initialization
 	void watcherChange(QString);
 	void screensChanged();
-	void screenResized(int);
 	void checkWindowGeoms();
 
 	//System Tray Functions
@@ -162,7 +158,6 @@ private slots:
 
     // Clipboard
     void handleClipboard(QClipboard::Mode mode);
-    void storeClipboard(QString text, QClipboard::Mode mode);
 
 signals:
 	//System Tray Signals

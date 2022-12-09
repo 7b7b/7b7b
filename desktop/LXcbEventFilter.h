@@ -93,7 +93,7 @@ private:
 	}
 
 public:
-	XCBEventFilter(LSession *sessionhandle);
+	explicit XCBEventFilter(LSession *sessionhandle);
 	void setTrayDamageFlag(int flag);
 	void StopEventHandling(){ stopping = true; }
 

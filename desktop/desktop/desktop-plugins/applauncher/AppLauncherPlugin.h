@@ -32,7 +32,7 @@ public:
     AppLauncherPlugin(QWidget* parent, QString ID);
     ~AppLauncherPlugin() {}
 
-    void Cleanup(); //special function for final cleanup
+    void Cleanup() override; //special function for final cleanup
 
 private:
     QToolButton *button;
@@ -67,7 +67,7 @@ private slots:
     void fileDrop(bool copy, QList<QUrl> urls);
 
 public slots:
-    void LocaleChange() {
+    void LocaleChange() override {
         loadButton(); //force reload
     }
 

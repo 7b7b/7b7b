@@ -25,7 +25,7 @@ class LAppMenuPlugin : public LPPlugin {
     Q_OBJECT
 
 public:
-    LAppMenuPlugin(QWidget *parent = 0, QString id = "appmenu", bool horizontal=true);
+    explicit LAppMenuPlugin(QWidget *parent = 0, QString id = "appmenu", bool horizontal=true);
     ~LAppMenuPlugin();
 
 private:
@@ -40,7 +40,7 @@ private slots:
     void UpdateMenu();
 
 public slots:
-    void OrientationChange() {
+    void OrientationChange() override {
         if(this->layout()->direction()==QBoxLayout::LeftToRight) {
             this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
             button->setIconSize( QSize(this->height(), this->height()) );
@@ -52,11 +52,11 @@ public slots:
         updateButtonVisuals();
     }
 
-    void LocaleChange() {
+    void LocaleChange() override {
         updateButtonVisuals();
     }
 
-    void ThemeChange() {
+    void ThemeChange() override {
         updateButtonVisuals();
     }
 };

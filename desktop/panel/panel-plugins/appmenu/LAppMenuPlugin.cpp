@@ -35,7 +35,7 @@ LAppMenuPlugin::LAppMenuPlugin(QWidget *parent, QString id, bool horizontal) : L
 }
 
 LAppMenuPlugin::~LAppMenuPlugin() {
-
+	LSession::handle()->unregisterStartButton(this->type());
 }
 
 void LAppMenuPlugin::updateButtonVisuals() {

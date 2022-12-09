@@ -52,7 +52,7 @@ public:
     enum XDGDesktopType { BAD, APP, LINK, DIR };
 
     //Admin variables
-    QString filePath; //which file this structure contains the information for (absolute path)
+    QString filePath; //which file this structure contains the information for (absolute path)    
     QDateTime lastRead; //when this structure was created from the file
     XDGDesktopType type;
     //General variables
@@ -71,7 +71,7 @@ public:
     QString url;
 
     //Constructor/destructor
-    XDGDesktop(QString filePath="", QObject *parent = 0);
+    explicit XDGDesktop(QString filePath="", QObject *parent = 0);
     ~XDGDesktop() {}
 
     //Functions for using this structure in various ways
@@ -96,7 +96,7 @@ class XDGDesktopList : public QObject {
     Q_OBJECT
 public:
     //Functions
-    XDGDesktopList(QObject *parent = 0, bool watchdirs = false);
+    explicit XDGDesktopList(QObject *parent = 0, bool watchdirs = false);
     ~XDGDesktopList();
 
     static XDGDesktopList* instance();
@@ -125,46 +125,6 @@ private slots:
 signals:
     void appsUpdated();
 };
-
-// ========================
-// File Information simplification class (combine QFileInfo with XDGDesktop)
-//  Need some extra information not usually available by a QFileInfo
-// ========================
-/*class LFileInfo : public QFileInfo{
-private:
-	QString mime, icon;
-	XDGDesktop *desk;
-
-	void loadExtraInfo();
-
-public:
-	//Couple overloaded contructors
-	LFileInfo();
-	LFileInfo(QString filepath);
-	LFileInfo(QFileInfo info);
-	~LFileInfo(){
-	  desk->deleteLater();
-	}
-
-	//Functions for accessing the extra information
-	// -- Return the mimetype for the file
-	QString mimetype();
-
-	// -- Return the icon file to use for this file
-	QString iconfile(); //Note: This string is auto-formatted for use in the LXDG::findIcon() routine.
-
-	// -- Check if this is an XDG desktop file
-	bool isDesktopFile();
-
-	// -- Allow access to the internal XDG desktop data structure
-	XDGDesktop* XDG();
-
-	//Other file type identification routines
-	bool isImage(); //Is a readable image file (for thumbnail support)
-	bool isVideo(); //Is a readable video file (for thumbnail support)
-	bool isAVFile(); //Is an audio/video file
-};
-typedef QList<LFileInfo> LFileInfoList;*/
 
 // ================================
 //  Collection of FreeDesktop standards interaction routines

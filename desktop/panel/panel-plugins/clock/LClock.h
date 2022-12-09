@@ -27,7 +27,7 @@
 class LClock : public LPPlugin {
     Q_OBJECT
 public:
-    LClock(QWidget *parent = 0, QString id = "clock", bool horizontal=true);
+    explicit LClock(QWidget *parent = 0, QString id = "clock", bool horizontal=true);
     ~LClock();
 
 private:
@@ -45,14 +45,13 @@ private slots:
 
     void updateMenu();
     void openMenu();
-    void closeMenu();
 
     void ChangeTZ(QAction*);
 
 public slots:
-    void LocaleChange();
-    void ThemeChange();
-    void OrientationChange();
+    void LocaleChange() override;
+    void ThemeChange() override;
+    void OrientationChange() override;
 };
 
 #endif

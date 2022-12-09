@@ -32,8 +32,8 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     screenID = scr;
     panelnum = num; //save for later
     //screen = LSession::desktop();
-    QString screenID = QApplication::screens().at(Screen())->name();
-    PPREFIX = "panel_"+screenID+"."+QString::number(num)+"/";
+    QString lscreenID = QApplication::screens().at(Screen())->name();
+    PPREFIX = "panel_"+lscreenID+"."+QString::number(num)+"/";
     if(DEBUG) {
         qDebug() << "Panel Prefix:" << PPREFIX;
     }
@@ -120,19 +120,6 @@ void LPanel::prepareToClose() {
         i--; //need to back up one space to not miss another plugin
     }
     this->hide();
-}
-
-void LPanel::scalePanel(double xscale, double yscale) {
-    int ht = settings->value(PPREFIX+"height", 30).toInt(); //this is technically the distance into the screen from the edge
-    QString loc = settings->value(PPREFIX+"location","").toString().toLower();
-    if(loc=="top" || loc=="bottom") {
-        ht = qRound(ht*yscale);
-    } else {
-        ht = qRound(ht*xscale);
-    }
-    settings->setValue(PPREFIX+"height", ht);
-    settings->sync();
-    QTimer::singleShot(0, this, SLOT(UpdatePanel()) );
 }
 
 //===========
@@ -412,22 +399,6 @@ void LPanel::UpdatePanel(bool geomonly) {
     checkPanelFocus();
     //LSession::processEvents();
 }
-
-void LPanel::UpdateLocale() {
-    //The panel itself has no text to translate, just forward the signal to all the plugins
-    for(int i=0; i<PLUGINS.length(); i++) {
-        QTimer::singleShot(1,PLUGINS[i], SLOT(LocaleChange()));
-    }
-}
-
-void LPanel::UpdateTheme() {
-    //The panel itself has no theme-based icons, just forward the signal to all the plugins
-    //qDebug() << "Update Theme for plugins";
-    for(int i=0; i<PLUGINS.length(); i++) {
-        QTimer::singleShot(1,PLUGINS[i], SLOT(ThemeChange()));
-    }
-}
-
 // ===================
 //     PRIVATE SLOTS
 // ===================
@@ -480,19 +451,6 @@ void LPanel::paintEvent(QPaintEvent *event) {
         delete(painter);
     }
     QWidget::paintEvent(event); //now pass the event along to the normal painting event
-}
-
-void LPanel::enterEvent(QEvent *event) {
-    //qDebug() << "Panel Enter Event:";
-    checkPanelFocus();
-    /*if(hidden){
-      //Move the panel out so it is fully available
-      this->move(showpoint);
-      this->resize( horizontal ? this->width() : fullwidth, horizontal ? fullwidth : this->height() );
-      this->update();
-    }*/
-    //this->activateWindow();
-    event->accept(); //just to quiet the compile warning
 }
 
 void LPanel::leaveEvent(QEvent *event) {

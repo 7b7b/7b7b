@@ -28,10 +28,9 @@ private:
 	LXCB::WINDOWVISIBILITY cstate; //current window state
 
 public:
-	LWinInfo(WId id = 0){
-	  window = id;
-	  cstate = LXCB::IGNORE; //make sure this gets updates with the first "status" call
-	}
+	explicit LWinInfo(WId id = 0)
+	  : window(id),
+	  cstate(LXCB::IGNORE){} //make sure this gets updates with the first "status" call
 	~LWinInfo(){};
 	
 	//The current window ID

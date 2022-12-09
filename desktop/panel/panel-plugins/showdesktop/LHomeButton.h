@@ -26,7 +26,7 @@ class LHomeButtonPlugin : public LPPlugin {
     Q_OBJECT
 
 public:
-    LHomeButtonPlugin(QWidget *parent = 0, QString id = "homebutton", bool horizontal=true);
+    explicit LHomeButtonPlugin(QWidget *parent = 0, QString id = "homebutton", bool horizontal=true);
     ~LHomeButtonPlugin();
 
 private:
@@ -38,7 +38,7 @@ private slots:
     void showDesktop();
 
 public slots:
-    void OrientationChange() {
+    void OrientationChange() override {
         if(this->layout()->direction()==QBoxLayout::LeftToRight) {
             this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
             button->setIconSize( QSize(this->height(), this->height()) );
@@ -50,11 +50,11 @@ public slots:
         updateButtonVisuals();
     }
 
-    void LocaleChange() {
+    void LocaleChange() override {
         updateButtonVisuals();
     }
 
-    void ThemeChange() {
+    void ThemeChange() override {
         updateButtonVisuals();
     }
 };

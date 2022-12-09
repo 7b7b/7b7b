@@ -27,7 +27,7 @@
 class LTaskManagerPlugin : public LPPlugin {
     Q_OBJECT
 public:
-    LTaskManagerPlugin(QWidget *parent=0, QString id="taskmanager", bool horizontal=true);
+    explicit LTaskManagerPlugin(QWidget *parent=0, QString id="taskmanager", bool horizontal=true);
     ~LTaskManagerPlugin();
 //	int vertsizeicon;
 //	int *dpi;  //this comes from the PCDM dpi
@@ -44,13 +44,13 @@ private slots:
     void checkWindows();
 
 public slots:
-    void LocaleChange() {
+    void LocaleChange() override {
         UpdateButtons();
     }
-    void ThemeChange() {
+    void ThemeChange() override {
         UpdateButtons();
     }
-    void OrientationChange() {
+    void OrientationChange() override {
         if(this->layout()->direction()==QBoxLayout::LeftToRight) { //horizontal
             this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
             this->layout()->setAlignment(Qt::AlignLeft);

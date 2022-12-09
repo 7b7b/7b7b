@@ -37,7 +37,7 @@ struct icon_data {
 class LIconCache : public QObject {
     Q_OBJECT
 public:
-    LIconCache(QObject *parent = 0);
+    explicit LIconCache(QObject *parent = 0);
     ~LIconCache();
 
     //Static method for using this class (DO NOT MIX WITH GLOBAL OBJECT METHOD)

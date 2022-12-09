@@ -24,7 +24,7 @@
 class OutlineToolButton : public QToolButton {
     Q_OBJECT
 public:
-    OutlineToolButton(QWidget *parent=0) : QToolButton(parent) {
+    explicit OutlineToolButton(QWidget *parent=0) : QToolButton(parent) {
         //This button needs slightly different font settings - do this in the constructor so that other widgets can take it into account.
         QFont font = this->font();
         font.setStyleStrategy(QFont::PreferAntialias); //Always set the font strategy (just in case it starts working down the road)

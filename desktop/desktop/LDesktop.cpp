@@ -18,8 +18,9 @@
 
 #define DEBUG 1
 
-LDesktop::LDesktop(int deskNum, bool setdefault) : QObject() {
-    screenID = QApplication::screens().at(deskNum)->name();
+LDesktop::LDesktop(int deskNum, bool setdefault)
+	: QObject(),
+	screenID(QApplication::screens().at(deskNum)->name()) {
     DPREFIX = "desktop-"+screenID+"/";
     i_dlg_folder = true;
     inputDLG = 0;
