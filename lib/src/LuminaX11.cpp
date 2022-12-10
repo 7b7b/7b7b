@@ -605,7 +605,8 @@ QIcon LXCB::WindowIcon(WId win) {
             uint* dat = iter.data;
             //dat+=2; //remember the first 2 element offset
             for(qsizetype i=0; i<image.sizeInBytes()/4; ++i, ++dat) {
-                ((uint*)image.bits())[i] = *dat;
+                //((uint*)image.bits())[i] = *dat;
+                reinterpret_cast<uint*>(image.bits())[i] = *dat;
             }
             icon.addPixmap(QPixmap::fromImage(image)); //layer this pixmap onto the icon
             //Now see if there are any more icons available
@@ -2524,7 +2525,7 @@ QIcon LXCB::WM_Get_Icon(WId win) {
         //Now iterate over all the pixmaps and load them into the QIcon
         xcb_ewmh_wm_icon_iterator_t it = xcb_ewmh_get_wm_icon_iterator(&reply);
         while(it.index < reply.num_icons) {
-            QImage img( (const unsigned char *) it.data, it.width, it.height, QImage::Format_ARGB32);
+            QImage img( reinterpret_cast<const unsigned char *>(it.data), it.width, it.height, QImage::Format_ARGB32);
             out.addPixmap( QPixmap::fromImage(img) );
             if(it.rem>0) {
                 xcb_ewmh_get_wm_icon_next(&it);    //go to the next pixmap

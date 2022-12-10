@@ -299,7 +299,7 @@ public:
 
     // _NET_MOVERESIZE_WINDOW
     // Note: Used for finalized movement/resize operations
-    void WM_Request_MoveResize_Window(WId win, QRect geom, bool fromuser = false,  LXCB::GRAVITY grav = LXCB::STATIC, LXCB::MOVERESIZE_WINDOW_FLAGS flags = LXCB::MOVERESIZE_WINDOW_FLAGS(LXCB::X | LXCB::Y | LXCB::WIDTH | LXCB::HEIGHT) );
+    void WM_Request_MoveResize_Window(WId win, QRect geom, bool fromuser = false,  LXCB::GRAVITY grav = LXCB::STATIC, LXCB::MOVERESIZE_WINDOW_FLAGS flags = LXCB::MOVERESIZE_WINDOW_FLAGS(LXCB::X) );
 
     // _NET_WM_MOVERESIZE
     // Note: Used for interactive clicks/changes to a window size/position
