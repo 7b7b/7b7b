@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 set(PROJECT Lumina)
-project(Lumina)
+project(${PROJECT})
 
 # CMake Settings (policies to do AUTOMOC as much as possible)
 cmake_policy(SET CMP0057 NEW)
@@ -23,7 +23,6 @@ find_package(
     Network
     Widgets	
 )
-
 find_package(X11 REQUIRED)
 find_package(
     XCB
@@ -51,72 +50,4 @@ add_definitions(
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(LUMINA_INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${PROJECT}")
-set(SRCS
-    src/DesktopSettings.cpp
-    src/LDesktopUtils.cpp
-    src/LIconCache.cpp
-    src/LUtils.cpp
-    src/LuminaSingleApplication.cpp
-    src/LuminaX11.cpp
-    src/LuminaXDG.cpp
-    src/LuminaOS.cpp
-)
-
-set(PUB_HDRS
-    src/DesktopSettings.h
-    src/ExternalProcess.h
-	src/LDesktopUtils.h
-    src/LIconCache.h
-    src/LuminaSingleApplication.h
-    src/LuminaX11.h
-    src/LuminaXDG.h
-	src/LuminaOS.h
-    src/LUtils.h
-)
-
-add_library(
-    ${PROJECT}
-    SHARED
-    ${PUB_HDRS}
-    ${SRCS}
-)
-
-target_include_directories(${PROJECT}
-    PUBLIC
-    ${XCB_INCLUDE_DIR}
-)
-
-target_link_libraries(
-	${PROJECT}
-	Qt6::Concurrent
-	Qt6::Core
-	Qt6::GuiPrivate
-	Qt6::Widgets
-	Qt6::Network
-	XCB::XCB
-	XCB::AUX
-	XCB::IMAGE
-	XCB::COMPOSITE
-	XCB::DAMAGE
-	XCB::ICCCM
-	XCB::EWMH
-	XCB::DPMS
-	X11::Xdamage
-)
-
-install(TARGETS
-	${PROJECT}
-	DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-	EXPORT FindLumina
-	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-	COMPONENT Runtime
-)
-
-install(FILES
-    ${PUB_HDRS}
-    DESTINATION "${LUMINA_INSTALL_INCLUDE_DIR}"
-    COMPONENT Devel
-)
-
-install(EXPORT FindLumina DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT}")
+add_subdirectory(src)

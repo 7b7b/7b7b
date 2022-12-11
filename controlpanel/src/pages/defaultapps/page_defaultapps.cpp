@@ -6,7 +6,7 @@
 //===========================================
 #include "page_defaultapps.h"
 #include "ui_page_defaultapps.h"
-#include "plugins/AppDialog.h"
+#include "widgets/AppDialog.h"
 
 //==========
 //    PUBLIC

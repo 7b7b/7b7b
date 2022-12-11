@@ -365,10 +365,10 @@ int main(int argc, char **argv) {
             }
 
             // TODO: Apply this to all
-            QStringList cmdargs = cmd.split(" ");
-            QString cmdbin = args.at(0);
-            cmdargs.remove(0);
-            p->start(cmdbin, cmdargs);
+            QStringList args = cmd.split(" ");
+            QString bin = args.at(0);
+            args.remove(0);
+            p->start(bin, args);
 
             //Now check up on it once every minute until it is finished
             while(!p->waitForFinished(60000)) {

@@ -9,7 +9,7 @@
 #include <QInputDialog>
 
 #include "plugins/GetPluginDialog.h"
-#include "plugins/AppDialog.h"
+#include "widgets/AppDialog.h"
 
 //==========
 //    PUBLIC

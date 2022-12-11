@@ -7,7 +7,7 @@
 #include "PanelWidget.h"
 #include "ui_PanelWidget.h"
 
-#include "GetPluginDialog.h"
+#include "plugins/GetPluginDialog.h"
 #include "AppDialog.h"
 
 PanelWidget::PanelWidget(QWidget *parent, QWidget *Main, LPlugins *Pinfo) : QWidget(parent), ui(new Ui::PanelWidget) {

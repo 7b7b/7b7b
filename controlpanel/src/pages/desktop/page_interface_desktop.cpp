@@ -7,7 +7,7 @@
 #include "page_interface_desktop.h"
 #include "ui_page_interface_desktop.h"
 #include "plugins/GetPluginDialog.h"
-#include "plugins/AppDialog.h"
+#include "widgets/AppDialog.h"
 
 //==========
 //    PUBLIC

@@ -9,7 +9,7 @@
 
 #include "globals.h"
 
-#include "LPlugins.h"
+#include "plugins/LPlugins.h"
 
 //namespace for using the *.ui file
 namespace Ui {

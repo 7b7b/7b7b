@@ -9,7 +9,7 @@
 #include "globals.h"
 #include "../PageWidget.h"
 #include "plugins/LPlugins.h"
-#include "plugins/PanelWidget.h"
+#include "widgets/PanelWidget.h"
 
 namespace Ui {
 class page_interface_panels;

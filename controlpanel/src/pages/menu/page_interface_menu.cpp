@@ -6,7 +6,7 @@
 //===========================================
 #include "page_interface_menu.h"
 #include "ui_page_interface_menu.h"
-#include "plugins/AppDialog.h"
+#include "widgets/AppDialog.h"
 #include "plugins/GetPluginDialog.h"
 
 //==========
