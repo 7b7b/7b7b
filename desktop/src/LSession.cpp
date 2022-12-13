@@ -279,8 +279,7 @@ void LSession::StartLogout() {
 void LSession::StartShutdown(bool skipupdates) {
     CleanupSession();
 
-	QString cmd = sessionSettings()->value("ShutdownCmd", "").toString();
-
+	LaunchApplicationDetached(sessionSettings()->value("ShutdownCmd", "").toString());
     QCoreApplication::exit(0);
 }
 
@@ -348,12 +347,7 @@ void LSession::checkWindowGeoms() {
 }
 
 bool LSession::checkUserFiles() {
-    //internal version conversion examples:
-    //  [1.0.0 -> 1000000], [1.2.3 -> 1002003], [0.6.1 -> 6001]
     qDebug() << "Check User Files";
-    //char tmp[] = "junk\0";
-    //int tmpN = 0;
-    //QApplication A(tmpN, (char **)&tmp);
     QSettings sset("lumina-desktop", "sessionsettings");
     QString OVS = sset.value("DesktopVersion","0").toString(); //Old Version String
     qDebug() << " - Old Version:" << OVS;
@@ -365,7 +359,6 @@ bool LSession::checkUserFiles() {
         sset.setValue("DesktopVersion", LDesktopUtils::LuminaDesktopVersion());
     }
     qDebug() << "Finished with user files check";
-    //delete A;
     return changed;
 }
 
