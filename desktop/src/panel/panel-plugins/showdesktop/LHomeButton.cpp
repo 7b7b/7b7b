@@ -18,8 +18,6 @@ LHomeButtonPlugin::LHomeButtonPlugin(QWidget *parent, QString id, bool horizonta
     this->layout()->setContentsMargins(0,0,0,0);
     this->layout()->addWidget(button);
 
-    this->setStyleSheet("QToolButton::hover{ background: palette(highlight); border-radius: 5px; }");
-
     QTimer::singleShot(0,this, SLOT(OrientationChange())); //Update icons/sizes
 }
 

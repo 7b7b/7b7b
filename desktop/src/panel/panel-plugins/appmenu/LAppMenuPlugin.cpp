@@ -21,9 +21,7 @@ LAppMenuPlugin::LAppMenuPlugin(QWidget *parent, QString id, bool horizontal) : L
     button->setPopupMode(QToolButton::InstantPopup);
     this->layout()->setContentsMargins(0,0,0,0);
     this->layout()->addWidget(button);
-
-    this->setStyleSheet("QToolButton::hover{ background: palette(highlight); border-radius: 5px; }");
-
+	
     connect(mainmenu, SIGNAL(aboutToHide()), this, SIGNAL(MenuClosed()));
     connect(mainmenu, SIGNAL(triggered(QAction*)), this, SLOT(LaunchItem(QAction*)) );
     connect(LSession::handle()->applicationMenu(), SIGNAL(AppMenuUpdated()), this, SLOT(UpdateMenu()));

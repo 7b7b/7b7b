@@ -18,8 +18,7 @@ LClock::LClock(QWidget *parent, QString id, bool horizontal) : LPPlugin(parent, 
     button->setToolButtonStyle(Qt::ToolButtonTextOnly);
     button->setPopupMode(QToolButton::DelayedPopup); //make sure it runs the update routine first
     button->setMenu(new QMenu());
-    //button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    //this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+
     connect(button, SIGNAL(clicked()), this, SLOT(openMenu()));
     connect(button->menu(), SIGNAL(aboutToHide()), this, SIGNAL(MenuClosed()));
     calendar = new QCalendarWidget(this);
@@ -34,7 +33,6 @@ LClock::LClock(QWidget *parent, QString id, bool horizontal) : LPPlugin(parent, 
 
     this->layout()->setContentsMargins(0,0,0,0); //reserve some space on left/right
     this->layout()->addWidget(button);
-    this->setStyleSheet("QToolButton::hover{ background: palette(highlight); border-radius: 5px; }");
 
     //Setup the timer
     timer = new QTimer();
