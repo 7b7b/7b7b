@@ -33,7 +33,9 @@ private:
     QSettings *settings;
     QString PPREFIX; //internal prefix for all settings
     QWidget *bgWindow, *panelArea;
-    //QRect hidegeom, showgeom; //for hidden panels
+	
+	QString panel_csstyle;
+	
     QPoint hidepoint, showpoint; //for hidden panels: locations when hidden/visible
     bool defaultpanel, horizontal, hidden, reserveloc;
     QString screenID;

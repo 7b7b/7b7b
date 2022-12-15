@@ -11,14 +11,12 @@
 #define DEBUG 0
 #endif
 
-LTaskButton::LTaskButton(QWidget *parent, bool smallDisplay) : LTBWidget(parent) {
+LTaskButton::LTaskButton(QWidget *parent) : LTBWidget(parent) {
     actMenu = new QMenu(this);
     winMenu = new QMenu(this);
     UpdateMenus();
     this->setAutoRaise(false); //make sure these always look like buttons
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    //this->setFocusPolicy(Qt::NoFocus);
-    //this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     winMenu->setContextMenuPolicy(Qt::CustomContextMenu);
     LWINLIST = 0;
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(openActionMenu()) );
@@ -241,9 +239,6 @@ void LTaskButton::closeAllWindows() {
 
 void LTaskButton::triggerWindow() {
     LWinInfo win = currentWindow();
-    //Check which state the window is currently in and flip it to the other
-    //LXCB::WINDOWSTATE state = cstate;
-    //if(DEBUG){ qDebug() << "Window State: " << state; }
     if(cstate == LXCB::ACTIVE) {
         if(DEBUG) {
             qDebug() << "Minimize Window:" << this->text();

@@ -12,15 +12,10 @@ LTaskManagerPlugin::LTaskManagerPlugin(QWidget *parent, QString id, bool horizon
     timer->setSingleShot(true);
     timer->setInterval(10); // 1/100 second
     connect(timer, SIGNAL(timeout()), this, SLOT(UpdateButtons()) );
-    usegroups = true; //backwards-compatible default value
-    if(id.contains("-nogroups")) {
-        usegroups = false;
-    }
     connect(LSession::handle(), SIGNAL(WindowListEvent()), this, SLOT(checkWindows()) );
     connect(LSession::handle(), SIGNAL(WindowListEvent(WId)), this, SLOT(UpdateButton(WId)) );
     this->layout()->setContentsMargins(0,0,0,0);
     QTimer::singleShot(0,this, SLOT(UpdateButtons()) ); //perform an initial sync
-    //QTimer::singleShot(100,this, SLOT(OrientationChange()) ); //perform an initial sync
 }
 
 LTaskManagerPlugin::~LTaskManagerPlugin() {
@@ -49,8 +44,6 @@ void LTaskManagerPlugin::UpdateButtons() {
         }
     }
     //Do not change the status of the previously active window if it just changed to a non-visible window
-    //WId activeWin = LSession::handle()->XCB->ActiveWindow();
-    //bool skipActive = !winlist.contains(activeWin);
     //qDebug() << "Update Buttons:" << winlist;
     if(updating > ctime) {
         return;    //another thread kicked off already - stop this one
@@ -98,9 +91,7 @@ void LTaskManagerPlugin::UpdateButtons() {
             if(updating > ctime) {
                 return;    //another thread kicked off already - stop this one
             }
-            //if(!skipActive || !BUTTONS[i]->isActive()){
             QTimer::singleShot(1,BUTTONS[i], SLOT(UpdateButton()) ); //keep moving on
-            //}
         }
     }
     //Now go through the remaining windows
@@ -116,7 +107,7 @@ void LTaskManagerPlugin::UpdateButtons() {
             if(updating > ctime) {
                 return;    //another thread kicked off already - stop this one
             }
-            if(BUTTONS[b]->classname()== ctxt && usegroups) {
+            if(BUTTONS[b]->classname()== ctxt) {
                 //This adds a window to an existing group
                 found = true;
                 //qDebug() << "Add Window to Button:" << b;
@@ -130,7 +121,7 @@ void LTaskManagerPlugin::UpdateButtons() {
             }
             //No group, create a new button
             //qDebug() << "New Button";
-            LTaskButton *but = new LTaskButton(this, usegroups);
+            LTaskButton *but = new LTaskButton(this);
             but->addWindow( winlist[i] );
             if(this->layout()->direction()==QBoxLayout::LeftToRight) {
                 but->setIconSize(QSize(this->height(), this->height()));

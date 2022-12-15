@@ -31,7 +31,9 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     settings = file;
     screenID = scr;
     panelnum = num; //save for later
-    //screen = LSession::desktop();
+
+	panel_csstyle  = "QWidget#LuminaPanelColor{ background: %1; }";
+
     QString lscreenID = QApplication::screens().at(Screen())->name();
     PPREFIX = "panel_"+lscreenID+"."+QString::number(num)+"/";
     if(DEBUG) {
@@ -46,15 +48,13 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     }
     this->setContentsMargins(0,0,0,0);
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    //panels cannot get keyboard focus otherwise it upsets the task manager window detection
-    //this->setAttribute(Qt::WA_X11DoNotAcceptFocus);
+
     this->setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
     this->setAttribute(Qt::WA_TranslucentBackground);
-    //this->setAttribute(Qt::WA_NoSystemBackground);
+
     this->setAutoFillBackground(false);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
-    //this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
 
     this->setWindowTitle("LuminaPanel");
     this->setObjectName("LuminaPanelBackgroundWidget");
@@ -63,20 +63,21 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     layout = new QBoxLayout(QBoxLayout::LeftToRight);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(1);
-    //layout->setSizeConstraint(QLayout::SetFixedSize);
+
     panelArea->setLayout(layout);
+
     //Set special window flags on the panel for proper usage
     if(DEBUG) {
         qDebug() << "About to Show Panel";
     }
     this->show();
-    //if(reservespace){
+
     LSession::handle()->XCB->SetAsPanel(this->winId());
-    //}
+
     LSession::handle()->XCB->SetAsSticky(this->winId());
     QTimer::singleShot(1,this, SLOT(UpdatePanel()) );
-    //connect(screen, SIGNAL(resized(int)), this, SLOT(UpdatePanel()) ); //in case the screen resolution changes
-    this->startTimer(10000);
+
+    this->startTimer(10);
     this->timerEvent(nullptr);
 }
 
@@ -91,10 +92,8 @@ void LPanel::timerEvent(QTimerEvent *) {
         QRgb rgb = panelArea->palette().base().color().rgb();
         QString color = "rgba("+ QString::number(qRed(rgb)) + ", " + QString::number(qGreen(rgb)) +", "+ QString::number(qBlue(rgb)) +", 255)";
         if (styleCLR != color) {
-            QString style = "QWidget#LuminaPanelColor{ background: %1; border-radius: 3px; border: 1px solid %1; }";
-            style = style.arg(color);
             styleCLR = color;
-            panelArea->setStyleSheet(style);
+            panelArea->setStyleSheet(panel_csstyle.arg(color));
         }
     }
 }
@@ -296,24 +295,17 @@ void LPanel::UpdatePanel(bool geomonly) {
     //Now update the appearance of the toolbar
     if(settings->value(PPREFIX+"customColor", false).toBool()) {
         QString color = settings->value(PPREFIX+"color", "rgba(255,255,255,160)").toString();
-        QString style = "QWidget#LuminaPanelColor{ background: %1; border-radius: 3px; border: 1px solid %1; }";
-        style = style.arg(color);
-        panelArea->setStyleSheet(style);
+		panelArea->setStyleSheet(panel_csstyle.arg(color));
     } else {
         panelArea->setPalette(this->style()->standardPalette());
         QRgb rgb = panelArea->palette().base().color().rgb();
         QString color = "rgba("+ QString::number(qRed(rgb)) + ", " + QString::number(qGreen(rgb)) +", "+ QString::number(qBlue(rgb)) +", 255)";
-        QString style = "QWidget#LuminaPanelColor{ background: %1; border-radius: 3px; border: 1px solid %1; }";
-        style = style.arg(color);
         styleCLR = color;
-        panelArea->setStyleSheet(style);
+        panelArea->setStyleSheet(panel_csstyle.arg(color));
     }
 
     //Then go through the plugins and create them as necessary
     QStringList plugins = settings->value(PPREFIX+"pluginlist", QStringList()).toStringList();
-    /*if(defaultpanel && plugins.isEmpty()){
-      plugins << "userbutton" << "taskmanager" << "spacer" << "systemtray" << "clock" << "systemdashboard";
-    }*/
     if(DEBUG) {
         qDebug() << " - Initialize Plugins: " << plugins;
     }
@@ -454,14 +446,6 @@ void LPanel::paintEvent(QPaintEvent *event) {
 }
 
 void LPanel::leaveEvent(QEvent *event) {
-    /*qDebug() << "Panel Leave Event:";
-    qDebug() << "Panel Geom:" << this->geometry().x() << this->geometry().y() << this->geometry().width() << this->geometry().height() ;
-    QPoint pt = QCursor::pos();
-    qDebug() << "Mouse Point (global):" << pt.x() << pt.y();
-    //pt = this->mapFromGlobal(pt);
-    //qDebug() << "Mouse Point (local):" << pt.x() << pt.y();
-    qDebug() << "Contained:" << this->geometry().contains(pt);*/
     checkPanelFocus();
     QWidget::leaveEvent(event);
-    //event->accept(); //just to quiet the compile warning
 }

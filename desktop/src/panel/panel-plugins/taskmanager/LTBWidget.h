@@ -26,16 +26,13 @@ private:
         }
         else if(cstate == LXCB::VISIBLE) {
             this->setObjectName("WindowVisible");
-        }//background = "background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 240), stop:0.505682 rgba(240, 240, 240, 150), stop:1 rgba(210, 210, 210, 55));"; border="border: 1px solid transparent;"; }
+        }
         else if(cstate == LXCB::INVISIBLE) {
             this->setObjectName("WindowInvisible");
-        } //background = "background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(215, 215, 215, 240), stop:0.505682 rgba(184, 185, 186, 150), stop:1 rgba(221, 246, 255, 55));"; border="border: 1px solid transparent;"; }
+        }
         else if(cstate == LXCB::ACTIVE) {
             this->setObjectName("WindowActive");
-        }//background= "background: qlineargradient(spkground: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(252, 187, 127, 240), stop:0.505682 rgba(255, 222, 197, 150), stop:1 rgba(221, 246, 255, 55));"; border="border: 1px solid transparent;"; }
-
-        QString raw = rawstyle;
-        this->setStyleSheet( raw.replace("%1","background: transparent; ").replace("%2", "border: 1px solid transparent;") );
+        }
     }
 
 signals:

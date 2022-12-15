@@ -29,14 +29,11 @@ class LTaskManagerPlugin : public LPPlugin {
 public:
     explicit LTaskManagerPlugin(QWidget *parent=0, QString id="taskmanager", bool horizontal=true);
     ~LTaskManagerPlugin();
-//	int vertsizeicon;
-//	int *dpi;  //this comes from the PCDM dpi
 
 private:
     QList<LTaskButton*> BUTTONS; //to keep track of the current buttons
     QTimer *timer;
     QDateTime updating; //quick flag for if it is currently working
-    bool usegroups;
 
 private slots:
     void UpdateButtons();
@@ -56,7 +53,6 @@ public slots:
             this->layout()->setAlignment(Qt::AlignLeft);
             QSize sz(this->height(), this->height());
             for(int i=0; i<BUTTONS.length(); i++) {
-                BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
                 BUTTONS[i]->setIconSize(sz);
             }
         } else { //vertical
@@ -64,7 +60,6 @@ public slots:
             this->layout()->setAlignment(Qt::AlignTop);
             QSize sz(this->width(), this->width());
             for(int i=0; i<BUTTONS.length(); i++) {
-                BUTTONS[i]->setToolButtonStyle(Qt::ToolButtonIconOnly);
                 BUTTONS[i]->setIconSize(sz);
             }
         }
