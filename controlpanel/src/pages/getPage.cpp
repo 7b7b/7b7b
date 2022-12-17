@@ -37,12 +37,15 @@ QList<PAGEINFO> Pages::KnownPages() {
     // Valid Groups: ["appearance", "interface", "session", "user"]
     QList<PAGEINFO> list;
     //Reminder: <ID>, <name>, <title>, <icon>, <comment>, <category>, <server subsytem list>, <search tags>
-    list << Pages::PageInfo("wallpaper", QObject::tr("Wallpaper"), QObject::tr("Wallpaper Settings"), "preferences-desktop-wallpaper",QObject::tr("Change background image(s)"), "appearance", QStringList(), QStringList() << "background" << "wallpaper" << "color" << "image");
-    list << Pages::PageInfo("autostart", QObject::tr("Autostart"), QObject::tr("Startup Settings"), "preferences-system-session-services",QObject::tr("Automatically start applications or services"), "session", QStringList(), QStringList() << "apps" << "autostart" << "services" << "xdg" << "startup" << "session");
-    list << Pages::PageInfo("defaultapps", QObject::tr("Applications"), QObject::tr("Mimetype Settings"), "preferences-desktop-default-applications",QObject::tr("Change default applications"), "session", QStringList(), QStringList() << "apps" << "default" << "services" << "xdg" << "session");
+	// Interface Configuration
+    list << Pages::PageInfo("wallpaper", QObject::tr("Wallpaper"), QObject::tr("Wallpaper Settings"), "preferences-desktop-wallpaper",QObject::tr("Change background image(s)"), "interface", QStringList(), QStringList() << "background" << "wallpaper" << "color" << "image");
     list << Pages::PageInfo("interface-desktop", QObject::tr("Desktop"), QObject::tr("Desktop Plugins"), "preferences-desktop-icons",QObject::tr("Change what icons or tools are embedded on the desktop"), "interface", QStringList(), QStringList() << "desktop" << "plugins" << "embed" << "icons" << "utilities");
     list << Pages::PageInfo("interface-panel", QObject::tr("Panels"), QObject::tr("Panels and Plugins"), "emblem-generic",QObject::tr("Change any floating panels and what they show"), "interface", QStringList(), QStringList() << "desktop" << "toolbar" << "panel" << "floating" << "plugins");
     list << Pages::PageInfo("interface-menu", QObject::tr("Menu"), QObject::tr("Menu Plugins"), "emblem-generic",QObject::tr("Change what options are shown on the desktop context menu"), "interface", QStringList(), QStringList() << "desktop" << "menu" << "plugins" << "shortcuts");
+    list << Pages::PageInfo("autostart", QObject::tr("Autostart"), QObject::tr("Startup Settings"), "preferences-system-session-services",QObject::tr("Automatically start applications or services"), "interface", QStringList(), QStringList() << "apps" << "autostart" << "services" << "xdg" << "startup" << "session");
+    list << Pages::PageInfo("defaultapps", QObject::tr("Applications"), QObject::tr("Mimetype Settings"), "preferences-desktop-default-applications",QObject::tr("Change default applications"), "interface", QStringList(), QStringList() << "apps" << "default" << "services" << "xdg" << "session");
+
+	// User settings
     list << Pages::PageInfo("session-locale", QObject::tr("Localization"), QObject::tr("Locale Settings"), "preferences-desktop-locale",QObject::tr("Change the default locale settings for this user"), "user", QStringList(), QStringList() << "user"<<"locale"<<"language"<<"translations");
     list << Pages::PageInfo("session-options", QObject::tr("General Options"), QObject::tr("User Settings"), "emblem-system",QObject::tr("Change basic user settings such as time/date formats"), "user", QStringList(), QStringList() << "user"<<"settings"<<"time"<<"date"<<"icon"<<"reset"<<"numlock"<<"clock");
 
