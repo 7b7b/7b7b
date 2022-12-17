@@ -106,21 +106,12 @@ void page_interface_panels::setupProfiles() {
     if(ui->tool_profile->menu()==0) {
         ui->tool_profile->setMenu( new QMenu(this) );
         connect(ui->tool_profile->menu(), SIGNAL(triggered(QAction*)), this, SLOT(applyProfile(QAction*)) );
-    }
-    else {
+    } else {
         ui->tool_profile->menu()->clear();
     }
     ui->tool_profile->menu()->addSection("Profiles");
     QAction *act = ui->tool_profile->menu()->addAction(tr("No Panels"));
     act->setWhatsThis("none");
-    act = ui->tool_profile->menu()->addAction("Windows");
-    act->setWhatsThis("windows");
-    act = ui->tool_profile->menu()->addAction("GNOME2/MATE");
-    act->setWhatsThis("gnome2");
-    act = ui->tool_profile->menu()->addAction("XFCE");
-    act->setWhatsThis("xfce");
-    act = ui->tool_profile->menu()->addAction("Mac OSX");
-    act->setWhatsThis("osx");
 
     //Add in any custom profiles
     //qDebug() << " - read settings";
@@ -247,73 +238,9 @@ void page_interface_panels::applyProfile(QAction *act) {
     QString DPrefix = "desktop-"+screenID+"/";
     QString PPrefix = "panel_"+screenID+"."; //NEED TO APPEND PANEL NUMBER (0+)
     qDebug() << "Apply Profile:" << act->whatsThis() << "To Monitor:" << screenID;
+    
     if(act->whatsThis()=="none") {
         settings->setValue(DPrefix+"panels", 0); //number of panels
-    } else if(act->whatsThis()=="windows") {
-        settings->setValue(DPrefix+"panels", 1); //number of panels
-        //Panel 1 settings (index 0)
-        settings->setValue(PPrefix+"0/customColor", false);
-        settings->setValue(PPrefix+"0/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.04)); //4% of screen height
-        settings->setValue(PPrefix+"0/hidepanel", false);
-        settings->setValue(PPrefix+"0/lengthPercent", 100);
-        settings->setValue(PPrefix+"0/location", "bottom");
-        settings->setValue(PPrefix+"0/pinLocation", "center");
-        settings->setValue(PPrefix+"0/pluginlist", QStringList() << "systemstart" << "taskmanager" << "spacer" << "systemtray" << "clock");
-    } else if(act->whatsThis()=="gnome2") {
-        settings->setValue(DPrefix+"panels", 2); //number of panels
-        //Panel 1 settings (index 0)
-        settings->setValue(PPrefix+"0/customColor", false);
-        settings->setValue(PPrefix+"0/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.02)); //2% of screen height
-        settings->setValue(PPrefix+"0/hidepanel", false);
-        settings->setValue(PPrefix+"0/lengthPercent", 100);
-        settings->setValue(PPrefix+"0/location", "top");
-        settings->setValue(PPrefix+"0/pinLocation", "center");
-        settings->setValue(PPrefix+"0/pluginlist", QStringList() << "appmenu" << "desktopbar" << "spacer" << "systemtray" << "clock" << "systemdashboard");
-        //Panel 2 settings (index 1)
-        settings->setValue(PPrefix+"1/customColor", false);
-        settings->setValue(PPrefix+"1/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.02)); //2% of screen height
-        settings->setValue(PPrefix+"1/hidepanel", false);
-        settings->setValue(PPrefix+"1/lengthPercent", 100);
-        settings->setValue(PPrefix+"1/location", "bottom");
-        settings->setValue(PPrefix+"1/pinLocation", "center");
-        settings->setValue(PPrefix+"1/pluginlist", QStringList() << "homebutton" << "taskmanager-nogroups" << "spacer" << "desktopswitcher");
-    } else if(act->whatsThis()=="xfce") {
-        settings->setValue(DPrefix+"panels", 2); //number of panels
-        //Panel 1 settings (index 0)
-        settings->setValue(PPrefix+"0/customColor", false);
-        settings->setValue(PPrefix+"0/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.02)); //2% of screen height
-        settings->setValue(PPrefix+"0/hidepanel", false);
-        settings->setValue(PPrefix+"0/lengthPercent", 100);
-        settings->setValue(PPrefix+"0/location", "top");
-        settings->setValue(PPrefix+"0/pinLocation", "center");
-        settings->setValue(PPrefix+"0/pluginlist", QStringList() << "appmenu" << "taskmanager-nogroups" << "spacer" << "desktopswitcher" << "clock" << "systemtray" << "systemdashboard");
-        //Panel 2 settings (index 1)
-        settings->setValue(PPrefix+"1/customColor", false);
-        settings->setValue(PPrefix+"1/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.04)); //4% of screen height
-        settings->setValue(PPrefix+"1/hidepanel", false);
-        settings->setValue(PPrefix+"1/lengthPercent", 20);
-        settings->setValue(PPrefix+"1/location", "bottom");
-        settings->setValue(PPrefix+"1/pinLocation", "center");
-        settings->setValue(PPrefix+"1/pluginlist", QStringList() << "applauncher::lumina-fm.desktop" << "line"<<"spacer" << "desktopbar" << "spacer" << "line" << "applauncher::lumina-search.desktop");
-    } else if(act->whatsThis()=="osx") {
-        settings->setValue(DPrefix+"panels", 2); //number of panels
-        //Panel 1 settings (index 0)
-        settings->setValue(PPrefix+"0/customColor", false);
-        settings->setValue(PPrefix+"0/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.02)); //2% of screen height
-        settings->setValue(PPrefix+"0/hidepanel", false);
-        settings->setValue(PPrefix+"0/lengthPercent", 100);
-        settings->setValue(PPrefix+"0/location", "top");
-        settings->setValue(PPrefix+"0/pinLocation", "center");
-        settings->setValue(PPrefix+"0/pluginlist", QStringList() << "systemdashboard" <<  "spacer" << "systemtray" << "clock" << "applauncher::lumina-search.desktop");
-        //Panel 2 settings (index 1)
-        settings->setValue(PPrefix+"1/customColor", false);
-        settings->setValue(PPrefix+"1/height", qRound(QApplication::screens().at(cscreen)->virtualSize().height()*0.04)); //4% of screen height
-        settings->setValue(PPrefix+"1/hidepanel", false);
-        settings->setValue(PPrefix+"1/lengthPercent", 80);
-        settings->setValue(PPrefix+"1/location", "bottom");
-        settings->setValue(PPrefix+"1/pinLocation", "center");
-        settings->setValue(PPrefix+"1/pluginlist", QStringList() << "systemstart" << "applauncher::lumina-fm.desktop" << "desktopbar"<<"spacer" << "line"<< "taskmanager");
-
     } else {
         qDebug() << " - unknown profile! ("+act->whatsThis()+")";
         return;
@@ -338,7 +265,7 @@ void page_interface_panels::applyImport(QString fromID) {
 
     //save the number of panels which is active
     settings->setValue("desktop-"+cID+"/panels", pannum);
-//Now move over all the panel settings associated with the fromID
+	//Now move over all the panel settings associated with the fromID
     cID.prepend("panel_");
     for(int i=0; i<pans.length(); i++) {
         QString newvar = pans[i];
