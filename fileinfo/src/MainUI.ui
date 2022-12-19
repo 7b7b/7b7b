@@ -6,9 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>564</width>
-    <height>658</height>
+    <width>550</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>550</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>550</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>File Information</string>
@@ -36,7 +54,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_file_icon">
         <property name="text">
-         <string notr="true">icon</string>
+         <string notr="true"/>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -141,7 +159,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>MimeType:</string>
+         <string>MIME Type:</string>
         </property>
        </widget>
       </item>

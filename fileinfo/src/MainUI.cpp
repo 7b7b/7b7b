@@ -86,16 +86,16 @@ void MainUI::GetDirSize(const QString dirname) const {
             if(!file_list[i].isSymLink())
                 filesize += file_list[i].size();
             if(i%update_frequency == 0)
-                emit folder_size_changed(filesize, file_number, dir_number, false);
+                emit folder_size_changed(filesize, file_number, dir_number);
         }
     }
-    emit folder_size_changed(filesize, file_number, dir_number, true);
+    emit folder_size_changed(filesize, file_number, dir_number);
 }
 
 // Initialization procedures
 void MainUI::SetupConnections() {
     connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(closeApplication()) );
-    connect(this, SIGNAL(folder_size_changed(quint64, quint64, quint64, bool)), this, SLOT(refresh_folder_size(quint64, quint64, quint64, bool)));
+    connect(this, SIGNAL(folder_size_changed(quint64, quint64, quint64)), this, SLOT(refresh_folder_size(quint64, quint64, quint64)));
 }
 
 //UI Buttons
@@ -104,11 +104,8 @@ void MainUI::closeApplication() {
     this->close();
 }
 
-void MainUI::refresh_folder_size(quint64 size, quint64 files, quint64 folders, bool finished) {
-    if(finished)
-        ui->label_file_size->setText( LUtils::BytesToDisplaySize( size ) + " - " + tr(" Folders: ") + QString::number(folders) + " / " + tr("Files: ") + QString::number(files) );
-    else
-        ui->label_file_size->setText( LUtils::BytesToDisplaySize( size ) + " - " + tr(" Folders: ") + QString::number(folders) + " / " + tr("Files: ") + QString::number(files) + tr("  Calculating..." ));
+void MainUI::refresh_folder_size(quint64 size, quint64 files, quint64 folders) {
+    ui->label_file_size->setText( LUtils::BytesToDisplaySize( size ) + " - " + tr(" Folders: ") + QString::number(folders) + " / " + tr("Files: ") + QString::number(files) );
 }
 
 void MainUI::SyncFileInfo() {
@@ -116,26 +113,26 @@ void MainUI::SyncFileInfo() {
     if(fileINFO->filePath().isEmpty()) {
         return;
     }
-	QString mime = LXDG::findAppMimeForFile(fileINFO->fileName());
-	
+    QString mime = LXDG::findAppMimeForFile(fileINFO->fileName());
+
     if (!fileINFO->isDir()) {
         ui->label_file_name->setText( fileINFO->fileName() );
         this->setWindowTitle(fileINFO->fileName() + " Properties");
         ui->label_file_mimetype->setText( mime );
         ui->label_file_size->setText( LUtils::BytesToDisplaySize( fileINFO->size() ));
+
     } else {
         ui->label_file_name->setText( fileINFO->absolutePath() );
         this->setWindowTitle(fileINFO->absolutePath() + " Properties");
         ui->label_file_mimetype->setText(tr("inode/directory"));
-        ui->label_file_size->setText(tr("Calculating..."));
-        
-        sizeThread = QtConcurrent::run([=]{
-			MainUI::GetDirSize(fileINFO->absoluteFilePath());
-		});
+
+        sizeThread = QtConcurrent::run([=] {
+            MainUI::GetDirSize(fileINFO->absoluteFilePath());
+        });
     }
     ui->label_file_owner->setText(fileINFO->owner());
     ui->label_file_group->setText(fileINFO->group());
-    
+
     ui->label_file_created->setText( fileINFO->birthTime().toString() );
     ui->label_file_modified->setText( fileINFO->lastModified().toString() );
 
@@ -173,22 +170,22 @@ void MainUI::SyncFileInfo() {
         ftype = QString(tr("Hidden %1")).arg(ftype);
     }
     ui->label_file_type->setText(ftype);
-	
-	// Nows the icons
-	QString icon = "";
-	if (fileINFO->suffix() == "desktop"){
-		XDGDesktop *desk = new XDGDesktop(fileINFO->absoluteFilePath(), 0);
-		icon = QString(desk->icon);
+
+    // Nows the icons
+    QString icon;
+    if (fileINFO->suffix() == "desktop") {
+        XDGDesktop *desk = new XDGDesktop(fileINFO->absoluteFilePath(), 0);
+        icon = QString(desk->icon);
     }
     //Now load the icon for the file
     if(mime.startsWith("image/")) {
-		icon = "image-x-generic";
+        icon = "image-x-generic";
     } else if(mime.startsWith("video/")) {
-		icon = "video-x-generic";
-    } else if (fileINFO->isDir() ){
-		icon = "folder";
-	}
-	ui->label_file_icon->setPixmap( LXDG::findIcon( icon, "unknown").pixmap(QSize(64,64)) );
+        icon = "video-x-generic";
+    } else if (fileINFO->isDir() ) {
+        icon = "folder";
+    }
+    
+    ui->label_file_icon->setPixmap( LXDG::findIcon( icon, "unknown").pixmap(QSize(64,64)) );
     this->setWindowIcon( LXDG::findIcon( icon, "unknown") );
-    this->setFixedSize(QSize(550, 600));
 }

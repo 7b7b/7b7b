@@ -44,7 +44,7 @@ private:
     void SyncFileInfo();
 
 signals:
-    void folder_size_changed(quint64 size, quint64 files, quint64 folders, bool finished) const; //Signal for updating the folder size asynchronously
+    void folder_size_changed(quint64 size, quint64 files, quint64 folders) const; //Signal for updating the folder size asynchronously
 
 private slots:
 
@@ -55,7 +55,7 @@ private slots:
     void closeApplication();
 
     //Folder size
-    void refresh_folder_size(quint64 size, quint64 files, quint64 folders, bool finished); //Slot for updating the folder size asynchronously
+    void refresh_folder_size(quint64 size, quint64 files, quint64 folders); //Slot for updating the folder size asynchronously
 };
 
 #endif

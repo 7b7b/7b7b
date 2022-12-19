@@ -9,7 +9,7 @@ int main(int argc, char ** argv)
     QApplication a(argc, argv);
 
     //Read the input variables
-    QString path = "";
+    QString path;
     for(int i=1; i<argc; i++) {
         QString tmp(argv[i]);
         if(!tmp.startsWith("-")) {
@@ -17,11 +17,12 @@ int main(int argc, char ** argv)
             break;
         }
     }
-    if(!path.isEmpty()) {
-        path = LUtils::PathToAbsolute(path);
-    } else {
-		return 0;
-	}
+    
+    if(path.isEmpty()) {
+        return 0;
+    }
+
+    path = LUtils::PathToAbsolute(path);
     MainUI w;
     w.LoadFile(path);
     w.show();
