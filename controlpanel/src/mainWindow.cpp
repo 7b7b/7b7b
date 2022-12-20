@@ -25,23 +25,24 @@ mainWindow::mainWindow() : QMainWindow(), ui(new Ui::mainWindow()) {
 
     APPSLIST = new XDGDesktopList(this, true); //keep this up to date while the app is open
     QTimer::singleShot(100, APPSLIST, SLOT(updateList())); //don't let this hold up the initial application loading
-    cpage = "somerandomjunktostartwith";
 
     //Need to insert a spacer action in the toolbar
     QWidget *tmp = new QWidget(this);
     tmp->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     ui->toolBar->insertWidget(ui->actionSave, tmp); //after the save button
     backShortcut = new QShortcut(Qt::Key_Escape, this);
-    connect(backShortcut, SIGNAL(activated()), this, SLOT(on_actionBack_triggered()) );
     quitShortcut = new QShortcut(Qt::CTRL | Qt::Key_Q, this);
+    connect(backShortcut, SIGNAL(activated()), this, SLOT(on_actionBack_triggered()) );
     connect(quitShortcut, SIGNAL(activated()), this, SLOT(quitShortcut_Triggered()) );
-    setupIcons();
     loadMonitors();
     QSettings S("lumina-desktop","lumina-config");
     QRect geom = S.value("window_geometry", QRect()).toRect();
     if(!geom.isNull()) {
         this->setGeometry(geom);
     }
+	changePage("");
+	this->showNormal(); //just in case it is hidden/minimized
+
 }
 
 mainWindow::~mainWindow() {
@@ -51,25 +52,6 @@ mainWindow::~mainWindow() {
 //==============
 //  PUBLIC SLOTS
 //==============
-void mainWindow::slotSingleInstance(QStringList args) {
-    for(int i=0; i<args.length()-1; i++) {
-        if(args[i]=="--page") {
-            changePage(args[i]);
-        }
-    }
-    if(cpage == "somerandomjunktostartwith") {
-        changePage("");
-    }
-    this->showNormal(); //just in case it is hidden/minimized
-}
-
-void mainWindow::setupIcons() {
-    this->setWindowIcon( LXDG::findIcon("preferences-desktop") );
-    ui->actionSave->setIcon( LXDG::findIcon("document-save","") );
-    ui->actionBack->setIcon( LXDG::findIcon("go-previous-view","") );
-    ui->actionMonitor->setIcon(LXDG::findIcon("preferences-desktop-display","") );
-}
-
 void mainWindow::loadMonitors() {
     if(ui->actionMonitor->menu()==0) {
         ui->actionMonitor->setMenu( new QMenu(this) );

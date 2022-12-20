@@ -37,18 +37,18 @@ void LDialog::setFileInfo(QString filename, QString extension, bool isFile) {
     ui->label_file->setText( this->fontMetrics().elidedText( filename, Qt::ElideMiddle, 300 ) );
     bool shownetwork = false;
     if(isFile) {
-        ui->label_extension->setText( "("+extension+")");
+        ui->label_extension->setText(extension);
     }
     else if(extension=="email") {
-        ui->label_extension->setText( QString(tr("(Email Link)")) );
+        ui->label_extension->setText( QString(tr("Email Link")) );
         shownetwork = true;
     }
     else if(extension.startsWith("x-scheme-handler/")) {
-        ui->label_extension->setText( QString(tr("(Internet URL - %1)")).arg(extension.section("/",-1)) );
+        ui->label_extension->setText( QString(tr("Internet URL - %1")).arg(extension.section("/",-1)) );
         shownetwork = true;
     }
     else {
-        ui->label_extension->setText("("+extension+" link)");
+        ui->label_extension->setText(""+extension+" link");
     }
     fileEXT = extension; //NOTE: this is the mime-type for the file now, not the extension
     generateAppList(shownetwork);

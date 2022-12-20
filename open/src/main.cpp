@@ -6,21 +6,7 @@
 //===========================================
 
 #include <QApplication>
-#include <QtGui/private/qtx11extras_p.h>
-
-#include <QProcess>
-#include <QProcessEnvironment>
-#include <QFile>
-#include <QFileInfo>
-#include <QString>
-#include <QUrl>
-#include <QDebug>
-#include <QTranslator>
 #include <QMessageBox>
-#include <QLabel>
-#include <QDateTime>
-#include <QPixmap>
-#include <QColor>
 
 #include "LDialog.h"
 
@@ -34,7 +20,6 @@ void printUsageInfo() {
     qDebug() << "lumina-open: Application launcher for the Lumina Desktop Environment";
     qDebug() << "Description: Given a file (with absolute path) or URL, this utility will try to find the appropriate application with which to open the file. If the file is a *.desktop application shortcut, it will just start the application appropriately. It can also perform a few specific system operations if given special flags.";
     qDebug() << "Usage: lumina-open [-select] [-action <ActionID>] <absolute file path or URL>";
-    qDebug() << "           lumina-open [-volumeup, -volumedown, -brightnessup, -brightnessdown]";
     qDebug() << "  [-select] (optional) flag to bypass any default application settings and show the application selector window";
     qDebug() << "  [-action <ActionID>] (optional) Flag to run one of the alternate Actions listed in a .desktop registration file rather than the main command.";
     exit(1);

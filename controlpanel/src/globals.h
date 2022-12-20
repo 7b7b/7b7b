@@ -7,26 +7,14 @@
 #ifndef _LUMINA_CONFIG_GLOBALS_H
 #define _LUMINA_CONFIG_GLOBALS_H
 
-#include <QString>
-#include <QStringList>
-#include <QTimer>
-#include <QList>
-#include <QWidget>
-//#include <QDesktopWidget>
-#include <QScreen>
 #include <QMainWindow>
 #include <QTreeWidgetItem>
-#include <QToolButton>
-#include <QSettings>
-#include <QFileDialog>
-#include <QColorDialog>
-#include <QMessageBox>
 #include <QShortcut>
-#include <QImageReader>
-#include <QDialog>
-#include <QPoint>
-#include <QCursor>
-#include <QMenu>
+#include <QToolButton>
+#include <QTimer>
+#include <QMessageBox>
+#include <QColorDialog>
+#include <QFileDialog>
 
 //Now the Lumina Library classes
 #include <LuminaXDG.h>
@@ -34,7 +22,6 @@
 #include <LDesktopUtils.h>
 #include <LuminaX11.h>
 #include <LuminaOS.h>
-//#include <LuminaThemes.h>
 
 #include "pages/PageWidget.h"
 

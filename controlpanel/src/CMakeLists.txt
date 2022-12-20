@@ -38,7 +38,6 @@ add_executable(${PROJECT}
 # Add the dependencies for linking
 target_link_libraries(${PROJECT}
 	Qt6::Widgets
-	Qt6::GuiPrivate
 	Qt6::Network
 	Lumina
 	${LUMINA_LIBS}

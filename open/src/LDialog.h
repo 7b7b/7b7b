@@ -7,19 +7,8 @@
 #ifndef _LUMINA_OPEN_DIALOG_H
 #define _LUMINA_OPEN_DIALOG_H
 
-#include <QSettings>
 #include <QDialog>
-#include <QString>
-#include <QStringList>
-#include <QIcon>
 #include <QFileDialog>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QSettings>
-#include <QTextStream>
-#include <QTreeWidgetItem>
-#include <QAction>
 
 #include <LuminaXDG.h>
 #include <LUtils.h>

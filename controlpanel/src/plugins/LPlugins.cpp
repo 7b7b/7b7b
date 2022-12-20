@@ -65,128 +65,77 @@ LPI LPlugins::menuPluginInfo(QString plug) {
 //   PANEL PLUGINS
 void LPlugins::LoadPanelPlugins() {
     PANEL.clear();
-    LPI info;
-    //Application Menu
-    info = LPI(); //clear it
-    info.name = QObject::tr("Application Menu");
-    info.description = QObject::tr("Start menu alternative which focuses on launching applications.");
-    info.ID = "appmenu";
-    info.icon = "format-list-unordered";
-    PANEL.insert(info.ID, info);
-    //Task Manager
-    info = LPI(); //clear it
-    info.name = QObject::tr("Task Manager");
-    info.description = QObject::tr("View and control any running application windows (group similar windows under a single button).");
-    info.ID = "taskmanager";
-    info.icon = "preferences-system-windows";
-    PANEL.insert(info.ID, info);
-    //Spacer
-    info = LPI(); //clear it
-    info.name = QObject::tr("Spacer");
-    info.description = QObject::tr("Invisible spacer to separate plugins.");
-    info.ID = "spacer";
-    info.icon = "transform-move";
-    PANEL.insert(info.ID, info);
-    //System Tray
-    info = LPI(); //clear it
-    info.name = QObject::tr("System Tray");
-    info.description = QObject::tr("Display area for dockable system applications");
-    info.ID = "systemtray";
-    info.icon = "preferences-system-windows-actions";
-    PANEL.insert(info.ID, info);
-    //Clock
-    info = LPI(); //clear it
-    info.name = QObject::tr("Time/Date");
-    info.description = QObject::tr("View the current time and date.");
-    info.ID = "clock";
-    info.icon = "preferences-system-time";
-    PANEL.insert(info.ID, info);
-    //Home Button
-    info = LPI(); //clear it
-    info.name = QObject::tr("Show Desktop");
-    info.description = QObject::tr("Hide all open windows and show the desktop");
-    info.ID = "homebutton";
-    info.icon = "user-desktop";
-    PANEL.insert(info.ID, info);
+    QStringList nameList = QStringList() << QObject::tr("Application Menu") << QObject::tr("Task Manager") << QObject::tr("Spacer")
+    << QObject::tr("System Tray") << QObject::tr("Time/Date") << QObject::tr("Show Desktop");
+
+	QStringList descriptionList = QStringList() << QObject::tr("Start menu alternative which focuses on launching applications.")
+	<< QObject::tr("View and control any running application windows (group similar windows under a single button).")
+	<< QObject::tr("Invisible spacer to separate plugins.") << QObject::tr("Display area for dockable system applications")
+	<< QObject::tr("View the current time and date.") << QObject::tr("Hide all open windows and show the desktop");
+
+	QStringList IDList = QStringList() << "appmenu" << "taskmanager" << "spacer" << "systemtray" << "clock" << "homebutton";
+
+	QStringList iconList = QStringList() << "format-list-unordered" << "preferences-system-windows" << "transform-move" << "preferences-system-windows-actions"
+	<< "preferences-system-time" << "user-desktop";
+
+	LPI info;
+	for (int i = 0; i < nameList.length(); i++){
+		info = LPI();
+		info.name = nameList[i];
+		info.description = descriptionList[i];
+		info.ID = IDList[i];
+		info.icon = iconList[i];
+		PANEL.insert(info.ID, info);
+	}
 }
 
 // DESKTOP PLUGINS
 void LPlugins::LoadDesktopPlugins() {
     DESKTOP.clear();
-    LPI info;
-    //Application Launcher Plugin
-    info = LPI(); //clear it
-    info.name = QObject::tr("Application Launcher");
-    info.description = QObject::tr("Desktop button for launching an application");
-    info.ID = "applauncher";
-    info.icon = "quickopen";
-    DESKTOP.insert(info.ID, info);
-    //Desktop View Plugin
-    info = LPI(); //clear it
-    info.name = QObject::tr("Desktop Icons View");
-    info.description = QObject::tr("Configurable area for automatically showing desktop icons");
-    info.ID = "desktopview";
-    info.icon = "preferences-desktop-icons";
-    DESKTOP.insert(info.ID, info);
+    QStringList nameList = QStringList() << QObject::tr("Application Launcher") << QObject::tr("Desktop Icons View");
+	
+	QStringList descriptionList = QStringList() << QObject::tr("Desktop button for launching an application")
+	<< QObject::tr("Configurable area for automatically showing desktop icons");
+	
+	QStringList IDList = QStringList() << "applauncher" << "desktopview";
+	
+	QStringList iconList = QStringList() << "quickopen" << "preferences-desktop-icons";
+
+	LPI info;
+	for (int i = 0; i < nameList.length(); i++){
+		info = LPI();
+		info.name = nameList[i];
+		info.description = descriptionList[i];
+		info.ID = IDList[i];
+		info.icon = iconList[i];
+		DESKTOP.insert(info.ID, info);
+	}
 }
 
 //    MENU PLUGINS
 void LPlugins::LoadMenuPlugins() {
     MENU.clear();
-    //Terminal
-    LPI info;
-    info.name = QObject::tr("Terminal");
-    info.description = QObject::tr("Start the default system terminal.");
-    info.ID = "terminal";
-    info.icon = "utilities-terminal";
-    MENU.insert(info.ID, info);
-    //File Manager
-    info = LPI(); //clear it
-    info.name = QObject::tr("Browse Files");
-    info.description = QObject::tr("Browse the system with the default file manager.");
-    info.ID = "filemanager";
-    info.icon = "Insight-FileManager";
-    MENU.insert(info.ID, info);
-    //Applications
-    info = LPI(); //clear it
-    info.name = QObject::tr("Applications");
-    info.description = QObject::tr("Show the system applications menu.");
-    info.ID = "applications";
-    info.icon = "system-run";
-    MENU.insert(info.ID, info);
-    //Line seperator
-    info = LPI(); //clear it
-    info.name = QObject::tr("Separator");
-    info.description = QObject::tr("Static horizontal line.");
-    info.ID = "line";
-    info.icon = "insert-horizontal-rule";
-    MENU.insert(info.ID, info);
-    //Settings
-    info = LPI(); //clear it
-    info.name = QObject::tr("Preferences");
-    info.description = QObject::tr("Show the desktop settings menu.");
-    info.ID = "settings";
-    info.icon = "configure";
-    MENU.insert(info.ID, info);
-    //Window List
-    info = LPI(); //clear it
-    info.name = QObject::tr("Task Manager");
-    info.description = QObject::tr("List the open, minimized, active, and urgent application windows");
-    info.ID = "windowlist";
-    info.icon = "preferences-system-windows";
-    MENU.insert(info.ID, info);
-    //Custom Apps
-    info = LPI(); //clear it
-    info.name = QObject::tr("Custom App");
-    info.description = QObject::tr("Start a custom application");
-    info.ID = "app";
-    info.icon = "application-x-desktop";
-    MENU.insert(info.ID, info);
-    //Lock Screen item
-    info = LPI(); //clear it
-    info.name = QObject::tr("Lock Session");
-    info.description = QObject::tr("Lock the current desktop session");
-    info.ID = "lockdesktop";
-    info.icon = "system-lock-screen";
-    MENU.insert(info.ID, info);
+	QStringList nameList = QStringList() << QObject::tr("Terminal") << QObject::tr("Browse Files") << QObject::tr("Applications") << QObject::tr("Separator")
+	<< QObject::tr("Preferences") << QObject::tr("Task Manager") << QObject::tr("Custom App") << QObject::tr("Lock Session");
+
+	QStringList descriptionList = QStringList() << QObject::tr("Start the default system terminal.")
+	<< QObject::tr("Browse the system with the default file manager.") << QObject::tr("Show the system applications menu.")
+	<< QObject::tr("Static horizontal line.") << QObject::tr("Show the desktop settings menu.")
+	<< QObject::tr("List the open, minimized, active, and urgent application windows") << QObject::tr("Start a custom application")
+	<< QObject::tr("Lock the current desktop session");
+
+	QStringList IDList = QStringList() << "terminal" << "filemanager" << "applications" << "line" << "settings" << "windowlist" << "app" << "lockdesktop";
+
+	QStringList iconList = QStringList() << "utilities-terminal" << "user-home" << "system-run" << "insert-horizontal-rule" << "configure"
+	<< "preferences-system-windows" << "application-x-desktop" << "system-lock-screen";
+
+	LPI info;
+	for (int i = 0; i < nameList.length(); i++){
+		info = LPI();
+		info.name = nameList[i];
+		info.description = descriptionList[i];
+		info.ID = IDList[i];
+		info.icon = iconList[i];
+		MENU.insert(info.ID, info);
+	}
 }

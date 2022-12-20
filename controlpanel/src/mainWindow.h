@@ -23,14 +23,11 @@ public:
     ~mainWindow();
 
 public slots:
-    void slotSingleInstance(QStringList args);
-    void setupIcons();
     void loadMonitors();
 
 private:
     Ui::mainWindow *ui;
     QShortcut *backShortcut, *quitShortcut;
-    QString cpage; //current page
     QTimer *geomTimer;
 
     void changePage(QString id);
