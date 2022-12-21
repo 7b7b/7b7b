@@ -12,7 +12,6 @@
 
 #include <LuminaXDG.h>
 #include <LUtils.h>
-#include <LuminaOS.h>
 
 #define DEBUG 0
 
@@ -159,10 +158,7 @@ void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& pat
         isFile=true;    //account for relative paths
         inFile = QDir::currentPath()+"/"+inFile;
     }
-    else if(inFile.startsWith("mailto:")) {
-        isUrl= true;
-    }
-    else if(QUrl(inFile).isValid() && !inFile.startsWith("/") ) {
+    else if(inFile.startsWith("mailto:") || (QUrl(inFile).isValid() && !inFile.startsWith("/"))) {
         isUrl=true;
     }
     if( !isFile && !isUrl ) {

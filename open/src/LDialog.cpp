@@ -16,6 +16,8 @@ LDialog::LDialog(QWidget *parent) : QDialog(parent), ui(new Ui::LDialog() ) {
     appPath.clear();
     appFile.clear();
     settings = new QSettings("lumina-desktop", "lumina-open", this);
+    
+    ui->label_goodbin->setPixmap(LXDG::findIcon("cancel", "").pixmap(QSize(24,24)));
     //Connect the signals/slots
     connect(ui->combo_apps, SIGNAL(currentIndexChanged(int)), this, SLOT(updateUI()) );
     connect(ui->radio_rec, SIGNAL(toggled(bool)), this, SLOT(radioChanged()) );
@@ -36,20 +38,25 @@ void LDialog::setFileInfo(QString filename, QString extension, bool isFile) {
     filePath = filename; //save for later
     ui->label_file->setText( this->fontMetrics().elidedText( filename, Qt::ElideMiddle, 300 ) );
     bool shownetwork = false;
-    if(isFile) {
-        ui->label_extension->setText(extension);
+    QString ext;
+    if (extension == "") {
+		ext = "Undefined type";
+	}
+    else if(isFile) {
+		ext = extension;
     }
     else if(extension=="email") {
-        ui->label_extension->setText( QString(tr("Email Link")) );
+		ext = QString(tr("Email Link"));
         shownetwork = true;
     }
     else if(extension.startsWith("x-scheme-handler/")) {
-        ui->label_extension->setText( QString(tr("Internet URL - %1")).arg(extension.section("/",-1)) );
+		ext = QString(tr("Internet URL - %1")).arg(extension.section("/",-1));
         shownetwork = true;
     }
     else {
-        ui->label_extension->setText(""+extension+" link");
+		ext = extension+" link";
     }
+	ui->label_extension->setText(ext);
     fileEXT = extension; //NOTE: this is the mime-type for the file now, not the extension
     generateAppList(shownetwork);
 }
@@ -141,23 +148,21 @@ void LDialog::setPreferredApplication(QString desktopfile) {
 void LDialog::updateUI() {
     //Check for a selected application
     bool good = false;
-    if(ui->radio_custom->isChecked()) {
-        if(!ui->line_bin->text().isEmpty()) {
-            QString bin = ui->line_bin->text();
-            good = LUtils::isValidBinary(bin);
-            //Now verify that the file exists and is executable
-            if( good ) {
-                ui->label_goodbin->setPixmap(QPixmap(":/icons/good.png"));
-            } else {
-                ui->label_goodbin->setPixmap(QPixmap(":/icons/bad.png"));
-            }
-        }
+    if(ui->radio_custom->isChecked() && !ui->line_bin->text().isEmpty()) {
+		QString bin = ui->line_bin->text();
+		QFileInfo* info = new QFileInfo(bin);
+		good = (LUtils::isValidBinary(bin) && !info->isDir());
+
+		//Now verify that the file exists and is executable
+		QString pixicon = "cancel";
+		if( good ) {
+			pixicon = "ok";
+		}
+
+		ui->label_goodbin->setPixmap(LXDG::findIcon(pixicon, "").pixmap(QSize(24,24)));
     }
-    else if(ui->radio_rec->isChecked()) {
+    else if(ui->radio_rec->isChecked() || (ui->combo_apps->count() > 0 && !ui->combo_apps->currentData().toString().isEmpty()) ) {
         good = true; //a valid app is always selected on this page if it is available
-    }
-    else if(ui->combo_apps->count() > 0 && !ui->combo_apps->currentData().toString().isEmpty() ) {
-        good=true;
     }
     ui->tool_ok->setEnabled(good);
 }
@@ -257,23 +262,21 @@ void LDialog::on_tool_ok_clicked() {
     setDefault = ui->check_default->isChecked();
     if(ui->radio_custom->isChecked()) {
         appExec = ui->line_bin->text();
-    } else if(ui->radio_rec->isChecked()) {
+	} else {
         //application selected
-        XDGDesktop app(PREFAPPS[ui->combo_rec->currentIndex()]);
+        QString path;
+        if (ui->radio_rec->isChecked()){
+			path = PREFAPPS[ui->combo_rec->currentIndex()];
+		} else {
+			path = ui->combo_apps->currentData().toString();
+		}
+        XDGDesktop app(path);
         //Set the output variables
         appExec =  app.getDesktopExec();
         appPath = app.path;
         appFile = app.filePath;
-        setPreferredApplication(app.filePath); //bump this to the top of the preferred list for next time
-    } else {
-        //application selected
-        XDGDesktop app(ui->combo_apps->currentData().toString());
-        //Set the output variables
-        appExec = app.getDesktopExec();
-        appPath = app.path;
-        appFile = app.filePath;
-        setPreferredApplication(app.filePath); //save this app to this extension as a recommendation
-    }
+        setPreferredApplication(app.filePath); //bump this to the top of the preferred list for next time		
+	}
     this->close();
 }
 
@@ -284,10 +287,9 @@ void LDialog::on_tool_cancel_clicked() {
 
 void LDialog::on_tool_findBin_clicked() {
     QString filepath = QFileDialog::getOpenFileName(this, tr("Find Application Binary"), QDir::homePath() );
-    if(filepath.isEmpty()) {
-        return;
+    if(!filepath.isEmpty()) {
+        ui->line_bin->setText(filepath);
     }
-    ui->line_bin->setText(filepath);
 }
 
 void LDialog::on_line_bin_textChanged() {
