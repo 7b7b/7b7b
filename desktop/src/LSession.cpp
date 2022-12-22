@@ -114,7 +114,7 @@ void LSession::setupSession() {
                               sessionsettings->value("InitLocale/LC_CTYPE","").toString() );
     }
     checkUserFiles();
-	
+
 	// Window Manager
 	LaunchApplicationDetached(sessionsettings->value("WindowManager", "").toString());
 	

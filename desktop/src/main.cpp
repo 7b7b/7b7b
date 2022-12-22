@@ -36,6 +36,11 @@ int main(int argc, char ** argv)
     }
     //Setup any pre-QApplication initialization values
     LXDG::setEnvironmentVars();
+	QSettings* sessionsettings = new QSettings("lumina-desktop", "sessionsettings");
+
+	const char* style = sessionsettings->value("StyleApplication","Fusion").toString().toStdString().c_str();
+
+	setenv("QT_QPA_PLATFORMTHEME",style,true);
 
     LSession a(argc, argv);
     if(!a.isPrimaryProcess()) {

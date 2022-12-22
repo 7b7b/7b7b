@@ -99,18 +99,15 @@ WId LDesktop::backgroundID() {
     if(bgDesktop!=0) {
         return bgDesktop->winId();
     }
-    else {
-        return QX11Info::appRootWindow();
-    }
+	return QX11Info::appRootWindow();
 }
 
 QRect LDesktop::availableScreenGeom() {
     //Return a QRect containing the (global) screen area that is available (not under any panels)
     if(bgDesktop!=0) {
         return globalWorkRect; //saved from previous calculations
-    } else {
-        return LSession::handle()->screenGeom( Screen() );
     }
+    return LSession::handle()->screenGeom( Screen() );
 }
 
 void LDesktop::UpdateGeometry() {
@@ -119,8 +116,7 @@ void LDesktop::UpdateGeometry() {
 }
 
 void LDesktop::SystemLock() {
-    //QTimer::singleShot(30,LSession::handle(), SLOT(LockScreen()) );
-    //QProcess::startDetached("xscreensaver-command -lock");
+    QTimer::singleShot(30,LSession::handle(), SLOT(LockScreen()) );
 }
 
 void LDesktop::SystemLogout() {
@@ -133,15 +129,11 @@ void LDesktop::SystemPreferences() {
 
 void LDesktop::SystemTerminal() {
     LSession::handle()->sessionSettings()->sync(); //make sure it is up to date
-    QString term = LXDG::findDefaultAppForMime("application/terminal"); //LSession::handle()->sessionSettings()->value("default-terminal","xterm").toString();
-    if(term.isEmpty() ||(!term.endsWith(".desktop") && !LUtils::isValidBinary(term)) ) {
-        term = "xterm";
-    }
+    QString term = LXDG::findDefaultAppForMime("application/terminal");
     LSession::LaunchApplication("lumina-open " + term);
 }
 
 void LDesktop::SystemFileManager() {
-    //Just open the home directory
     LSession::LaunchApplication("lumina-open " + QDir::homePath());
 }
 
@@ -163,13 +155,10 @@ void LDesktop::checkResolution() {
     issyncing = true;
     settings->setValue(DPREFIX+"screen/lastWidth",scrn.width());
     settings->setValue(DPREFIX+"screen/lastHeight",scrn.height());
-
-    if(oldWidth<1 || oldHeight<1 || scrn.width()<1 || scrn.height()<1) {
-        //nothing to do - something invalid
-    } else if(scrn.width()==oldWidth && scrn.height()==oldHeight) {
-        //nothing to do - same as before
-    } else {
-        //Calculate the scale factor between the old/new sizes in each dimension
+    
+	if (!(oldWidth<1 || oldHeight<1 || scrn.width()<1 || scrn.height()<1)
+	&& !(scrn.width()==oldWidth && scrn.height()==oldHeight)){
+		//Calculate the scale factor between the old/new sizes in each dimension
         //  and forward that on to all the interface elements
         double xscale = scrn.width()/((double) oldWidth);
         double yscale = scrn.height()/((double) oldHeight);
@@ -206,29 +195,16 @@ void LDesktop::checkResolution() {
             QStringList filter = keys.filter(plugs[i]);
             for(int j=0; j<filter.length(); j++) {
                 //Has existing settings - need to adjust it
-                if(filter[j].endsWith("location/height")) {
+                if (filter[j].endsWith("location/height") || filter[j].endsWith("location/y") 
+                || filter[j].endsWith("IconSize") || filter[j].endsWith("iconsize")){
                     DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*yscale) );
-                }
-                if(filter[j].endsWith("location/width")) {
+				} else if (filter[j].endsWith("location/width") || filter[j].endsWith("location/x")) {
                     DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*xscale) );
-                }
-                if(filter[j].endsWith("location/x")) {
-                    DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*xscale) );
-                }
-                if(filter[j].endsWith("location/y")) {
-                    DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*yscale) );
-                }
-                if(filter[j].endsWith("IconSize")) {
-                    DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*yscale) );
-                }
-                if(filter[j].endsWith("iconsize")) {
-                    DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*yscale) );
-                }
-            }
+				}
+			}
         }
         DP->sync(); //make sure it gets saved to disk right away
-
-    }
+	}
     issyncing = false;
 }
 
@@ -270,7 +246,6 @@ void LDesktop::InitDesktop() {
     }
     bgDesktop->SetIconSize( grid );
     bgDesktop->setContextMenuPolicy(Qt::CustomContextMenu);
-    //LSession::handle()->XCB->SetAsDesktop(bgDesktop->winId());
     connect(bgDesktop, SIGNAL(PluginRemovedByUser(QString)), this, SLOT(RemoveDeskPlugin(QString)) );
     connect(bgDesktop, SIGNAL(IncreaseIcons()), this, SLOT(IncreaseDesktopPluginIcons()) );
     connect(bgDesktop, SIGNAL(DecreaseIcons()), this, SLOT(DecreaseDesktopPluginIcons()) );
@@ -416,7 +391,6 @@ void LDesktop::UpdateDesktop() {
                 num++;
             }
             plugins[i] = plugins[i]+"---"+screenID+"."+QString::number(num);
-            //plugins[i] = plugins[i]+"---"+QString::number(Screen())+"."+QString::number(num);
             changed=true;
         }
     }
@@ -468,11 +442,11 @@ void LDesktop::RemoveDeskPlugin(QString ID) {
 
 void LDesktop::IncreaseDesktopPluginIcons() {
     int cur = settings->value(DPREFIX+"GridSize",-1).toInt();
-    if(cur<0 && QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
-        cur = 200;
-    }
-    else if(cur<0) {
+    if(cur<0) {
         cur = 100;
+        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000){
+			cur = 200;
+		}
     }
     cur+=16;
     issyncing=true; //don't let the change cause a refresh
@@ -484,16 +458,15 @@ void LDesktop::IncreaseDesktopPluginIcons() {
 
 void LDesktop::DecreaseDesktopPluginIcons() {
     int cur = settings->value(DPREFIX+"GridSize",-1).toInt();
-    if(cur<0 && QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
-        cur = 200;
-    }
-    else if(cur<0) {
+    if(cur<0) {
         cur = 100;
+        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000){
+			cur = 200;
+		}
     }
-    if(cur<32) {
-        return;    //cannot get smaller than 16x16
+    if(cur>=32) {
+		cur-=16;
     }
-    cur-=16;
     issyncing=true; //don't let the change cause a refresh
     settings->setValue(DPREFIX+"GridSize",cur);
     settings->sync();
@@ -578,7 +551,7 @@ void LDesktop::UpdateDesktopPluginArea() {
     }
     //Now make sure the desktop plugin area is only the visible area
     QRect rec = visReg.boundingRect();
-//  QRect rec = LSession::desktop()->availableGeometry(Screen());
+	//  QRect rec = LSession::desktop()->availableGeometry(Screen());
     //qDebug() << " - DPArea: Panel-Adjusted rectangle:" << rec;
     //qDebug() << " - DPArea: Screen Geometry:" << LSession::desktop()->screenGeometry(Screen());
     //qDebug() << " - DPArea: Current Geometry:" << bgDesktop->geometry();
@@ -590,21 +563,14 @@ void LDesktop::UpdateDesktopPluginArea() {
     if(rec.size().isNull() ) {
         return;    //nothing changed
     } //|| rec == bgDesktop->geometry()){return; }
-    //bgDesktop->show(); //make sure Fluxbox is aware of it *before* we start moving it
 
     bgDesktop->setGeometry( QGuiApplication::screens().at(Screen())->geometry());
-    //bgDesktop->resize(LSession::desktop()->screenGeometry(Screen()).size());
-    //bgDesktop->move(LSession::desktop()->screenGeometry(Screen()).topLeft());
+
     bgDesktop->setDesktopArea( rec );
     bgDesktop->UpdateGeom(); //just in case the plugin space itself needs to do anything
     QTimer::singleShot(10, this, SLOT(UpdateBackground()) );
-    //Re-paint the panels (just in case a plugin was underneath it and the panel is transparent)
-    //for(int i=0; i<PANELS.length(); i++){ PANELS[i]->update(); }
-    //Make sure to re-disable any WM control flags and reset geometry again
+
     LSession::handle()->XCB->SetDisableWMActions(bgDesktop->winId());
-    //bgDesktop->setGeometry( LSession::desktop()->screenGeometry(Screen()));
-    //qDebug() << "Desktop Geom:" << bgDesktop->geometry();
-    //qDebug() << "Screen Geom:" <<  LSession::desktop()->screenGeometry(Screen());
 }
 
 void LDesktop::UpdateBackground() {
@@ -621,28 +587,15 @@ void LDesktop::UpdateBackground() {
     if(bgL.isEmpty()) {
         bgL = settings->value(DPREFIX+"background/filelist", QStringList()).toStringList();
     }
-    if(bgL.isEmpty()) {
-        bgL << LOS::LuminaShare()+"../wallpapers/lumina-nature";    //Use this entire directory by default if nothing specified
-    }
     //qDebug() << " - List:" << bgL << CBG;
     //Remove any invalid files
     for(int i=0; i<bgL.length(); i++) {
         if(bgL[i]=="default" || bgL[i].startsWith("rgb(") ) {
             continue;    //built-in definitions - treat them as valid
         }
-        if(bgL[i].isEmpty()) {
+        if(bgL[i].isEmpty() || !QFile::exists(bgL[i])) {
             bgL.removeAt(i);
             i--;
-        }
-        if( !QFile::exists(bgL[i]) ) {
-            //Quick Detect/replace for new path for Lumina wallpapers (change in 1.3.4)
-            if(bgL[i].contains("/wallpapers/Lumina-DE/")) {
-                bgL[i] = bgL[i].replace("/wallpapers/Lumina-DE/", "/wallpapers/lumina-desktop/");
-                i--; //modify the path and re-check it
-            } else {
-                bgL.removeAt(i);
-                i--;
-            }
         }
     }
     if(bgL.isEmpty()) {
@@ -682,12 +635,11 @@ void LDesktop::UpdateBackground() {
             break;
         }
         int index = ( QRandomGenerator::global()->generate() % bgL.length() );
-        if(index== bgL.indexOf(CBG)) { //if the current wallpaper was selected by the randomization again
+        if(index == bgL.indexOf(CBG)) { //if the current wallpaper was selected by the randomization again
             //Go to the next in the list
             if(index < 0 || index >= bgL.length()-1) {
                 index = 0;    //if invalid or last item in the list - go to first
-            }
-            else {
+            } else {
                 index++;    //go to next
             }
         }

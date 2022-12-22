@@ -22,7 +22,7 @@ mainWindow::mainWindow() : QMainWindow(), ui(new Ui::mainWindow()) {
     geomTimer->setSingleShot(true);
     geomTimer->setInterval(1000); //1 second
     connect(geomTimer, SIGNAL(timeout()), this, SLOT(saveWinGeometry()) );
-
+	cpage = "junkjunk";
     APPSLIST = new XDGDesktopList(this, true); //keep this up to date while the app is open
     QTimer::singleShot(100, APPSLIST, SLOT(updateList())); //don't let this hold up the initial application loading
 
@@ -40,9 +40,6 @@ mainWindow::mainWindow() : QMainWindow(), ui(new Ui::mainWindow()) {
     if(!geom.isNull()) {
         this->setGeometry(geom);
     }
-	changePage("");
-	this->showNormal(); //just in case it is hidden/minimized
-
 }
 
 mainWindow::~mainWindow() {
@@ -52,6 +49,18 @@ mainWindow::~mainWindow() {
 //==============
 //  PUBLIC SLOTS
 //==============
+void mainWindow::slotSingleInstance(QStringList args) {
+    for(int i=0; i<args.length(); i++) {
+        if(args[i].contains("--page=")) {
+            changePage(args[i].replace("--page=", ""));
+        }
+    }
+    if(cpage == "junkjunk") {
+        changePage("");
+    }
+    this->showNormal(); //just in case it is hidden/minimized
+}
+
 void mainWindow::loadMonitors() {
     if(ui->actionMonitor->menu()==0) {
         ui->actionMonitor->setMenu( new QMenu(this) );

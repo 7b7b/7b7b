@@ -6,7 +6,7 @@
 //===========================================
 #include "page_session_options.h"
 #include "ui_page_session_options.h"
-
+#include <QStyleFactory>
 //==========
 //    PUBLIC
 //==========
@@ -19,9 +19,11 @@ page_session_options::page_session_options(QWidget *parent) : PageWidget(parent)
     ui->combo_session_datetimeorder->addItem( tr("Date (Time as tooltip)"), "dateonly");
     ui->combo_session_datetimeorder->addItem( tr("Time first then Date"), "timedate");
     ui->combo_session_datetimeorder->addItem( tr("Date first then Time"), "datetime");
-
+	
+	ui->combo_styles->clear();
+	ui->combo_styles->addItems(QStyleFactory::keys());
+	
     connect(ui->push_session_resetSysDefaults, SIGNAL(clicked()), this, SLOT(sessionResetSys()) );
-    connect(ui->push_session_resetLuminaDefaults, SIGNAL(clicked()), this, SLOT(sessionResetLumina()) );
     connect(ui->tool_help_time, SIGNAL(clicked()), this, SLOT(sessionShowTimeCodes()) );
     connect(ui->tool_help_date, SIGNAL(clicked()), this, SLOT(sessionShowDateCodes()) );
     connect(ui->line_session_time, SIGNAL(textChanged(QString)), this, SLOT(sessionLoadTimeSample()) );
@@ -31,6 +33,7 @@ page_session_options::page_session_options(QWidget *parent) : PageWidget(parent)
     connect(ui->restart_cmd, SIGNAL(textChanged(QString)), this, SLOT(settingChanged()) );
     connect(ui->lock_cmd, SIGNAL(textChanged(QString)), this, SLOT(settingChanged()) );
     connect(ui->combo_session_datetimeorder, SIGNAL(currentIndexChanged(int)), this, SLOT(settingChanged()) );
+    connect(ui->combo_styles, SIGNAL(currentIndexChanged(int)), this, SLOT(settingChanged()) );
     updateIcons();
 }
 
@@ -46,6 +49,7 @@ void page_session_options::SaveSettings() {
     sessionsettings.setValue("TimeFormat", ui->line_session_time->text());
     sessionsettings.setValue("DateFormat", ui->line_session_date->text());
     sessionsettings.setValue("DateTimeOrder", ui->combo_session_datetimeorder->currentData().toString());
+    sessionsettings.setValue("StyleApplication", ui->combo_styles->currentText());
     sessionsettings.setValue("WindowManager", ui->windowmanager->text());
     sessionsettings.setValue("ShutdownCmd", ui->shutdown_cmd->text());
     sessionsettings.setValue("RestartCmd", ui->restart_cmd->text());
@@ -62,7 +66,9 @@ void page_session_options::LoadSettings(int) {
     ui->line_session_time->setText( sessionsettings.value("TimeFormat","").toString() );
     ui->line_session_date->setText( sessionsettings.value("DateFormat","").toString() );
     int index = ui->combo_session_datetimeorder->findData( sessionsettings.value("DateTimeOrder","timeonly").toString() );
+    int indexStyle = ui->combo_styles->findText( sessionsettings.value("StyleApplication","Fusion").toString() );
     ui->combo_session_datetimeorder->setCurrentIndex(index);
+	ui->combo_styles->setCurrentIndex(indexStyle);
     ui->windowmanager->setText( sessionsettings.value("WindowManager","").toString() );
     ui->shutdown_cmd->setText( sessionsettings.value("ShutdownCmd","").toString() );
     ui->restart_cmd->setText( sessionsettings.value("RestartCmd","").toString() );
@@ -74,13 +80,6 @@ void page_session_options::LoadSettings(int) {
     sessionLoadDateSample();
     QApplication::processEvents(); //throw away any interaction events from loading
     loading = false;
-}
-
-void page_session_options::updateIcons() {
-    ui->push_session_resetSysDefaults->setIcon( LXDG::findIcon("start-here-lumina","view-refresh") );
-    ui->push_session_resetLuminaDefaults->setIcon( LXDG::findIcon("Lumina-DE","") );
-    ui->tool_help_time->setIcon( LXDG::findIcon("help-about","") );
-    ui->tool_help_date->setIcon( LXDG::findIcon("help-about","") );
 }
 
 //=================
@@ -99,14 +98,6 @@ void page_session_options::sessionResetSys() {
         return;    //cancelled
     }
     LDesktopUtils::LoadSystemDefaults();
-    QTimer::singleShot(500,this, SLOT(LoadSettings()) );
-}
-
-void page_session_options::sessionResetLumina() {
-    if( !verifySettingsReset() ) {
-        return;    //cancelled
-    }
-    LDesktopUtils::LoadSystemDefaults(true); //skip OS customizations
     QTimer::singleShot(500,this, SLOT(LoadSettings()) );
 }
 

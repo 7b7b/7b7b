@@ -83,6 +83,8 @@ void LDesktopUtils::LoadSystemDefaults(bool skipOS) {
 			sset = "RestartCmd=" + val;
 		} else if (var == "session_lockcmd"){
 			sset = "LockCmd=" + val;
+		} else if (var == "session_applicationstyle") {
+			sset = "StyleApplication=" + val;
 		}
         //Put the line into the file (overwriting any previous assignment as necessary)
         if(!sset.isEmpty()) {

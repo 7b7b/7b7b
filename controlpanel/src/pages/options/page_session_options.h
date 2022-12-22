@@ -22,7 +22,6 @@ public:
 public slots:
     void SaveSettings() override;
     void LoadSettings(int screennum = -1) override;
-    void updateIcons() override;
 
     virtual void settingChanged() {
         if(!loading) {
@@ -36,7 +35,6 @@ private:
 
 private slots:
     void sessionResetSys();
-    void sessionResetLumina();
     void sessionLoadTimeSample();
     void sessionShowTimeCodes();
     void sessionLoadDateSample();
