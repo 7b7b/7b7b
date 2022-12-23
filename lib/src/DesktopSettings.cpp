@@ -13,7 +13,7 @@
 #include <pwd.h>
 #include <grp.h>
 
-#define FILEPREFIX QString("/lumina-desktop/desktop/")
+#define FILEPREFIX QString("/7b7b-desktop/desktop/")
 
 // === PUBLIC ===
 DesktopSettings::DesktopSettings(QObject *parent) : QObject(parent) {
@@ -219,7 +219,7 @@ void DesktopSettings::parseSystemSettings() {
     else if(runmode == DesktopSettings::SystemInterface) {
         mode = "System Interface";
     }
-    qDebug() << "Detected Lumina Runtime Mode:" << mode;
+    qDebug() << "Detected 7b7b Runtime Mode:" << mode;
 }
 
 void DesktopSettings::locateFiles() {
@@ -247,7 +247,7 @@ void DesktopSettings::locateFiles() {
         if(systemdirs[i].endsWith("/xdg")) {
             systemdirs[i] = systemdirs[i].section("/",0,-2);
         }
-        if( !QFile::exists(systemdirs[i]+"/lumina-desktop") ) {
+        if( !QFile::exists(systemdirs[i]+"/7b7b-desktop") ) {
             continue;
         }
         for(int j=0; j<tmp.length(); j++) {

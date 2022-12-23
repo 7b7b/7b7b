@@ -176,5 +176,5 @@ void AppMenu::watcherUpdate() {
 
 void AppMenu::launchApp(QAction *act) {
 	QString appFile = act->whatsThis();
-	LSession::LaunchApplication("lumina-open "+appFile);
+	LSession::LaunchApplication("7b7b-open "+appFile);
 }

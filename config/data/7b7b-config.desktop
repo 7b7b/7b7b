@@ -1,12 +1,10 @@
 [Desktop Entry]
-Exec=lumina-config
+Exec=7b7b-config
 Icon=preferences-desktop
 Terminal=false
 Type=Application
 StartupNotify=true
 Categories=Settings;
 Name=Desktop Configuration
-Name[pt]=Configurar ambiente de trabalho
 Comment=Modify the desktop
-Comment[pt]=Modificar ambiente de trabalho
-OnlyShowIn=Lumina;
+OnlyShowIn=7b7b;

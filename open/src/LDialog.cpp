@@ -15,7 +15,7 @@ LDialog::LDialog(QWidget *parent) : QDialog(parent), ui(new Ui::LDialog() ) {
     appExec.clear();
     appPath.clear();
     appFile.clear();
-    settings = new QSettings("lumina-desktop", "lumina-open", this);
+    settings = new QSettings("7b7b-desktop", "7b7b-open", this);
     
     ui->label_goodbin->setPixmap(LXDG::findIcon("cancel", "").pixmap(QSize(24,24)));
     //Connect the signals/slots

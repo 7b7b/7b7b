@@ -1,12 +1,12 @@
-pkgname=lumina-fileinfo
-pkgver=1.7
+pkgname=7b7b-fileinfo
+pkgver=1.0
 pkgrel=0
 pkgdesc="File info"
 arch=("x86_64")
 license=("BSD")
 makedepends=("cmake")
 depends=(
- "liblumina"
+ "lib7b7b"
  "qt6-base"
 )
 

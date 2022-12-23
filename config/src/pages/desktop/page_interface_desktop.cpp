@@ -30,7 +30,7 @@ page_interface_desktop::~page_interface_desktop() {
 //    PUBLIC SLOTS
 //================
 void page_interface_desktop::SaveSettings() {
-    QSettings settings("lumina-desktop","desktopsettings");
+    QSettings settings("7b7b-desktop","desktopsettings");
     QString screenID = QApplication::screens().at(cscreen)->name();
     QString DPrefix = "desktop-"+screenID+"/";
 
@@ -54,7 +54,7 @@ void page_interface_desktop::LoadSettings(int screennum) {
     }
     emit HasPendingChanges(false);
     emit ChangePageTitle( tr("Desktop Settings") );
-    QSettings settings("lumina-desktop","desktopsettings");
+    QSettings settings("7b7b-desktop","desktopsettings");
     QString screenID = QApplication::screens().at(cscreen)->name();
     QString DPrefix = "desktop-"+screenID+"/";
     ui->check_desktop_autolaunchers->setChecked(settings.value(DPrefix+"generateDesktopIcons",false).toBool() );

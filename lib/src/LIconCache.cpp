@@ -91,7 +91,7 @@ QString LIconCache::findFile(QString icon) {
             for(int j=0; j<themedeps.length(); j++) {
                 theme << getChildIconDirs(paths[i]+themedeps[j]);
             }
-            oxy << getChildIconDirs(paths[i]+"material-design-light"); //Lumina base icon set
+            oxy << getChildIconDirs(paths[i]+"material-design-light"); //7b7b base icon set
             fall << getChildIconDirs(paths[i]+"hicolor"); //XDG fallback (apps add to this)
         }
         //Now load all the icon theme dependencies in order (Theme1 -> Theme2 -> Theme3 -> Fallback)

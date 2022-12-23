@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=start-7b7b-desktop
+TryExec=start-7b7b-desktop
+Icon=Lumina-DE
+Type=Application
+Name=7b7b Desktop
+Comment=A Lightweight Desktop

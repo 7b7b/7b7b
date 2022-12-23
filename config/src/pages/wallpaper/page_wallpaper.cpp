@@ -30,7 +30,7 @@ page_wallpaper::~page_wallpaper() {
 //    PUBLIC SLOTS
 //================
 void page_wallpaper::SaveSettings() {
-    QSettings settings("lumina-desktop","desktopsettings");
+    QSettings settings("7b7b-desktop","desktopsettings");
     QString screenID = QApplication::screens().at(cScreen)->name();
     QString DPrefix = "desktop-"+screenID+"/";
     QStringList bgs; //get the list of backgrounds to use
@@ -57,7 +57,7 @@ void page_wallpaper::LoadSettings(int screennum) {
     emit ChangePageTitle( tr("Wallpaper Settings") );
     cScreen = screennum; //save for later
     loading = true;
-    QSettings settings("lumina-desktop","desktopsettings");
+    QSettings settings("7b7b-desktop","desktopsettings");
     QString screenID = QApplication::screens().at(cScreen)->name();
     QString DPrefix = "desktop-"+screenID+"/";
 
@@ -245,7 +245,7 @@ void page_wallpaper::deskbgremoved() {
 
 void page_wallpaper::deskbgadded() {
     //Prompt the user to find an image file to use for a background
-    QString dir = LOS::LuminaShare().section("/lumina-desktop",0,0)+"/wallpapers";
+    QString dir = LOS::LuminaShare().section("/7b7b-desktop",0,0)+"/wallpapers";
     qDebug() << "Looking for wallpaper dir:" << dir;
     if( !QFile::exists(dir) ) {
         dir = QDir::homePath();
@@ -286,7 +286,7 @@ void page_wallpaper::deskbgcoloradded() {
 
 void page_wallpaper::deskbgdiradded() {
     //Add the files from a single directory
-    QString dir = LOS::LuminaShare().section("/lumina-desktop",0,0)+"/wallpapers";
+    QString dir = LOS::LuminaShare().section("/7b7b-desktop",0,0)+"/wallpapers";
     qDebug() << "Looking for wallpaper dir:" << dir;
     if( !QFile::exists(dir) ) {
         dir = QDir::homePath();
@@ -308,7 +308,7 @@ void page_wallpaper::deskbgdiradded() {
 
 void page_wallpaper::deskbgdirradded() {
     //Recursively add files from a directory
-    QString dir = LOS::LuminaShare().section("/lumina-desktop",0,0)+"/wallpapers";
+    QString dir = LOS::LuminaShare().section("/7b7b-desktop",0,0)+"/wallpapers";
     qDebug() << "Looking for wallpaper dir:" << dir;
     if( !QFile::exists(dir) ) {
         dir = QDir::homePath();

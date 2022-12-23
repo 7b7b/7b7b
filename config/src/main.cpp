@@ -11,7 +11,7 @@ XDGDesktopList *APPSLIST = 0;
 
 int main(int argc, char ** argv)
 {
-    LSingleApplication a(argc, argv, "lumina-config"); //loads translations inside constructor
+    LSingleApplication a(argc, argv, "7b7b-config"); //loads translations inside constructor
     if(!a.isPrimaryProcess()) {
         return 0;
     }

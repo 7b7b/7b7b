@@ -1,9 +1,9 @@
 #!/bin/sh
 
-DESKTOP_SESSION=Lumina
+DESKTOP_SESSION=7b7b
 XDG_CURRENT_DESKTOP="${DESKTOP_SESSION}"
 
 export DESKTOP_SESSION
 export XDG_CURRENT_DESKTOP
 
-lumina-desktop
+7b7b-desktop

@@ -1,6 +1,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(LUMINA_LIBS
+set(7B7B_LIBS
 	XCB::XCB
 	XCB::AUX
 	XCB::IMAGE
@@ -54,12 +54,12 @@ target_link_libraries(${PROJECT}
 	Qt6::Network
 	Qt6::Concurrent
 	Qt6::Svg
-	Lumina
-	${LUMINA_LIBS}
+	7b7b
+	${7B7B_LIBS}
 )
 
 include_directories(
-	"${CMAKE_INSTALL_FULL_INCLUDEDIR}/Lumina"
+	"${CMAKE_INSTALL_FULL_INCLUDEDIR}/7b7b"
 	${XCB_INCLUDE_DIR}
 )
 

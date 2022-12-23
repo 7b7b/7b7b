@@ -13,6 +13,9 @@
 
 #include <QSettings>
 
+#include <QDebug>
+#include <QStyleFactory>
+
 //=============
 //      PUBLIC
 //=============
@@ -35,11 +38,14 @@ mainWindow::mainWindow() : QMainWindow(), ui(new Ui::mainWindow()) {
     connect(backShortcut, SIGNAL(activated()), this, SLOT(on_actionBack_triggered()) );
     connect(quitShortcut, SIGNAL(activated()), this, SLOT(quitShortcut_Triggered()) );
     loadMonitors();
-    QSettings S("lumina-desktop","lumina-config");
+    QSettings S("7b7b-desktop","7b7b-config");
     QRect geom = S.value("window_geometry", QRect()).toRect();
     if(!geom.isNull()) {
         this->setGeometry(geom);
     }
+	
+	qDebug() << QStyleFactory::keys();
+
 }
 
 mainWindow::~mainWindow() {
@@ -124,7 +130,7 @@ void mainWindow::changePage(QString id) {
 //  PRIVATE SLOTS
 //================
 void mainWindow::saveWinGeometry() {
-    QSettings S("lumina-desktop","lumina-config");
+    QSettings S("7b7b-desktop","7b7b-config");
     S.setValue("window_geometry", this->geometry());
 }
 

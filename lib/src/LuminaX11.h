@@ -117,7 +117,7 @@ public:
 
     //== Main Interface functions ==
     // General Information
-    QList<WId> WindowList(bool rawlist = false); //list all non-Lumina windows (rawlist -> all workspaces)
+    QList<WId> WindowList(bool rawlist = false); //list all non-7b7b windows (rawlist -> all workspaces)
     unsigned int CurrentWorkspace();
     unsigned int NumberOfWorkspaces();
     WId ActiveWindow(); //fetch the ID for the currently active window

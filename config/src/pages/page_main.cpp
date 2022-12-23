@@ -180,11 +180,6 @@ void page_main::UpdateItems(QString search) {
         wid = ui->treeWidget->header()->width();
     }
     //qDebug() << "Current size:" << ui->treeWidget->size() << ui->treeWidget->header()->width() << wid;
-    if(ui->treeWidget->size().width() < wid ) {
-        // ENABLE LATER  WITH LUMINA 2.0 - Fluxbox does not like it when a window gets resized near the init routine
-        //   and moves the window slightly-offscreen (titlebar hidden)
-        //ui->treeWidget->setMinimumWidth( wid );
-    }
 }
 
 //================
@@ -211,7 +206,7 @@ void page_main::LoadSettings(int) {
     QList<XDGDesktop*> apps = APPSLIST->apps(false,false); //only valid, non-hidden files
     qDebug() << "Found Apps:" << apps.length();
     for(int i=0; i<apps.length(); i++) {
-        if( !apps[i]->catList.contains("Settings") || apps[i]->filePath.endsWith("lumina-config.desktop") ) {
+        if( !apps[i]->catList.contains("Settings") || apps[i]->filePath.endsWith("7b7b-config.desktop") ) {
             continue;
         }
         INFO << Pages::PageInfo(apps[i]->filePath, apps[i]->name, apps[i]->genericName, apps[i]->icon, apps[i]->comment, "system", QStringList(), apps[i]->keyList);
@@ -254,9 +249,8 @@ void page_main::itemTriggered(QTreeWidgetItem *it, int col) {
         it->setSelected(false);
     } else if(!it->whatsThis(col).isEmpty()) {
         QString id = it->whatsThis(col);
-        //if(id.endsWith(".desktop")){ QProcess::startDetached("lumina-open \""+id+"\""); } //external setting utility
         if(id.endsWith(".desktop")) {
-            QProcess::startDetached("lumina-open", QStringList() << id);    //external setting utility
+            QProcess::startDetached("7b7b-open", QStringList() << id);    //external setting utility
         }
         else {
             emit ChangePage(it->whatsThis(col));    //internal page

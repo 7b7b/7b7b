@@ -242,12 +242,12 @@ void XDGDesktop::sync() {
 
     file.clear(); //done with contents of file
     //If there are OnlyShowIn desktops listed, add them to the name
-    if( !showInList.isEmpty() && !showInList.contains("Lumina", Qt::CaseInsensitive) ) {
+    if( !showInList.isEmpty() && !showInList.contains("7b7b", Qt::CaseInsensitive) ) {
         name.append(" ("+showInList.join(", ")+")");
     }
     //Quick fix for showing "wine" applications (which quite often don't list a category, or have other differences)
     if(catList.isEmpty() && filePath.contains("/wine/")) {
-        catList << "Wine"; //Internal Lumina category only (not in XDG specs as of 11/14/14)
+        catList << "Wine"; //Internal 7b7b category only (not in XDG specs as of 11/14/14)
         //Also add a fix for the location of Wine icons
         if( !icon.isEmpty() ) {
             QStringList sizes;
@@ -302,7 +302,7 @@ bool XDGDesktop::isValid(bool showAll) {
     if(!showAll) {
         QString cdesk = getenv("XDG_CURRENT_DESKTOP");
         if(cdesk.isEmpty()) {
-            cdesk="Lumina";
+            cdesk="7b7b";
         }
         if(!showInList.isEmpty()) {
             ok = showInList.contains(cdesk, Qt::CaseInsensitive);
@@ -716,9 +716,9 @@ bool XDGDesktop::setAutoStarted(bool autostart) {
     }
     //Make sure the user-autostart dir is specified, and clean the app structure as necessary
     if( !filePath.startsWith(upath) && autostart) {
-        //Some other non-override autostart file - set it up to open with lumina-open
+        //Some other non-override autostart file - set it up to open with 7b7b-open
         if(!filePath.endsWith(".desktop")) {
-            exec = "lumina-open "+filePath;
+            exec = "7b7b-open "+filePath;
             tryexec = filePath; //make sure this file exists
             if(name.isEmpty()) {
                 name = filePath.section("/",-1);
@@ -732,7 +732,7 @@ bool XDGDesktop::setAutoStarted(bool autostart) {
         } else {
             //Some other *.desktop file on the system (keep almost all the existing settings/values)
             // - setup a redirect to the other file
-            exec = "lumina-open "+filePath;
+            exec = "7b7b-open "+filePath;
             tryexec = filePath; //make sure this file exists
             // - Adjust the actual path where this file will get saved
             filePath = upath+filePath.section("/",-1);
@@ -1474,18 +1474,18 @@ QString LXDG::findMimeComment(QString mime) {
 QString LXDG::findDefaultAppForMime(QString mime) {
     //First get the priority-ordered list of default file locations
     QStringList dirs;
-    dirs << QString(getenv("XDG_CONFIG_HOME"))+"/lumina-mimeapps.list" \
-         << QString(getenv("XDG_DATA_HOME"))+"/applications/lumina-mimeapps.list" \
+    dirs << QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-mimeapps.list" \
+         << QString(getenv("XDG_DATA_HOME"))+"/applications/7b7b-mimeapps.list" \
          << QString(getenv("XDG_CONFIG_HOME"))+"/mimeapps.list" \
          << QString(getenv("XDG_DATA_HOME"))+"/applications/mimeapps.list";
     QStringList tmp = QString(getenv("XDG_CONFIG_DIRS")).split(":");
     for(int i=0; i<tmp.length(); i++) {
-        dirs << tmp[i]+"/lumina-mimeapps.list";
+        dirs << tmp[i]+"/7b7b-mimeapps.list";
         dirs << tmp[i]+"/mimeapps.list";
     }
     tmp = QString(getenv("XDG_DATA_DIRS")).split(":");
     for(int i=0; i<tmp.length(); i++) {
-        dirs << tmp[i]+"/applications/lumina-mimeapps.list";
+        dirs << tmp[i]+"/applications/7b7b-mimeapps.list";
         dirs << tmp[i]+"/applications/mimeapps.list";
     }
 
@@ -1590,11 +1590,11 @@ QStringList LXDG::findAvailableAppsForMime(QString mime) {
 
 void LXDG::setDefaultAppForMime(QString mime, QString app) {
     //qDebug() << "Set Default App For Mime:" << mime << app;
-    QString filepath = QString(getenv("XDG_CONFIG_HOME"))+"/lumina-mimeapps.list";
+    QString filepath = QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-mimeapps.list";
     QStringList cinfo = LUtils::readFile(filepath);
     //If this is a new file, make sure to add the header appropriately
     if(cinfo.isEmpty()) {
-        cinfo << "#Automatically generated with lumina-config" << "# DO NOT CHANGE MANUALLY" << "[Default Applications]";
+        cinfo << "#Automatically generated with 7b7b-config" << "# DO NOT CHANGE MANUALLY" << "[Default Applications]";
     }
     //Check for any current entry for this mime type
     QStringList tmp = cinfo.filter(mime+"=");
@@ -1660,7 +1660,7 @@ QStringList LXDG::loadMimeFileGlobs2() {
                 file.close();
             }
             if(i==dirs.length()-1 && mimeglobs.isEmpty()) {
-                //Could not find the mimetype database on the system - use the fallback file distributed with Lumina
+                //Could not find the mimetype database on the system - use the fallback file distributed with 7b7b
                 dirs << LOS::LuminaShare();
             }
         }//end loop over dirs

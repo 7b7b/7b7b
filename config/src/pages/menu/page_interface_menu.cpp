@@ -32,7 +32,7 @@ page_interface_menu::~page_interface_menu() {
 //    PUBLIC SLOTS
 //================
 void page_interface_menu::SaveSettings() {
-    QSettings settings("lumina-desktop","desktopsettings");
+    QSettings settings("7b7b-desktop","desktopsettings");
     QStringList items;
     for(int i=0; i<ui->list_menu->count(); i++) {
         items << ui->list_menu->item(i)->whatsThis();
@@ -44,7 +44,7 @@ void page_interface_menu::SaveSettings() {
 void page_interface_menu::LoadSettings(int) {
     emit HasPendingChanges(false);
     emit ChangePageTitle( tr("Desktop Settings") );
-    QSettings settings("lumina-desktop","desktopsettings");
+    QSettings settings("7b7b-desktop","desktopsettings");
 
     QStringList items = settings.value("menu/itemlist", QStringList() ).toStringList();
     if(items.isEmpty()) {

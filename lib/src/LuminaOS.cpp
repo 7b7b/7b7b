@@ -15,7 +15,7 @@ QString LOS::OSName() {
 
 //OS-specific prefix(s)
 QString LOS::LuminaShare() {
-    return (L_SHAREDIR+"/lumina-desktop/");    //Install dir for Lumina share files
+    return (L_SHAREDIR+"/7b7b-desktop/");    //Install dir for 7b7b share files
 }
 QString LOS::AppPrefix() {
     return "/usr/";    //Prefix for applications

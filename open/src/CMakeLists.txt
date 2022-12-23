@@ -1,6 +1,6 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(LUMINA_LIBS
+set(7B7B_LIBS
 	XCB::XCB
 	XCB::AUX
 	XCB::IMAGE
@@ -22,13 +22,13 @@ add_executable(${PROJECT}
 # Add the dependencies for linking
 target_link_libraries(${PROJECT}
 	Qt6::Widgets
-	Lumina
-	${LUMINA_LIBS}
+	7b7b
+	${7B7B_LIBS}
 )
 
 # Include header files
 include_directories(
-    "${CMAKE_INSTALL_FULL_INCLUDEDIR}/Lumina"
+    "${CMAKE_INSTALL_FULL_INCLUDEDIR}/7b7b"
 )
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

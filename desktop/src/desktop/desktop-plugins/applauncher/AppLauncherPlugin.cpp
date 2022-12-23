@@ -260,11 +260,9 @@ void AppLauncherPlugin::buttonClicked(bool openwith) {
         this->saveSetting("applicationpath", apps[ names.indexOf(app) ]->filePath);
         QTimer::singleShot(0,this, SLOT(loadButton()));
     } else if(openwith) {
-        LSession::LaunchApplication("lumina-open -select "+path);
-        //QProcess::startDetached("lumina-open", QStringList() << "-select" << path);
+        LSession::LaunchApplication("7b7b-open -select "+path);
     } else {
-        LSession::LaunchApplication("lumina-open "+path);
-        //QProcess::startDetached("lumina-open", QStringList() << path);
+        LSession::LaunchApplication("7b7b-open "+path);
     }
     qDebug() << path;
 
@@ -309,7 +307,7 @@ void AppLauncherPlugin::actionTriggered(QAction *act) {
     if(path.isEmpty() || !QFile::exists(path)) {
         return;    //invalid file
     }
-    LSession::LaunchApplication("lumina-open -action "+act->whatsThis()+" "+path);
+    LSession::LaunchApplication("7b7b-open -action "+act->whatsThis()+" "+path);
 }
 
 void AppLauncherPlugin::openWith() {
@@ -321,7 +319,7 @@ void AppLauncherPlugin::fileProperties() {
     if(path.isEmpty() || !QFile::exists(path)) {
         return;    //invalid file
     }
-    LSession::LaunchApplication("lumina-fileinfo " +path.replace('"', ""));
+    LSession::LaunchApplication("7b7b-fileinfo " +path.replace('"', ""));
 }
 
 void AppLauncherPlugin::fileDelete() {
@@ -345,7 +343,7 @@ void AppLauncherPlugin::fileCut() {
     //Now save that data to the global clipboard
     QMimeData *dat = new QMimeData;
     dat->clear();
-    dat->setData("x-special/lumina-copied-files", path.toLocal8Bit());
+    dat->setData("x-special/7b7b-copied-files", path.toLocal8Bit());
     dat->setUrls(urilist); //the text/uri-list mimetype - built in Qt conversion/use
     QApplication::clipboard()->clear();
     QApplication::clipboard()->setMimeData(dat);
@@ -359,7 +357,7 @@ void AppLauncherPlugin::fileCopy() {
     //Now save that data to the global clipboard
     QMimeData *dat = new QMimeData;
     dat->clear();
-    dat->setData("x-special/lumina-copied-files", path.toLocal8Bit());
+    dat->setData("x-special/7b7b-copied-files", path.toLocal8Bit());
     dat->setUrls(urilist); //the text/uri-list mimetype - built in Qt conversion/use
     QApplication::clipboard()->clear();
     QApplication::clipboard()->setMimeData(dat);

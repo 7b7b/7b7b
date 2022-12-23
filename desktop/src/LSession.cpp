@@ -27,13 +27,13 @@
 XCBEventFilter *evFilter = 0;
 LIconCache *ICONS = 0;
 
-LSession::LSession(int &argc, char ** argv) : LSingleApplication(argc, argv, "lumina-desktop") {
+LSession::LSession(int &argc, char ** argv) : LSingleApplication(argc, argv, "7b7b-desktop") {
     xchange = false;
     if(this->isPrimaryProcess()) {
         connect(this, SIGNAL(InputsAvailable(QStringList)), this, SLOT(NewCommunication(QStringList)) );
-        this->setApplicationName("Lumina Desktop Environment");
+        this->setApplicationName("7b7b Desktop Environment");
         this->setApplicationVersion( LDesktopUtils::LuminaDesktopVersion() );
-        this->setOrganizationName("LuminaDesktopEnvironment");
+        this->setOrganizationName("7b7bDesktopEnvironment");
         this->setQuitOnLastWindowClosed(false); //since the LDesktop's are not necessarily "window"s
         //Enabled a few of the simple effects by default
         this->setEffectEnabled( Qt::UI_AnimateMenu, true);
@@ -90,8 +90,8 @@ void LSession::setupSession() {
     QRandomGenerator( QTime::currentTime().msec() );
 
     qDebug() << "Initializing Session";
-    if(QFile::exists("/tmp/.luminastopping")) {
-        QFile::remove("/tmp/.luminastopping");
+    if(QFile::exists("/tmp/.7b7bstopping")) {
+        QFile::remove("/tmp/.7b7bstopping");
     }
     QElapsedTimer* timer = 0;
     if(DEBUG) {
@@ -100,8 +100,8 @@ void LSession::setupSession() {
         qDebug() << " - Init srand:" << timer->elapsed();
     }
 
-    sessionsettings = new QSettings("lumina-desktop", "sessionsettings");
-    DPlugSettings = new QSettings("lumina-desktop","pluginsettings/desktopsettings");
+    sessionsettings = new QSettings("7b7b-desktop", "sessionsettings");
+    DPlugSettings = new QSettings("7b7b-desktop","pluginsettings/desktopsettings");
     //Load the proper translation files
     if(sessionsettings->value("ForceInitialLocale",false).toBool()) {
         //Some system locale override it in place - change the env first
@@ -184,7 +184,7 @@ void LSession::CleanupSession() {
     //Close any running applications and tray utilities (Make sure to keep the UI interactive)
     LSession::processEvents();
     //Create a temporary flag to prevent crash dialogs from opening during cleanup
-    LUtils::writeFile("/tmp/.luminastopping",QStringList() << "yes", true);
+    LUtils::writeFile("/tmp/.7b7bstopping",QStringList() << "yes", true);
 
     //Stop the background system tray (detaching/closing apps as necessary)
     stopSystemTray(!cleansession);
@@ -226,8 +226,8 @@ void LSession::CleanupSession() {
         usleep(25000);
     }
     //Clean up the temporary flag
-    if(QFile::exists("/tmp/.luminastopping")) {
-        QFile::remove("/tmp/.luminastopping");
+    if(QFile::exists("/tmp/.7b7bstopping")) {
+        QFile::remove("/tmp/.7b7bstopping");
     }
 }
 
@@ -348,7 +348,7 @@ void LSession::checkWindowGeoms() {
 
 bool LSession::checkUserFiles() {
     qDebug() << "Check User Files";
-    QSettings sset("lumina-desktop", "sessionsettings");
+    QSettings sset("7b7b-desktop", "sessionsettings");
     QString OVS = sset.value("DesktopVersion","0").toString(); //Old Version String
     qDebug() << " - Old Version:" << OVS;
     qDebug() << " - Current Version:" << LDesktopUtils::LuminaDesktopVersion();
@@ -378,7 +378,7 @@ void LSession::updateDesktops() {
     }
 
     bool firstrun = (DESKTOPS.length()==0);
-    QSettings dset("lumina-desktop", "desktopsettings");
+    QSettings dset("7b7b-desktop", "desktopsettings");
     if(firstrun && sC==1) {
         //Sanity check - ensure the monitor ID did not change between sessions for single-monitor setups
         QString name = QApplication::screens().at(0)->name();

@@ -7,7 +7,6 @@
 #ifndef _LUMINA_CONFIG_MAIN_WINDOW_H
 #define _LUMINA_CONFIG_MAIN_WINDOW_H
 #include "globals.h"
-//#include "pages/getPage.h"
 
 #include <QResizeEvent>
 #include <QMoveEvent>

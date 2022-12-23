@@ -30,7 +30,7 @@ LDesktop::LDesktop(int deskNum, bool setdefault)
     usewinmenu=false;
     desktopFolderActionMenu = 0;
     //Setup the internal variables
-    settings = new QSettings(QSettings::UserScope, "lumina-desktop","desktopsettings", this);
+    settings = new QSettings(QSettings::UserScope, "7b7b-desktop","desktopsettings", this);
     //qDebug() << " - Desktop Settings File:" << settings->fileName();
     if(!QFile::exists(settings->fileName())) {
         settings->setValue(DPREFIX+"background/filelist",QStringList()<<"default");
@@ -124,22 +124,22 @@ void LDesktop::SystemLogout() {
 }
 
 void LDesktop::SystemPreferences() {
-    LSession::LaunchApplication("lumina-config");
+    LSession::LaunchApplication("7b7b-config");
 }
 
 void LDesktop::SystemTerminal() {
     LSession::handle()->sessionSettings()->sync(); //make sure it is up to date
     QString term = LXDG::findDefaultAppForMime("application/terminal");
-    LSession::LaunchApplication("lumina-open " + term);
+    LSession::LaunchApplication("7b7b-open " + term);
 }
 
 void LDesktop::SystemFileManager() {
-    LSession::LaunchApplication("lumina-open " + QDir::homePath());
+    LSession::LaunchApplication("7b7b-open " + QDir::homePath());
 }
 
 void LDesktop::SystemApplication(QAction* act) {
     if(!act->whatsThis().isEmpty() && act->parent()==deskMenu) {
-        LSession::LaunchApplication("lumina-open " + act->whatsThis());
+        LSession::LaunchApplication("7b7b-open " + act->whatsThis());
     }
 }
 
@@ -188,7 +188,7 @@ void LDesktop::checkResolution() {
         for(int i=0; i<files.length(); i++) {
             plugs << "applauncher::"+files[i].absoluteFilePath()+"---"+DPREFIX;
         }
-        //QString pspath = QDir::homePath()+"/.lumina/desktop-plugins/%1.conf";
+
         QSettings *DP = LSession::handle()->DesktopPluginSettings();
         QStringList keys = DP->allKeys();
         for(int i=0; i<plugs.length(); i++) {
@@ -753,8 +753,8 @@ void LDesktop::NewDesktopFile(QString name) {
 void LDesktop::PasteInDesktop() {
     const QMimeData *mime = QApplication::clipboard()->mimeData();
     QStringList files;
-    if(mime->hasFormat("x-special/lumina-copied-files")) {
-        files = QString(mime->data("x-special/lumina-copied-files")).split("\n");
+    if(mime->hasFormat("x-special/7b7b-copied-files")) {
+        files = QString(mime->data("x-special/7b7b-copied-files")).split("\n");
     } else if(mime->hasUrls()) {
         QList<QUrl> urls = mime->urls();
         for(int i=0; i<urls.length(); i++) {

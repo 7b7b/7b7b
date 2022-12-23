@@ -41,12 +41,9 @@ void page_defaultapps::LoadSettings(int) {
     emit HasPendingChanges(false);
     emit ChangePageTitle( tr("Default Applications") );
 
-    //First load the lumina-open specific defaults
+    //First load the 7b7b-open specific defaults
     //  - Default File Manager
     defaultFileManager = LXDG::findDefaultAppForMime("inode/directory");
-    if(defaultFileManager.isEmpty()) {
-        defaultFileManager = "lumina-fm";
-    }
     updateDefaultButton(ui->tool_default_filemanager, defaultFileManager);
 
     // - Default Terminal
@@ -203,9 +200,6 @@ void page_defaultapps::changeDefaultFileManager() {
     QString app = getSysApp(true, defaultFileManager);
     if(app.isEmpty()) {
         return;    //nothing selected
-    }
-    if(app=="reset") {
-        app = "lumina-fm";
     }
     //save the new app setting and adjust the button appearance
     defaultFileManager = app;

@@ -358,7 +358,7 @@ QStringList LUtils::knownLocales() {
     if( !i18n.exists() ) {
         return QStringList();
     }
-    QStringList files = i18n.entryList(QStringList() << "lumina-desktop_*.qm", QDir::Files, QDir::Name);
+    QStringList files = i18n.entryList(QStringList() << "7b7b-desktop_*.qm", QDir::Files, QDir::Name);
     if(files.isEmpty()) {
         return QStringList();
     }

@@ -16,9 +16,9 @@
 //      PUBLIC
 // ===================
 LDesktopPluginSpace::LDesktopPluginSpace() : QWidget() {
-    this->setObjectName("LuminaDesktopPluginSpace");
+    this->setObjectName("7b7bDesktopPluginSpace");
     this->setAutoFillBackground(false);
-    this->setStyleSheet("QWidget#LuminaDesktopPluginSpace{ border: none; background: transparent; }");
+    this->setStyleSheet("QWidget#7b7bDesktopPluginSpace{ border: none; background: transparent; }");
     this->setWindowFlags(Qt::WindowStaysOnBottomHint | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     this->setAcceptDrops(true);
     this->setContextMenuPolicy(Qt::NoContextMenu);

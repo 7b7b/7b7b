@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.8.2)
-set(PROJECT lumina-config)
+set(PROJECT 7b7b-config)
 project(${PROJECT})
 
 # Find includes in the build directories
@@ -12,11 +12,11 @@ set(CMAKE_AUTORCC ON)
 
 # Add a compiler flag
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-set(CMAKE_MODULE_PATH "/usr/lib/cmake/Lumina;${CMAKE_MODULE_PATH}")
+set(CMAKE_MODULE_PATH "/usr/lib/cmake/7b7b;${CMAKE_MODULE_PATH}")
 
 # Dependencies
 find_package(Qt6 REQUIRED COMPONENTS Widgets Network Concurrent)
-find_package(Lumina REQUIRED)
+find_package(7b7b REQUIRED)
 find_package(X11 REQUIRED)
 find_package(
 	XCB
@@ -35,4 +35,4 @@ find_package(
 
 add_subdirectory(src)
 
-install(FILES "data/lumina-config.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
+install(FILES "data/7b7b-config.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")

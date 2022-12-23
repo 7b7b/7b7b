@@ -12,7 +12,7 @@
 #include <QSettings>
 
 QString LDesktopUtils::LuminaDesktopVersion() {
-    QString ver = "1.7.0";
+    QString ver = "1.0.0";
     return ver;
 }
 
@@ -24,7 +24,7 @@ void LDesktopUtils::LoadSystemDefaults(bool skipOS) {
     //Will create the Lumina configuration files based on the current system template (if any)
     qDebug() << "Loading System Defaults";
     //Ensure that the settings directory exists
-    QString setdir = QString(getenv("XDG_CONFIG_HOME"))+"/lumina-desktop";
+    QString setdir = QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-desktop";
     if(!QFile::exists(setdir)) {
         QDir dir;
         dir.mkpath(setdir);
@@ -33,7 +33,7 @@ void LDesktopUtils::LoadSystemDefaults(bool skipOS) {
     QStringList sysDefaults;
 
     if(!skipOS) {
-		sysDefaults = LUtils::readFile(LOS::LuminaShare()+"luminaDesktop.conf");
+		sysDefaults = LUtils::readFile(LOS::LuminaShare()+"7b7bDesktop.conf");
     }
 
     //Find the number of the left-most desktop screen
@@ -249,13 +249,13 @@ bool LDesktopUtils::checkUserFiles(QString lastversion, QString currentversion) 
     bool firstrun = false;
 
     //Check for the desktop settings file
-    QString dset = QString(getenv("XDG_CONFIG_HOME"))+"/lumina-desktop/desktopsettings.conf";
+    QString dset = QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-desktop/desktopsettings.conf";
     if(!QFile::exists(dset)) {
         firstrun = true;
         LDesktopUtils::LoadSystemDefaults();
     }
     if(firstrun) {
-        qDebug() << "First time using Lumina!!";
+        qDebug() << "First time using 7b7b!!";
     }
     return (firstrun || newversion || newrelease);
 }

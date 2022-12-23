@@ -63,7 +63,7 @@ void LAppMenuPlugin::LaunchItem(QAction* item) {
             LSession::handle()->systemWindow();
         }
     } else if(!appFile.isEmpty()) {
-        LSession::LaunchApplication("lumina-open "+appFile);
+        LSession::LaunchApplication("7b7b-open "+appFile);
     }
 }
 

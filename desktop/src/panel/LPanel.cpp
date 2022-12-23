@@ -32,7 +32,7 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     screenID = scr;
     panelnum = num; //save for later
 
-	panel_csstyle  = "QWidget#LuminaPanelColor{ background: %1; }";
+	panel_csstyle  = "QWidget#7b7bPanelColor{ background: %1; }";
 
     QString lscreenID = QApplication::screens().at(Screen())->name();
     PPREFIX = "panel_"+lscreenID+"."+QString::number(num)+"/";
@@ -56,10 +56,10 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     this->setAutoFillBackground(false);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
 
-    this->setWindowTitle("LuminaPanel");
-    this->setObjectName("LuminaPanelBackgroundWidget");
-    this->setStyleSheet("QToolButton::menu-indicator{ image: none; } QWidget#LuminaPanelBackgroundWidget{ background: transparent; }");
-    panelArea->setObjectName("LuminaPanelColor");
+    this->setWindowTitle("7b7bPanel");
+    this->setObjectName("7b7bPanelBackgroundWidget");
+    this->setStyleSheet("QToolButton::menu-indicator{ image: none; } QWidget#7b7bPanelBackgroundWidget{ background: transparent; }");
+    panelArea->setObjectName("7b7bPanelColor");
     layout = new QBoxLayout(QBoxLayout::LeftToRight);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(1);

@@ -35,7 +35,7 @@ DesktopViewPlugin::DesktopViewPlugin(QWidget* parent, QString ID) : LDPlugin(par
     menu->addSeparator();
     menu->addAction( LXDG::findIcon("edit-delete",""), tr("Delete"), this, SLOT(deleteItems()) );
     menu->addSeparator();
-    if(LUtils::isValidBinary("lumina-fileinfo")) {
+    if(LUtils::isValidBinary("7b7b-fileinfo")) {
         menu->addAction( LXDG::findIcon("system-search",""), tr("Properties"), this, SLOT(displayProperties()) );
     }
     this->layout()->addWidget(list);
@@ -53,7 +53,7 @@ DesktopViewPlugin::~DesktopViewPlugin() {
 void DesktopViewPlugin::runItems() {
     QList<QListWidgetItem*> sel = list->selectedItems();
     for(int i=0; i<sel.length(); i++) {
-        LSession::LaunchApplication("lumina-open \""+sel[i]->whatsThis()+"\"");
+        LSession::LaunchApplication("7b7b-open \""+sel[i]->whatsThis()+"\"");
     }
 }
 
@@ -70,7 +70,7 @@ void DesktopViewPlugin::copyItems() {
     //Now save that data to the global clipboard
     QMimeData *dat = new QMimeData;
     dat->clear();
-    dat->setData("x-special/lumina-copied-files", items.join("\n").toLocal8Bit());
+    dat->setData("x-special/7b7b-copied-files", items.join("\n").toLocal8Bit());
     QApplication::clipboard()->clear();
     QApplication::clipboard()->setMimeData(dat);
 }
@@ -88,7 +88,7 @@ void DesktopViewPlugin::cutItems() {
     //Now save that data to the global clipboard
     QMimeData *dat = new QMimeData;
     dat->clear();
-    dat->setData("x-special/lumina-copied-files", items.join("\n").toLocal8Bit());
+    dat->setData("x-special/7b7b-copied-files", items.join("\n").toLocal8Bit());
     QApplication::clipboard()->clear();
     QApplication::clipboard()->setMimeData(dat);
 }
@@ -221,6 +221,6 @@ void DesktopViewPlugin::updateContents() {
 void DesktopViewPlugin::displayProperties() {
     QList<QListWidgetItem*> sel = list->selectedItems();
     for(int i=0; i<sel.length(); i++) {
-        LSession::LaunchApplication("lumina-fileinfo \""+sel[i]->whatsThis());
+        LSession::LaunchApplication("7b7b-fileinfo \""+sel[i]->whatsThis());
     }
 }

@@ -16,9 +16,9 @@
 #define DEBUG 0
 
 void printUsageInfo() {
-    qDebug() << "lumina-open: Application launcher for the Lumina Desktop Environment";
+    qDebug() << "7b7b-open: Application launcher for the 7b7b Desktop Environment";
     qDebug() << "Description: Given a file (with absolute path) or URL, this utility will try to find the appropriate application with which to open the file. If the file is a *.desktop application shortcut, it will just start the application appropriately. It can also perform a few specific system operations if given special flags.";
-    qDebug() << "Usage: lumina-open [-select] [-action <ActionID>] <absolute file path or URL>";
+    qDebug() << "Usage: 7b7b-open [-select] [-action <ActionID>] <absolute file path or URL>";
     qDebug() << "  [-select] (optional) flag to bypass any default application settings and show the application selector window";
     qDebug() << "  [-action <ActionID>] (optional) Flag to run one of the alternate Actions listed in a .desktop registration file rather than the main command.";
     exit(1);
@@ -60,7 +60,7 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
             if(DF.isValid()) {
                 QString exec = DF.getDesktopExec();
                 if(!exec.isEmpty()) {
-                    if(DEBUG) qDebug() << "[lumina-open] Using default application:" << DF.name << "File:" << inFile;
+                    if(DEBUG) qDebug() << "[7b7b-open] Using default application:" << DF.name << "File:" << inFile;
                     if(!DF.path.isEmpty()) {
                         path = DF.path;
                     }
@@ -70,7 +70,7 @@ QString cmdFromUser(int argc, char **argv, QString inFile, QString extension, QS
         } else {
             //Only binary given
             if(LUtils::isValidBinary(defApp)) {
-                if(DEBUG) qDebug() << "[lumina-open] Using default application:" << defApp << "File:" << inFile;
+                if(DEBUG) qDebug() << "[7b7b-open] Using default application:" << defApp << "File:" << inFile;
                 return defApp; //just use the binary
             }
         }
@@ -262,7 +262,7 @@ void getCMD(int argc, char ** argv, QString& binary, QString& args, QString& pat
     //Now assemble the exec string (replace file/url field codes as necessary)
     if(useInputFile) {
         args = inFile; //just to keep them distinct internally
-        // NOTE: lumina-open is only designed for a single input file,
+        // NOTE: 7b7b-open is only designed for a single input file,
         //    so no need to distinguish between the list codes (uppercase)
         //    and the single-file codes (lowercase)
         //Special "inFile" format replacements for input codes
@@ -320,11 +320,11 @@ int main(int argc, char **argv) {
         ShowErrorDialog(argc,argv, QString(QObject::tr("Could not find \"%1\". Please ensure it is installed first.")).arg(bin)+"\n\n"+cmd);
         return 1;
     }
-    if(DEBUG) qDebug() << "[lumina-open] Running Cmd:" << cmd;
+    if(DEBUG) qDebug() << "[7b7b-open] Running Cmd:" << cmd;
     int retcode = 0;
     //Provide an override file for never watching running processes.
     if(watch) {
-        watch = !QFile::exists( QString(getenv("XDG_CONFIG_HOME"))+"/lumina-desktop/nowatch" );
+        watch = !QFile::exists( QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-desktop/nowatch" );
     }
     //Do the slimmer run routine if no watching needed
     if(!watch && path.isEmpty()) {
@@ -368,11 +368,11 @@ int main(int argc, char **argv) {
             }
         }
         //qDebug() << "[lumina-open] Finished Cmd:" << cmd << retcode << p->exitStatus();
-        if( QFile::exists("/tmp/.luminastopping") ) {
+        if( QFile::exists("/tmp/.7b7bstopping") ) {
             watch = false;    //closing down session - ignore "crashes" (app could have been killed during cleanup)
         }
         if( (retcode < 0) && watch) { //-1 is used internally for crashed processes - most apps return >=0
-            qDebug() << "[lumina-open] Application Error:" << retcode;
+            qDebug() << "[7b7b-open] Application Error:" << retcode;
             //Setup the application
             QApplication App(argc, argv);
             QMessageBox dlg(QMessageBox::Critical, QObject::tr("Application Error"), QObject::tr("The following application experienced an error and needed to close:")+"\n\n"+cmd );

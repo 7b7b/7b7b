@@ -14,9 +14,6 @@
 #include <unistd.h> //for getuid()
 
 LSingleApplication::LSingleApplication(int &argc, char **argv, QString appname) : QApplication(argc, argv) {
-    //Load the proper translation systems
-    //this->setAttribute(Qt::AA_UseHighDpiPixmaps);
-    //if(appname!="lumina-desktop"){ cTrans = LUtils::LoadTranslation(this, appname); }//save the translator for later
     //Initialize a couple convenience internal variables
     cfile = getLockfileName(this->applicationName()); //do not allow masking the utility name
     lockfile = new QLockFile(cfile+"-lock");

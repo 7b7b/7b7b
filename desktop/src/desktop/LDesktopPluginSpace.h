@@ -21,7 +21,7 @@
 
 #include "desktop-plugins/LDPlugin.h"
 
-#define MIMETYPE QString("x-special/lumina-desktop-plugin")
+#define MIMETYPE QString("x-special/7b7b-desktop-plugin")
 
 class LDesktopPluginSpace : public QWidget {
     Q_OBJECT

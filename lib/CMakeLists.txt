@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-set(PROJECT Lumina)
+set(PROJECT 7b7b)
 project(${PROJECT})
 
 # CMake Settings (policies to do AUTOMOC as much as possible)

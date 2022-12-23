@@ -31,12 +31,12 @@ int main(int argc, char ** argv)
         }
     }
     if(!QFile::exists(LOS::LuminaShare())) {
-        qDebug() << "Lumina does not appear to be installed correctly. Cannot find: " << LOS::LuminaShare();
+        qDebug() << "7b7b does not appear to be installed correctly. Cannot find: " << LOS::LuminaShare();
         return 1;
     }
     //Setup any pre-QApplication initialization values
     LXDG::setEnvironmentVars();
-	QSettings* sessionsettings = new QSettings("lumina-desktop", "sessionsettings");
+	QSettings* sessionsettings = new QSettings("7b7b-desktop", "sessionsettings");
 
 	const char* style = sessionsettings->value("StyleApplication","Fusion").toString().toStdString().c_str();
 
@@ -62,6 +62,6 @@ int main(int argc, char ** argv)
     }
     int retCode = a.exec();
     //qDebug() << "Stopping the window manager";
-    qDebug() << "Finished Closing Down Lumina";
+    qDebug() << "Finished Closing Down 7b7b";
     return retCode;
 }

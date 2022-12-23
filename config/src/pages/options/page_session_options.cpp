@@ -45,7 +45,7 @@ page_session_options::~page_session_options() {
 //    PUBLIC SLOTS
 //================
 void page_session_options::SaveSettings() {
-    QSettings sessionsettings("lumina-desktop","sessionsettings");
+    QSettings sessionsettings("7b7b-desktop","sessionsettings");
     sessionsettings.setValue("TimeFormat", ui->line_session_time->text());
     sessionsettings.setValue("DateFormat", ui->line_session_date->text());
     sessionsettings.setValue("DateTimeOrder", ui->combo_session_datetimeorder->currentData().toString());
@@ -62,7 +62,7 @@ void page_session_options::LoadSettings(int) {
     emit HasPendingChanges(false);
     emit ChangePageTitle( tr("Desktop Settings") );
     loading = true;
-    QSettings sessionsettings("lumina-desktop","sessionsettings");
+    QSettings sessionsettings("7b7b-desktop","sessionsettings");
     ui->line_session_time->setText( sessionsettings.value("TimeFormat","").toString() );
     ui->line_session_date->setText( sessionsettings.value("DateFormat","").toString() );
     int index = ui->combo_session_datetimeorder->findData( sessionsettings.value("DateTimeOrder","timeonly").toString() );
@@ -74,7 +74,7 @@ void page_session_options::LoadSettings(int) {
     ui->restart_cmd->setText( sessionsettings.value("RestartCmd","").toString() );
     ui->lock_cmd->setText( sessionsettings.value("LockCmd","").toString() );
 
-    QString lopenWatchFile = QString(getenv("XDG_CONFIG_HOME"))+"/lumina-desktop/nowatch";
+    QString lopenWatchFile = QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-desktop/nowatch";
 
     sessionLoadTimeSample();
     sessionLoadDateSample();

@@ -12,10 +12,8 @@
 #include <QObject>
 #include <QImage>
 #include <QApplication>
-//#include <QDesktopWidget>
+
 #include <QScreen>
-
-
 
 //XCB Library includes
 #include <xcb/xcb.h>
@@ -93,8 +91,8 @@ QList<WId> LXCB::WindowList(bool rawlist) {
         //qDebug() << " - Loop over items";
         unsigned int wkspace = CurrentWorkspace();
         for(unsigned int i=0; i<winlist.windows_len; i++) {
-            //Filter out the Lumina Desktop windows
-            if(WindowClass(winlist.windows[i]) == "Lumina Desktop Environment") {
+            //Filter out the 7b7b Desktop windows
+            if(WindowClass(winlist.windows[i]) == "7b7b Desktop Environment") {
                 continue;
             }
             //Also filter out windows not on the active workspace
