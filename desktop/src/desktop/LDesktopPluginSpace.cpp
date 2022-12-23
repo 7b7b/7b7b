@@ -9,7 +9,6 @@
 #include "desktop-plugins/NewDP.h"
 
 #include <LuminaXDG.h>
-//#include <QDesktopWidget>
 
 #define DEBUG 0
 

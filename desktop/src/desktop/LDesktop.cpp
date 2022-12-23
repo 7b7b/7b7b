@@ -238,11 +238,11 @@ void LDesktop::InitDesktop() {
     connect(QApplication::instance(), SIGNAL(WorkspaceChanged()), this, SLOT(UpdateBackground()) );
     bgDesktop = new LDesktopPluginSpace();
     int grid = settings->value(DPREFIX+"GridSize",-1).toInt();
-    if(grid<0 && QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
-        grid = 200;
-    }
-    else if(grid<0) {
+    if(grid<0) {
         grid = 100;
+        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000){
+			grid = 200;
+		}
     }
     bgDesktop->SetIconSize( grid );
     bgDesktop->setContextMenuPolicy(Qt::CustomContextMenu);

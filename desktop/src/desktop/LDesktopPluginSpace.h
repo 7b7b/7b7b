@@ -134,19 +134,13 @@ private:
     bool ValidGrid(QRect grid) {
         //qDebug() << "Check Valid Grid:" << grid << RoundUp(this->width()/GRIDSIZE) << RoundUp(this->height()/GRIDSIZE);
         //This just checks that the grid coordinates are not out of bounds - should still run ValidGeometry() below with the actual pixel geom
-        if(grid.x()<0|| grid.y()<0 || grid.width()<0 || grid.height()<0) {
-            return false;
-        }
-        else if( (grid.x()+grid.width()) > RoundUp(desktopRect.width()/GRIDSIZE) ) {
-            return false;
-        }
-        else if( (grid.y()+grid.height()) > RoundUp(desktopRect.height()/GRIDSIZE) ) {
-            return false;
-        }
-        //Final Check - don't let 1x1 items occupy the last row/column (not full size)
-        else if(grid.width()==1 && grid.height()==1 && (grid.x()==RoundUp(desktopRect.width()/GRIDSIZE) || grid.y()==RoundUp(desktopRect.height()/GRIDSIZE)) ) {
-            return false;
-        }
+        if ( (grid.x()<0|| grid.y()<0 || grid.width()<0 || grid.height()<0) ||
+        ( (grid.x()+grid.width()) > RoundUp(desktopRect.width()/GRIDSIZE) ) ||
+        ( (grid.y()+grid.height()) > RoundUp(desktopRect.height()/GRIDSIZE) ) ||
+        (grid.width()==1 && grid.height()==1 && (grid.x()==RoundUp(desktopRect.width()/GRIDSIZE) 
+         || grid.y()==RoundUp(desktopRect.height()/GRIDSIZE)) ) ){
+			return false;
+		}
         return true;
     }
 
