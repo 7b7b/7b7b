@@ -1,8 +1,8 @@
-# qt6-experimental
+# 7b7b
 
-This was originally planned to be the repo of the qt6 port of my version, but as you can see, i added some programs that i use with lumina.
+a fork of the lumina desktop enviorment.
 
-# Lumina components (PKGBUILD in `pkg/`)
+# components (PKGBUILD in `pkg/`)
 
 - `lib/` - The core library for the desktop
 
@@ -10,16 +10,9 @@ This was originally planned to be the repo of the qt6 port of my version, but as
 
 - `open/` - XDG-open front-end
 
-- `controlpanel/` - Configuration app
+- `config/` - Configuration app
 
 - `fileinfo/` - fileinfo for files
 
-# The other stuff
-
-- `sddm-halawa/` a fork of sugar-candy, made it more simpler
-
-- `compix/` compositor thats based on axcomp which is based on xcompmgr by @xeome
-
-- `7b7b-files/` config
-
-- `openbox-adwaita-theme/` theme for openbox
+# Does it have any conflicts with lumina?
+No.
