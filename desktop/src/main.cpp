@@ -36,7 +36,13 @@ int main(int argc, char ** argv)
     }
     //Setup any pre-QApplication initialization values
     LXDG::setEnvironmentVars();
+	
+	
+
 	QSettings* sessionsettings = new QSettings("7b7b-desktop", "sessionsettings");
+
+	QString OVS = sessionsettings.value("DesktopVersion","0").toString(); 
+	LDesktopUtils::checkUserFiles(OVS, LDesktopUtils::LuminaDesktopVersion());
 
 	const char* style = sessionsettings->value("StyleApplication","Fusion").toString().toStdString().c_str();
 
