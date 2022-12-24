@@ -12,7 +12,7 @@ set(CMAKE_AUTORCC ON)
 
 # Add a compiler flag
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-set(CMAKE_MODULE_PATH "/usr/lib/cmake/7b7b;${CMAKE_MODULE_PATH}")
+set(CMAKE_MODULE_PATH "${CMAKE_INSTALL_LIBDIR}/cmake/7b7b;${CMAKE_MODULE_PATH}")
 
 # Dependencies
 find_package(Qt6 REQUIRED COMPONENTS Widgets Network Concurrent)

@@ -14,7 +14,7 @@ depends=(
 build() {
 	mkdir -p build
 	cd build
-	cmake ../../../ -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_DATADIR=share -DCMAKE_INSTALL_BINDIR=bin
+	cmake ../../../ -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_DATADIR=share -DCMAKE_INSTALL_BINDIR=bin -DCMAKE_INSTALL_LIBDIR=lib
 	make
 }
 
