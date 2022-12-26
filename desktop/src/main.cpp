@@ -41,7 +41,7 @@ int main(int argc, char ** argv)
 
 	QSettings* sessionsettings = new QSettings("7b7b-desktop", "sessionsettings");
 
-	QString OVS = sessionsettings.value("DesktopVersion","0").toString(); 
+	QString OVS = sessionsettings->value("DesktopVersion","0").toString(); 
 	LDesktopUtils::checkUserFiles(OVS, LDesktopUtils::LuminaDesktopVersion());
 
 	
