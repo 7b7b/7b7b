@@ -44,7 +44,10 @@ int main(int argc, char ** argv)
 	QString OVS = sessionsettings.value("DesktopVersion","0").toString(); 
 	LDesktopUtils::checkUserFiles(OVS, LDesktopUtils::LuminaDesktopVersion());
 
-	const char* style = sessionsettings->value("StyleApplication","Fusion").toString().toStdString().c_str();
+	
+	QSettings* sesSet = new QSettings("7b7b-desktop", "sessionsettings");
+
+	const char* style = sesSet->value("StyleApplication","Fusion").toString().toStdString().c_str();
 
 	setenv("QT_QPA_PLATFORMTHEME",style,true);
 
