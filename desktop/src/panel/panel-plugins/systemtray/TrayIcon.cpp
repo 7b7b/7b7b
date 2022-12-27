@@ -10,11 +10,11 @@
 #include <QScreen>
 #include <LuminaX11.h>
 
-TrayIcon::TrayIcon(QWidget *parent) 
-	: QWidget(parent),
-	IID(0),
-	AID(0),
-	dmgID(0) {
+TrayIcon::TrayIcon(QWidget *parent)
+    : QWidget(parent),
+      IID(0),
+      AID(0),
+      dmgID(0) {
     badpaints = 0;
     if("1" == QString(getenv("QT_AUTO_SCREEN_SCALE_FACTOR")) ) {
         scalefactor = 2; //Auto-adjust this later to the physicalDotsPerInch of the current screen

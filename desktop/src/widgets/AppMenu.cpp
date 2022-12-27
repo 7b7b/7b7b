@@ -80,39 +80,39 @@ void AppMenu::updateAppList() {
         QString name, icon;
 
         QStringList submenus = QStringList() << "All" << "Game" << "Network" << "Settings" << "Utility" << "Wine" << "Multimedia" << "Development" << "Education" << "Graphics" << "Office" << "Science" << "System";
-		switch (submenus.indexOf(cats[i])){
-			case 0:
-				continue;
-				break;
-			case 1:
-				name = tr("Games");
-				icon = "applications-games";
-				break;
-			case 2:
-				name = tr("Network");
-				icon = "applications-internet";
-				break;
-			case 3:
-				name = tr("Settings");
-				icon = "applications-system";
-				break;
-			case 4:
-				name = tr("Utility");
-				icon = "applications-utilities";
-				break;
-			case 5:
-				name = tr("Wine");
-				icon = "wine";
-				break;
-			case 6 ... 12:
-				name = tr(cats[i].toUtf8().constData());
-				icon = "applications-" + cats[i].toLower();
-				break;
-			default:
-				name = tr("Unsorted");
-				icon = "applications-other";
-				break;
-		}
+        switch (submenus.indexOf(cats[i])) {
+        case 0:
+            continue;
+            break;
+        case 1:
+            name = tr("Games");
+            icon = "applications-games";
+            break;
+        case 2:
+            name = tr("Network");
+            icon = "applications-internet";
+            break;
+        case 3:
+            name = tr("Settings");
+            icon = "applications-system";
+            break;
+        case 4:
+            name = tr("Utility");
+            icon = "applications-utilities";
+            break;
+        case 5:
+            name = tr("Wine");
+            icon = "wine";
+            break;
+        case 6 ... 12:
+            name = tr(cats[i].toUtf8().constData());
+            icon = "applications-" + cats[i].toLower();
+            break;
+        default:
+            name = tr("Unsorted");
+            icon = "applications-other";
+            break;
+        }
 
         QMenu *menu = new QMenu(name, this);
         menu->setIcon( ICONS->loadIcon(icon) );
@@ -175,6 +175,6 @@ void AppMenu::watcherUpdate() {
 }
 
 void AppMenu::launchApp(QAction *act) {
-	QString appFile = act->whatsThis();
-	LSession::LaunchApplication("7b7b-open "+appFile);
+    QString appFile = act->whatsThis();
+    LSession::LaunchApplication("7b7b-open "+appFile);
 }

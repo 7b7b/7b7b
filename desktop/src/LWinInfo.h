@@ -22,28 +22,28 @@
 //#include "LSession.h"
 
 
-class LWinInfo{
+class LWinInfo {
 private:
-	WId window;
-	LXCB::WINDOWVISIBILITY cstate; //current window state
+    WId window;
+    LXCB::WINDOWVISIBILITY cstate; //current window state
 
 public:
-	explicit LWinInfo(WId id = 0)
-	  : window(id),
-	  cstate(LXCB::IGNORE){} //make sure this gets updates with the first "status" call
-	~LWinInfo(){};
-	
-	//The current window ID
-	WId windowID(){
-	  return window;
-	}
-	
-	//Information Retrieval
-	 // Don't cache these results because they can change regularly
-	QString  text();
-	QIcon icon(bool &noicon);
-	QString Class();
-	LXCB::WINDOWVISIBILITY status(bool update = false);
+    explicit LWinInfo(WId id = 0)
+        : window(id),
+          cstate(LXCB::IGNORE) {} //make sure this gets updates with the first "status" call
+    ~LWinInfo() {};
+
+    //The current window ID
+    WId windowID() {
+        return window;
+    }
+
+    //Information Retrieval
+    // Don't cache these results because they can change regularly
+    QString  text();
+    QIcon icon(bool &noicon);
+    QString Class();
+    LXCB::WINDOWVISIBILITY status(bool update = false);
 };
 
 #endif

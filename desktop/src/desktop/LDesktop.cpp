@@ -19,8 +19,8 @@
 #define DEBUG 1
 
 LDesktop::LDesktop(int deskNum, bool setdefault)
-	: QObject(),
-	screenID(QApplication::screens().at(deskNum)->name()) {
+    : QObject(),
+      screenID(QApplication::screens().at(deskNum)->name()) {
     DPREFIX = "desktop-"+screenID+"/";
     i_dlg_folder = true;
     inputDLG = 0;
@@ -99,7 +99,7 @@ WId LDesktop::backgroundID() {
     if(bgDesktop!=0) {
         return bgDesktop->winId();
     }
-	return QX11Info::appRootWindow();
+    return QX11Info::appRootWindow();
 }
 
 QRect LDesktop::availableScreenGeom() {
@@ -155,10 +155,10 @@ void LDesktop::checkResolution() {
     issyncing = true;
     settings->setValue(DPREFIX+"screen/lastWidth",scrn.width());
     settings->setValue(DPREFIX+"screen/lastHeight",scrn.height());
-    
-	if (!(oldWidth<1 || oldHeight<1 || scrn.width()<1 || scrn.height()<1)
-	&& !(scrn.width()==oldWidth && scrn.height()==oldHeight)){
-		//Calculate the scale factor between the old/new sizes in each dimension
+
+    if (!(oldWidth<1 || oldHeight<1 || scrn.width()<1 || scrn.height()<1)
+            && !(scrn.width()==oldWidth && scrn.height()==oldHeight)) {
+        //Calculate the scale factor between the old/new sizes in each dimension
         //  and forward that on to all the interface elements
         double xscale = scrn.width()/((double) oldWidth);
         double yscale = scrn.height()/((double) oldHeight);
@@ -195,16 +195,16 @@ void LDesktop::checkResolution() {
             QStringList filter = keys.filter(plugs[i]);
             for(int j=0; j<filter.length(); j++) {
                 //Has existing settings - need to adjust it
-                if (filter[j].endsWith("location/height") || filter[j].endsWith("location/y") 
-                || filter[j].endsWith("IconSize") || filter[j].endsWith("iconsize")){
+                if (filter[j].endsWith("location/height") || filter[j].endsWith("location/y")
+                        || filter[j].endsWith("IconSize") || filter[j].endsWith("iconsize")) {
                     DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*yscale) );
-				} else if (filter[j].endsWith("location/width") || filter[j].endsWith("location/x")) {
+                } else if (filter[j].endsWith("location/width") || filter[j].endsWith("location/x")) {
                     DP->setValue( filter[j], qRound(DP->value(filter[j]).toInt()*xscale) );
-				}
-			}
+                }
+            }
         }
         DP->sync(); //make sure it gets saved to disk right away
-	}
+    }
     issyncing = false;
 }
 
@@ -240,9 +240,9 @@ void LDesktop::InitDesktop() {
     int grid = settings->value(DPREFIX+"GridSize",-1).toInt();
     if(grid<0) {
         grid = 100;
-        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000){
-			grid = 200;
-		}
+        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
+            grid = 200;
+        }
     }
     bgDesktop->SetIconSize( grid );
     bgDesktop->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -444,9 +444,9 @@ void LDesktop::IncreaseDesktopPluginIcons() {
     int cur = settings->value(DPREFIX+"GridSize",-1).toInt();
     if(cur<0) {
         cur = 100;
-        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000){
-			cur = 200;
-		}
+        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
+            cur = 200;
+        }
     }
     cur+=16;
     issyncing=true; //don't let the change cause a refresh
@@ -460,12 +460,12 @@ void LDesktop::DecreaseDesktopPluginIcons() {
     int cur = settings->value(DPREFIX+"GridSize",-1).toInt();
     if(cur<0) {
         cur = 100;
-        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000){
-			cur = 200;
-		}
+        if (QGuiApplication::screens().at(Screen())->availableGeometry().height() > 2000) {
+            cur = 200;
+        }
     }
     if(cur>=32) {
-		cur-=16;
+        cur-=16;
     }
     issyncing=true; //don't let the change cause a refresh
     settings->setValue(DPREFIX+"GridSize",cur);
@@ -551,7 +551,7 @@ void LDesktop::UpdateDesktopPluginArea() {
     }
     //Now make sure the desktop plugin area is only the visible area
     QRect rec = visReg.boundingRect();
-	//  QRect rec = LSession::desktop()->availableGeometry(Screen());
+    //  QRect rec = LSession::desktop()->availableGeometry(Screen());
     //qDebug() << " - DPArea: Panel-Adjusted rectangle:" << rec;
     //qDebug() << " - DPArea: Screen Geometry:" << LSession::desktop()->screenGeometry(Screen());
     //qDebug() << " - DPArea: Current Geometry:" << bgDesktop->geometry();

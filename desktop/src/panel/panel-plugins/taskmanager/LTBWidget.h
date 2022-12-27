@@ -40,9 +40,9 @@ signals:
     void wheelScroll(int change);
 
 public:
-    explicit LTBWidget(QWidget* parent) 
-		: QToolButton(parent),
-		cstate(LXCB::IGNORE) {
+    explicit LTBWidget(QWidget* parent)
+        : QToolButton(parent),
+          cstate(LXCB::IGNORE) {
 
         this->setPopupMode(QToolButton::InstantPopup);
         this->setAutoRaise(true);

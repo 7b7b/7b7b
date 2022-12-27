@@ -36,20 +36,32 @@ int main(int argc, char ** argv)
     }
     //Setup any pre-QApplication initialization values
     LXDG::setEnvironmentVars();
-	
-	
 
-	QSettings* sessionsettings = new QSettings("7b7b-desktop", "sessionsettings");
+    //Find application style
+    const char* style;
 
-	QString OVS = sessionsettings->value("DesktopVersion","0").toString(); 
-	LDesktopUtils::checkUserFiles(OVS, LDesktopUtils::LuminaDesktopVersion());
+    if(!QFile::exists(QString(getenv("XDG_CONFIG_HOME"))+"/7b7b-desktop/desktopsettings.conf")) {
+        QStringList sysDefaults = LUtils::readFile(LOS::LuminaShare()+"7b7bDesktop.conf");
+        QStringList tmp = sysDefaults.filter("session_");
+        for(int i=0; i<tmp.length(); i++) {
+            if(tmp[i].startsWith("#") || !tmp[i].contains("=") ) {
+                continue;
+            }
+            QString var = tmp[i].section("=",0,0).toLower().simplified();
+            QString val = tmp[i].section("=",1,1).section("#",0,0).simplified();
+            if(val.isEmpty()) {
+                continue;
+            }
+            if (var == "session_applicationstyle") {
+                style = val.toStdString().c_str();
+            }
+        }
+    } else {
+        QSettings* sesSet = new QSettings("7b7b-desktop", "sessionsettings");
+        style = sesSet->value("StyleApplication","Fusion").toString().toStdString().c_str();
+    }
 
-	
-	QSettings* sesSet = new QSettings("7b7b-desktop", "sessionsettings");
-
-	const char* style = sesSet->value("StyleApplication","Fusion").toString().toStdString().c_str();
-
-	setenv("QT_QPA_PLATFORMTHEME",style,true);
+    setenv("QT_QPA_PLATFORMTHEME",style,true);
 
     LSession a(argc, argv);
     if(!a.isPrimaryProcess()) {

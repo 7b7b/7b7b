@@ -85,7 +85,7 @@ LSession::~LSession() {
     }
 }
 
-void LSession::setupSession() {    
+void LSession::setupSession() {
     //Seed random number generator (if needed)
     QRandomGenerator( QTime::currentTime().msec() );
 
@@ -115,9 +115,9 @@ void LSession::setupSession() {
     }
     checkUserFiles();
 
-	// Window Manager
-	LaunchApplicationDetached(sessionsettings->value("WindowManager", "").toString());
-	
+    // Window Manager
+    LaunchApplicationDetached(sessionsettings->value("WindowManager", "").toString());
+
     //Initialize the internal variables
     DESKTOPS.clear();
 
@@ -279,19 +279,19 @@ void LSession::StartLogout() {
 void LSession::StartShutdown(bool skipupdates) {
     CleanupSession();
 
-	LaunchApplicationDetached(sessionSettings()->value("ShutdownCmd", "").toString());
+    LaunchApplicationDetached(sessionSettings()->value("ShutdownCmd", "").toString());
     QCoreApplication::exit(0);
 }
 
 void LSession::StartReboot(bool skipupdates) {
     CleanupSession();
 
-	LaunchApplicationDetached(sessionSettings()->value("RestartCmd", "").toString());
+    LaunchApplicationDetached(sessionSettings()->value("RestartCmd", "").toString());
     QCoreApplication::exit(0);
 }
 
 void LSession::LockScreen() {
-	LaunchApplicationDetached(sessionSettings()->value("LockCmd", "").toString());
+    LaunchApplicationDetached(sessionSettings()->value("LockCmd", "").toString());
 }
 
 void LSession::watcherChange(QString changed) {
@@ -584,8 +584,8 @@ void LSession::LaunchApplication(QString cmd) {
 
 void LSession::LaunchApplicationDetached(QString cmd) {
     QStringList args = cmd.split(" ");
-	args.removeFirst();
-	QProcess::startDetached(cmd.split(" ")[0], args);
+    args.removeFirst();
+    QProcess::startDetached(cmd.split(" ")[0], args);
 
 }
 

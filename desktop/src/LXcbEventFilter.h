@@ -56,51 +56,53 @@ XCB_CLIENT_MESSAGE
 #define SYSTEM_TRAY_BEGIN_MESSAGE 1
 #define SYSTEM_TRAY_CANCEL_MESSAGE 2
 
-class XCBEventFilter : public QAbstractNativeEventFilter{
+class XCBEventFilter : public QAbstractNativeEventFilter {
 private:
-	LSession *session;
-	xcb_atom_t _NET_SYSTEM_TRAY_OPCODE;
-	QList<xcb_atom_t> WinNotifyAtoms, SysNotifyAtoms;
-	int TrayDmgFlag; //internal damage event offset value for the system tray
-	bool stopping;
+    LSession *session;
+    xcb_atom_t _NET_SYSTEM_TRAY_OPCODE;
+    QList<xcb_atom_t> WinNotifyAtoms, SysNotifyAtoms;
+    int TrayDmgFlag; //internal damage event offset value for the system tray
+    bool stopping;
 
-	void InitAtoms(){
-	  //Initialize any special atoms that we need to save/use regularly
-	  //NOTE: All the EWMH atoms are already saved in session->XCB->EWMH
-	  WinNotifyAtoms.clear();
-	    WinNotifyAtoms << session->XCB->EWMH._NET_WM_NAME \
-					<< session->XCB->EWMH._NET_WM_VISIBLE_NAME \
-					<< session->XCB->EWMH._NET_WM_ICON_NAME \
-					<< session->XCB->EWMH._NET_WM_VISIBLE_ICON_NAME \
-					<< session->XCB->EWMH._NET_WM_ICON \
-					<< session->XCB->EWMH._NET_WM_ICON_GEOMETRY;
+    void InitAtoms() {
+        //Initialize any special atoms that we need to save/use regularly
+        //NOTE: All the EWMH atoms are already saved in session->XCB->EWMH
+        WinNotifyAtoms.clear();
+        WinNotifyAtoms << session->XCB->EWMH._NET_WM_NAME \
+                       << session->XCB->EWMH._NET_WM_VISIBLE_NAME \
+                       << session->XCB->EWMH._NET_WM_ICON_NAME \
+                       << session->XCB->EWMH._NET_WM_VISIBLE_ICON_NAME \
+                       << session->XCB->EWMH._NET_WM_ICON \
+                       << session->XCB->EWMH._NET_WM_ICON_GEOMETRY;
 
-	  SysNotifyAtoms.clear();
-	    SysNotifyAtoms << session->XCB->EWMH._NET_CLIENT_LIST \
-					<< session->XCB->EWMH._NET_CLIENT_LIST_STACKING \
-					<< session->XCB->EWMH._NET_CURRENT_DESKTOP \
-					<< session->XCB->EWMH._NET_WM_STATE \
-					<< session->XCB->EWMH._NET_ACTIVE_WINDOW \
-					<< session->XCB->EWMH._NET_WM_ICON \
-					<< session->XCB->EWMH._NET_WM_ICON_GEOMETRY;
-	  //_NET_SYSTEM_TRAY_OPCODE
-	  xcb_intern_atom_cookie_t cookie = xcb_intern_atom(QX11Info::connection(), 0, 23,"_NET_SYSTEM_TRAY_OPCODE");
-	    xcb_intern_atom_reply_t *r = xcb_intern_atom_reply(QX11Info::connection(), cookie, NULL);
-	    if(r){
-	      _NET_SYSTEM_TRAY_OPCODE = r->atom;
-	      free(r);
-	    }
-	}
+        SysNotifyAtoms.clear();
+        SysNotifyAtoms << session->XCB->EWMH._NET_CLIENT_LIST \
+                       << session->XCB->EWMH._NET_CLIENT_LIST_STACKING \
+                       << session->XCB->EWMH._NET_CURRENT_DESKTOP \
+                       << session->XCB->EWMH._NET_WM_STATE \
+                       << session->XCB->EWMH._NET_ACTIVE_WINDOW \
+                       << session->XCB->EWMH._NET_WM_ICON \
+                       << session->XCB->EWMH._NET_WM_ICON_GEOMETRY;
+        //_NET_SYSTEM_TRAY_OPCODE
+        xcb_intern_atom_cookie_t cookie = xcb_intern_atom(QX11Info::connection(), 0, 23,"_NET_SYSTEM_TRAY_OPCODE");
+        xcb_intern_atom_reply_t *r = xcb_intern_atom_reply(QX11Info::connection(), cookie, NULL);
+        if(r) {
+            _NET_SYSTEM_TRAY_OPCODE = r->atom;
+            free(r);
+        }
+    }
 
 public:
-	explicit XCBEventFilter(LSession *sessionhandle);
-	void setTrayDamageFlag(int flag);
-	void StopEventHandling(){ stopping = true; }
+    explicit XCBEventFilter(LSession *sessionhandle);
+    void setTrayDamageFlag(int flag);
+    void StopEventHandling() {
+        stopping = true;
+    }
 
-	//This function format taken directly from the Qt5.3 documentation
-	//virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *) Q_DECL_OVERRIDE;
-	virtual bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *) Q_DECL_OVERRIDE;
-	//virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
+    //This function format taken directly from the Qt5.3 documentation
+    //virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *) Q_DECL_OVERRIDE;
+    virtual bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *) Q_DECL_OVERRIDE;
+    //virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *);
 
 };
 

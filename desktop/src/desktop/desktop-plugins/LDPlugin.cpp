@@ -9,10 +9,10 @@
 #include "LSession.h"
 #include <LuminaXDG.h>
 
-LDPlugin::LDPlugin(QWidget *parent, QString id) 
-	: QFrame(parent),
-	PLUGID(id),
-	prefix(id.replace("/","_")+"/") {
+LDPlugin::LDPlugin(QWidget *parent, QString id)
+    : QFrame(parent),
+      PLUGID(id),
+      prefix(id.replace("/","_")+"/") {
     //qDebug() << "ID:" << PLUGID << prefix;
     settings = LSession::handle()->DesktopPluginSettings();
     //Setup the plugin system control menu

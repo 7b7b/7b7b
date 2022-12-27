@@ -22,27 +22,29 @@
 #include <unistd.h>
 #include <stdio.h>
 
-class Lumina{
+class Lumina {
 public:
-  enum STATES {NONE, VISIBLE, INVISIBLE, ACTIVE, NOTIFICATION, NOSHOW};
+    enum STATES {NONE, VISIBLE, INVISIBLE, ACTIVE, NOTIFICATION, NOSHOW};
 
 };
 
-class SYSTEM{
+class SYSTEM {
 public:
-	//Installation location for finding default files
-	//static QString installDir(){ return PREFIX + "/share/Lumina-DE/"; }
-	//Current Username
-	static QString user(){ return QString::fromLocal8Bit(getlogin()); }
-	//Current Hostname
-	static QString hostname(){
-	  char name[BUFSIZ];
-	  int count = gethostname(name,sizeof(name));
-	  if (count < 0) {
-	    return QString();
-	  }
-	  return QString::fromLocal8Bit(name,count);
-	}
+    //Installation location for finding default files
+    //static QString installDir(){ return PREFIX + "/share/Lumina-DE/"; }
+    //Current Username
+    static QString user() {
+        return QString::fromLocal8Bit(getlogin());
+    }
+    //Current Hostname
+    static QString hostname() {
+        char name[BUFSIZ];
+        int count = gethostname(name,sizeof(name));
+        if (count < 0) {
+            return QString();
+        }
+        return QString::fromLocal8Bit(name,count);
+    }
 
 };
 

@@ -26,8 +26,8 @@ private:
 
 public:
     explicit LPPlugin(QWidget *parent = 0, QString ptype="unknown", bool horizontal = true)
-		: QWidget(parent),
-		plugintype(ptype) {
+        : QWidget(parent),
+          plugintype(ptype) {
         //plugintype=ptype;
         this->setContentsMargins(1,1,1,1);
         this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

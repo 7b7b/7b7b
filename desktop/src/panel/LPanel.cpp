@@ -32,7 +32,7 @@ LPanel::LPanel(QSettings *file, QString scr, int num, QWidget *parent, bool rese
     screenID = scr;
     panelnum = num; //save for later
 
-	panel_csstyle  = "QWidget#7b7bPanelColor{ background: %1; }";
+    panel_csstyle  = "QWidget#7b7bPanelColor{ background: %1; }";
 
     QString lscreenID = QApplication::screens().at(Screen())->name();
     PPREFIX = "panel_"+lscreenID+"."+QString::number(num)+"/";
@@ -295,7 +295,7 @@ void LPanel::UpdatePanel(bool geomonly) {
     //Now update the appearance of the toolbar
     if(settings->value(PPREFIX+"customColor", false).toBool()) {
         QString color = settings->value(PPREFIX+"color", "rgba(255,255,255,160)").toString();
-		panelArea->setStyleSheet(panel_csstyle.arg(color));
+        panelArea->setStyleSheet(panel_csstyle.arg(color));
     } else {
         panelArea->setPalette(this->style()->standardPalette());
         QRgb rgb = panelArea->palette().base().color().rgb();
