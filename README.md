@@ -16,3 +16,10 @@ a fork of the lumina desktop enviorment.
 
 # Does it have any conflicts with lumina?
 No.
+
+# Screenshots
+
+![Screenshot](screenshots/liveiso.png?raw=true)
+
+![Screenshot](screenshots/arcdark.png?raw=true)
+
